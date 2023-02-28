@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Notely - Notes</title>
+    </head>
+    <body onload="refreshLoadList()">
+        <form id="noteForm">
+            <textarea id="notes" name="notes" rows="10" cols="30"></textarea>
+            <br><br>
+            <input type="text" id="saveName" name="saveName">
+            <button type="button" onclick="saveNote()">Save</button>
+            <br><br>
+            <select id="loadName" name="loadName"></select>
+            <button type="button" onclick="loadNote()">Load</button>
+        </form>
+
+        <script src="note.js"></script>
+    </body>
+</html>
