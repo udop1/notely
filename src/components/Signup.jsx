@@ -5,7 +5,9 @@ import { UserAuth } from '../context/AuthContext';
 const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const { createUser } = UserAuth();
 
@@ -15,13 +17,20 @@ const Signup = () => {
         e.preventDefault();
         setError('');
 
+        if (passwordConfirm !== password) {
+            return setError('Passwords do not match');
+        }
+
         try {
             await createUser(email, password);
+            setLoading(true);
             navigate('/account');
         } catch (error) {
             setError(error.message);
             console.log(error);
         }
+
+        setLoading(false);
     };
 
     return (
@@ -30,6 +39,7 @@ const Signup = () => {
                 <h1>Create your account</h1>
                 <p><Link to='/'>Already have an account? Sign In.</Link></p>
             </div>
+            {error && <div>{error}</div>}
 
             <form onSubmit={handleSubmit}>
                 <div>
@@ -40,7 +50,11 @@ const Signup = () => {
                     <label>Password</label>
                     <input onChange={(e) => setPassword(e.target.value)} type="password"></input>
                 </div>
-                <button>Sign Up</button>
+                <div>
+                    <label>Password Confirmation</label>
+                    <input onChange={(e) => setPasswordConfirm(e.target.value)} type="password"></input>
+                </div>
+                <button disabled={loading}>Sign Up</button>
             </form>
         </div>
     )

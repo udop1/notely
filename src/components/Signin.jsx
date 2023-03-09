@@ -6,6 +6,7 @@ const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const { signIn } = UserAuth();
 
@@ -17,11 +18,14 @@ const Signin = () => {
 
         try {
             await signIn(email, password);
+            setLoading(true);
             navigate('/account');
         } catch (error) {
             setError(error.message);
             console.log(error);
         }
+
+        setLoading(false);
     };
 
     return (
@@ -30,6 +34,7 @@ const Signin = () => {
                 <h1>Sign in to your account</h1>
                 <p><Link to='/signup'>Don't have an account yet? Sign Up.</Link></p>
             </div>
+            {error && <div>{error}</div>}
 
             <form onSubmit={handleSubmit}>
                 <div>
@@ -40,7 +45,7 @@ const Signin = () => {
                     <label>Password</label>
                     <input onChange={(e) => setPassword(e.target.value)} type="password"></input>
                 </div>
-                <button>Sign In</button>
+                <button disabled={loading}>Sign In</button>
             </form>
         </div>
     )
