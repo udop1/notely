@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <div>
-      <h1>Firebase Auth</h1>
+      <h1>Notely</h1>
       <AuthContextProvider>
         <Routes>
           {/*<Route path='/' element={<Homepage />} />*/}

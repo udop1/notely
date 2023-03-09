@@ -1,3 +1,4 @@
+import { Alert, Button, Card, FormLabel, Input, Sheet, Typography } from '@mui/joy';
 import { React, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -23,8 +24,8 @@ const Signup = () => {
         }
 
         try {
-            await createUser(email, password, username);
             setLoading(true);
+            await createUser(email, password, username);
             navigate('/dashboard');
         } catch (error) {
             setError(error.message);
@@ -35,33 +36,35 @@ const Signup = () => {
     };
 
     return (
-        <div>
-            <div>
-                <h1>Create your account</h1>
-                <p><Link to='/login'>Already have an account? Sign In.</Link></p>
-            </div>
-            {error && <div>{error}</div>}
+        <Card variant="outlined">
+            <Typography level="h1" sx={{marginBottom: 3}}>Create your account</Typography>
+            {error && <Alert color="danger">{error}</Alert>}
 
             <form onSubmit={handleSubmit}>
+                <Sheet sx={{marginBottom: 3}}>
+                    <FormLabel>Username</FormLabel>
+                    <Input required onChange={(e) => setUsername(e.target.value)} type="text"></Input>
+                </Sheet>
+
                 <div>
-                    <label>Username</label>
-                    <input onChange={(e) => setUsername(e.target.value)} type="text"></input>
+                    <FormLabel>Email Address</FormLabel>
+                    <Input required onChange={(e) => setEmail(e.target.value)} type="email"></Input>
                 </div>
                 <div>
-                    <label>Email Address</label>
-                    <input onChange={(e) => setEmail(e.target.value)} type="email"></input>
+                    <FormLabel>Password</FormLabel>
+                    <Input required onChange={(e) => setPassword(e.target.value)} type="password"></Input>
                 </div>
                 <div>
-                    <label>Password</label>
-                    <input onChange={(e) => setPassword(e.target.value)} type="password"></input>
+                    <FormLabel>Password Confirmation</FormLabel>
+                    <Input required onChange={(e) => setPasswordConfirm(e.target.value)} type="password"></Input>
                 </div>
-                <div>
-                    <label>Password Confirmation</label>
-                    <input onChange={(e) => setPasswordConfirm(e.target.value)} type="password"></input>
-                </div>
-                <button disabled={loading}>Sign Up</button>
+                <Button type="submit" loading={loading}>Sign Up</Button>
             </form>
-        </div>
+
+            <div>
+                <Typography level="body1"><Link to='/login'>Already have an account? Sign In.</Link></Typography>
+            </div>
+        </Card>
     );
 };
 
