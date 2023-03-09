@@ -1,25 +1,24 @@
 import { React, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 
-const Signin = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { signIn } = UserAuth();
-
-    const navigate = useNavigate();
+    const { resetPassword } = UserAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setMessage('');
 
         try {
-            await signIn(email, password);
+            await resetPassword(email);
             setLoading(true);
-            navigate('/dashboard');
+            setMessage('Check your inbox for further instructions');
         } catch (error) {
             setError(error.message);
             console.log(error);
@@ -31,27 +30,22 @@ const Signin = () => {
     return (
         <div>
             <div>
-                <h1>Sign in to your account</h1>
+                <h1>Forgot Password</h1>
                 <p><Link to='/signup'>Don't have an account yet? Sign Up.</Link></p>
+                <p><Link to='/login'>Already have an account? Sign In.</Link></p>
             </div>
             {error && <div>{error}</div>}
+            {message && <div>{message}</div>}
 
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email Address</label>
                     <input onChange={(e) => setEmail(e.target.value)} type="email"></input>
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input onChange={(e) => setPassword(e.target.value)} type="password"></input>
-                </div>
-                <button disabled={loading}>Sign In</button>
+                <button disabled={loading}>Reset Password</button>
             </form>
-            <div>
-                <p><Link to='/forgot-password'>Forgot Password?</Link></p>
-            </div>
         </div>
     );
 };
 
-export default Signin;
+export default ForgotPassword;

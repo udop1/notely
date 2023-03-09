@@ -6,6 +6,7 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [username, setUsername] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -22,9 +23,9 @@ const Signup = () => {
         }
 
         try {
-            await createUser(email, password);
+            await createUser(email, password, username);
             setLoading(true);
-            navigate('/account');
+            navigate('/dashboard');
         } catch (error) {
             setError(error.message);
             console.log(error);
@@ -37,11 +38,15 @@ const Signup = () => {
         <div>
             <div>
                 <h1>Create your account</h1>
-                <p><Link to='/'>Already have an account? Sign In.</Link></p>
+                <p><Link to='/login'>Already have an account? Sign In.</Link></p>
             </div>
             {error && <div>{error}</div>}
 
             <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Username</label>
+                    <input onChange={(e) => setUsername(e.target.value)} type="text"></input>
+                </div>
                 <div>
                     <label>Email Address</label>
                     <input onChange={(e) => setEmail(e.target.value)} type="email"></input>
@@ -57,7 +62,7 @@ const Signup = () => {
                 <button disabled={loading}>Sign Up</button>
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default Signup;

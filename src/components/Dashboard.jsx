@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 
-const Account = () => {
+const Dashboard = () => {
     const { user, logout } = UserAuth();
 
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Account = () => {
     const handleLogout = async () => {
         try {
             await logout();
-            navigate('/');
+            navigate('/login');
             console.log('You are logged out');
         } catch (error) {
             console.log(error);
@@ -19,12 +19,13 @@ const Account = () => {
 
     return (
         <div>
-            <h1>Account</h1>
+            <h1>Dashboard</h1>
             <p>User Email: {user && user.email}</p>
+            <p>Username: {user && user.displayName}</p>
 
             <button onClick={handleLogout}>Logout</button>
         </div>
-    )
-}
+    );
+};
 
-export default Account;
+export default Dashboard;
