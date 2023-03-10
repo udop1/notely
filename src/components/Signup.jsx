@@ -1,4 +1,5 @@
-import { Alert, Button, Card, FormLabel, Input, Sheet, Typography } from '@mui/joy';
+import { LoadingButton } from '@mui/lab';
+import { Alert, AlertTitle, Card, CardContent, Container, TextField, Typography, Stack } from '@mui/material';
 import { React, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -36,35 +37,28 @@ const Signup = () => {
     };
 
     return (
-        <Card variant="outlined">
-            <Typography level="h1" sx={{marginBottom: 3}}>Create your account</Typography>
-            {error && <Alert color="danger">{error}</Alert>}
+        <Container>
+            <Card>
+                <CardContent>
+                    <Typography variant="h4" sx={{mb: 3}}>Create your account</Typography>
+                    <Stack spacing={2}>
+                        {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
 
-            <form onSubmit={handleSubmit}>
-                <Sheet sx={{marginBottom: 3}}>
-                    <FormLabel>Username</FormLabel>
-                    <Input required onChange={(e) => setUsername(e.target.value)} type="text"></Input>
-                </Sheet>
+                        <Stack component="form" spacing={2} onSubmit={handleSubmit}>
+                            <TextField required label="Username" onChange={(e) => setUsername(e.target.value)} type="text"></TextField>
+                            <TextField required label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
+                            <TextField required label="Password" onChange={(e) => setPassword(e.target.value)} type="password"></TextField>
+                            <TextField required label="Password Confirmation" onChange={(e) => setPasswordConfirm(e.target.value)} type="password"></TextField>
+                            <LoadingButton type="submit" loading={loading} variant="contained">Sign Up</LoadingButton>
+                        </Stack>
 
-                <div>
-                    <FormLabel>Email Address</FormLabel>
-                    <Input required onChange={(e) => setEmail(e.target.value)} type="email"></Input>
-                </div>
-                <div>
-                    <FormLabel>Password</FormLabel>
-                    <Input required onChange={(e) => setPassword(e.target.value)} type="password"></Input>
-                </div>
-                <div>
-                    <FormLabel>Password Confirmation</FormLabel>
-                    <Input required onChange={(e) => setPasswordConfirm(e.target.value)} type="password"></Input>
-                </div>
-                <Button type="submit" loading={loading}>Sign Up</Button>
-            </form>
-
-            <div>
-                <Typography level="body1"><Link to='/login'>Already have an account? Sign In.</Link></Typography>
-            </div>
-        </Card>
+                        <div>
+                            <Typography variant="body1"><Link to='/login'>Already have an account? Sign In.</Link></Typography>
+                        </div>
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Container>
     );
 };
 

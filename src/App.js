@@ -1,4 +1,3 @@
-import './App.css';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Signin from './components/Signin';
@@ -11,7 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <div>
-      <h1>Notely</h1>
+      {/*<h1>Notely</h1>*/}
       <AuthContextProvider>
         <Routes>
           {/*<Route path='/' element={<Homepage />} />*/}
