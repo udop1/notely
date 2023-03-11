@@ -9,7 +9,7 @@ export const AuthContextProvider = ({ children }) => {
 
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
-										await updateUser(username);
+			await updateUser(username);
 		});
 	};
 
