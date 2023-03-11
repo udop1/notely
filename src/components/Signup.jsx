@@ -40,7 +40,7 @@ const Signup = () => {
         <Container>
             <Card>
                 <CardContent>
-                    <Typography variant="h4" sx={{mb: 3}}>Create your account</Typography>
+                    <Typography variant="h4" sx={{ mb: 3 }}>Create your account</Typography>
                     <Stack spacing={2}>
                         {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
 
