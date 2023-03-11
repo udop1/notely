@@ -1,18 +1,24 @@
-name: "Run linting"
+name: "Run type checker"
 on:
-	push:
-		branches: [master]
-	pull_request:
-		branches: [master]
+  push:
+    branches: [ "master" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "master" ]
+
 jobs:
-	linting:
-		runs-on: ubuntu-latest
-		steps:
-		  - uses: actions/checkout@v3
-		  - uses: actions/setup-node@v3
-			with:
-				node-version: 18
-		  - name: Install packages
-		  	run: npm ci
-		  - name: Run linting
-			run: npx prettier ./src
+  type-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install pipenv
+        run: |
+          npm ci
+      - name: Type check with mypy
+        run: |
+          npx prettier ./src
