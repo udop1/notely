@@ -3,7 +3,6 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ "master" ]
 
 jobs:
@@ -12,13 +11,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Python
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install pipenv
-        run: |
-          npm ci
-      - name: Type check with mypy
-        run: |
-          npx prettier ./src
+      - name: Install Packages
+        run: npm ci
+      - name: Run Prettier
+        run: npx prettier ./src --check
