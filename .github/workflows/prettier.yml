@@ -1,3 +1,4 @@
+name: "Run linting"
 on:
 	push:
 		branches: ["master"]
