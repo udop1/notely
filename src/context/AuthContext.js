@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 const UserContext = createContext();
 
@@ -10,6 +11,13 @@ export const AuthContextProvider = ({ children }) => {
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
 			await updateUser(username);
+			// try {
+			// 	await addDoc(collection(db, user.uid), {
+
+			// 	});
+			// } catch (error) {
+			// 	console.log(error);
+			// }
 		});
 	};
 
