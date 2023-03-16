@@ -1,28 +1,16 @@
-import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent, Container, Grid, Typography } from '@mui/material';
 import ListRoundedIcon from '@mui/icons-material/ListRounded';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import NavBar from "./NavBar";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-    const { user, logout } = UserAuth();
-
-    const navigate = useNavigate();
-
-    const handleLogout = async () => {
-        try {
-            await logout();
-            navigate('/login');
-            console.log('You are logged out');
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    const { user } = UserAuth();
 
     return (
         <Box>
@@ -35,7 +23,7 @@ const Dashboard = () => {
                     <Grid container spacing={2} columns={12}>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea>
+                                <CardActionArea component={Link} to="/todo">
                                     <CardContent>
                                         <ListRoundedIcon sx={{ mb: 1, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>To-do list</Typography>
@@ -46,7 +34,7 @@ const Dashboard = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea>
+                                <CardActionArea component={Link} to="/notes">
                                     <CardContent>
                                         <DescriptionOutlinedIcon sx={{ mb: 1, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Notes</Typography>
@@ -57,7 +45,7 @@ const Dashboard = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea>
+                                <CardActionArea component={Link} to="/whiteboard">
                                     <CardContent>
                                         <DeveloperBoardIcon sx={{ mb: 1, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Whiteboard</Typography>
@@ -68,10 +56,10 @@ const Dashboard = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea>
+                                <CardActionArea component={Link} to="/flashcards">
                                     <CardContent>
                                         <StyleOutlinedIcon sx={{ mb: 1, fontSize: 50 }} />
-                                        <Typography variant="body1" sx={{ fontWeight: "700" }}>Flashcard</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: "700" }}>Flashcards</Typography>
                                         <Typography variant="body2">Master any subject with our interactive flashcards.</Typography>
                                     </CardContent>
                                 </CardActionArea>
@@ -79,7 +67,7 @@ const Dashboard = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea>
+                                <CardActionArea component={Link} to="/pomodoro">
                                     <CardContent>
                                         <TimerOutlinedIcon sx={{ mb: 1, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Pomodoro Timer</Typography>
@@ -90,8 +78,6 @@ const Dashboard = () => {
                         </Grid>
                     </Grid>
                 </Box>
-
-                <Button variant="contained" onClick={handleLogout}>Logout</Button>
             </Container>
         </Box>
     );

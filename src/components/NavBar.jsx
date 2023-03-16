@@ -11,6 +11,7 @@ import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { React, useState } from 'react'
 import { UserAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
     const { user } = UserAuth();
@@ -39,13 +40,13 @@ const NavBar = () => {
                             </ListItemText>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to="/dashboard">
                                 <ListItemIcon><HomeOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Dashboard" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to="/settings">
                                 <ListItemIcon><SettingsOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Settings" />
                             </ListItemButton>
@@ -54,31 +55,31 @@ const NavBar = () => {
                     <Divider />
                     <List>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to="/todo">
                                 <ListItemIcon><ListRoundedIcon /></ListItemIcon>
                                 <ListItemText primary="To-do list" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to="/notes">
                                 <ListItemIcon><DescriptionOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Notes" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to="/whiteboard">
                                 <ListItemIcon><DeveloperBoardIcon /></ListItemIcon>
                                 <ListItemText primary="Whiteboard" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to="/flashcards">
                                 <ListItemIcon><StyleOutlinedIcon /></ListItemIcon>
-                                <ListItemText primary="Flashcard" />
+                                <ListItemText primary="Flashcards" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to="/pomodoro">
                                 <ListItemIcon><TimerOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Pomodoro Timer" />
                             </ListItemButton>
