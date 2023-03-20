@@ -9,7 +9,7 @@ function App() {
 			<AuthContextProvider>
 				{/* prettier-ignore */}
 				<Routes>
-					{/*<Route path='/' element={ <Homepage /> } />*/}
+					{/* <Route path='/' element={ <Homepage /> } /> */}
 					<Route path="/login" element={ <Signin /> } />
 					<Route path="/forgot-password" element={ <ForgotPassword /> } />
 					<Route path="/signup" element={ <Signup /> } />
