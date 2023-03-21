@@ -2,10 +2,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { setDoc, doc, addDoc, collection, Timestamp, onSnapshot, query } from "firebase/firestore";
+import { useLocation } from "react-router-dom";
 
 const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+	const location = useLocation();
 	const [user, setUser] = useState({});
 	const [notes, setNotes] = useState([]);
 
@@ -63,20 +65,22 @@ export const AuthContextProvider = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		onAuthStateChanged(auth, async (currentUser) => {
-			const notesQuery = query(collection(db, "users", currentUser.uid, "notes"));
-			const unsubscribe = onSnapshot(notesQuery, (querySnapshot) => {
-				var notesArr = [];
-				querySnapshot.forEach((doc) => {
-					notesArr.push({ ...doc.data(), id: doc.id });
+		if (location.pathname.includes("/notes")) {
+			onAuthStateChanged(auth, async (currentUser) => {
+				const notesQuery = query(collection(db, "users", currentUser.uid, "notes"));
+				const unsubscribe = onSnapshot(notesQuery, (querySnapshot) => {
+					var notesArr = [];
+					querySnapshot.forEach((doc) => {
+						notesArr.push({ ...doc.data(), id: doc.id });
+					});
+					setNotes(notesArr);
 				});
-				setNotes(notesArr);
+				return () => {
+					unsubscribe();
+				};
 			});
-			return () => {
-				unsubscribe();
-			};
-		});
-	}, []);
+		}
+	}, [location]);
 
 	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes }}>{children}</UserContext.Provider>;
 };

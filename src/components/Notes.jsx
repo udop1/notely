@@ -8,6 +8,7 @@ import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutl
 import React from 'react';
 import NavBar from "./NavBar";
 import { UserAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const Notes = () => {
     const { notes } = UserAuth();
@@ -31,10 +32,9 @@ const Notes = () => {
                 <Stack spacing={2}>
                     {
                         notes.map((note) => {
-                            console.log(note);
                             return (
                                 <Card key={note.id}>
-                                    <CardActionArea>
+                                    <CardActionArea component={Link} to={`/notes/${note.id}`}>
                                         <CardContent>
                                             <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{note.title}</Typography>
                                             <Typography variant="body2" color="text.secondary">{note.date.toDate().toDateString()}, {note.date.toDate().toLocaleTimeString('en-GB')}</Typography>
