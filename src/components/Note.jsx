@@ -1,7 +1,6 @@
 import { Box, Chip, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
-
 import { React, useEffect, useState } from 'react';
 import NavBar from "./NavBar";
 import { useParams } from "react-router-dom";
@@ -14,9 +13,30 @@ const Note = () => {
     const { noteId } = useParams();
     const [noteData, setNoteData] = useState(null);
 
+    async function getData(userId) {
+        const queryData = await getDoc(doc(db, "users", userId, "notes", noteId));
+
+        return queryData;
+    }
+
     useEffect(() => {
-        getDoc(doc(db, "users", user.uid, "notes", noteId)).then((note) => setNoteData(note.data()));
-    }, [user, noteId]);
+        const userId = user && user.uid;
+        // let detached = false;
+
+        getData(userId)
+            .then((note) => {
+                // if (detached) return;
+                setNoteData(note.data());
+            })
+            .catch((error) => {
+                // if (detached) return;
+                console.error("Failed to get user session data:", error);
+            });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user && user.uid]);
+
+    if (!noteData) return <div>Loading...</div>
 
     return (
         <Box>
