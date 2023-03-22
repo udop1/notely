@@ -5,7 +5,7 @@ import { UserAuth } from "../context/AuthContext";
 import NavBar from "./NavBar";
 
 const Settings = () => {
-    const { user, logout } = UserAuth();
+    const { /*user,*/ logout } = UserAuth();
 
     const navigate = useNavigate();
 

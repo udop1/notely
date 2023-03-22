@@ -9,7 +9,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
-import { React, useState } from 'react'
+import React, { useState } from 'react'
 import { UserAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
