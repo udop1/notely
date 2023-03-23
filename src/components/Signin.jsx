@@ -1,3 +1,5 @@
+import { LoadingButton } from "@mui/lab";
+import { Alert, AlertTitle, Box, Card, CardActionArea, CardContent, Container, Divider, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -29,28 +31,50 @@ const Signin = () => {
     };
 
     return (
-        <div>
-            <div>
-                <h1>Sign in to your account</h1>
-                <p><Link to='/signup'>Don't have an account yet? Sign Up.</Link></p>
-            </div>
-            {error && <div>{error}</div>}
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+            <Container>
+                <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Login</Typography>
+                <Typography variant="body1" sx={{ mb: 2 }}>We are glad to see you back! Please enter your email and password.</Typography>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email Address</label>
-                    <input onChange={(e) => setEmail(e.target.value)} type="email"></input>
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input onChange={(e) => setPassword(e.target.value)} type="password"></input>
-                </div>
-                <button disabled={loading}>Sign In</button>
-            </form>
-            <div>
-                <p><Link to='/forgot-password'>Forgot Password?</Link></p>
-            </div>
-        </div>
+                <Stack spacing={2}>
+                    {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
+
+                    <Stack component="form" spacing={2} onSubmit={handleSubmit}>
+                        <TextField required label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
+                        <TextField required label="Password" onChange={(e) => setPassword(e.target.value)} type="password"></TextField>
+                        <Typography display="flex" justifyContent="flex-end"><Link to='/forgot-password'>Forgot Password?</Link></Typography>
+                        <LoadingButton type="submit" loading={loading} variant="contained">Login</LoadingButton>
+                    </Stack>
+                    <Divider>Or Login with</Divider>
+                    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                        <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                            <Card variant="outlined">
+                                <CardActionArea component={Link} to={"#"}>
+                                    <CardContent>
+                                        Facebook
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                            <Card variant="outlined">
+                                <CardActionArea component={Link} to={"#"}>
+                                    <CardContent>
+                                        Google
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                            <Card variant="outlined">
+                                <CardActionArea component={Link} to={"#"}>
+                                    <CardContent>
+                                        Apple
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                        </Stack>
+                        <Typography variant="body1">Don't have an account yet? <Link to='/signup'>Sign Up</Link></Typography>
+                    </Box>
+                </Stack>
+            </Container>
+        </Box>
     );
 };
 
