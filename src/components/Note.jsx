@@ -1,4 +1,4 @@
-import { Box, Chip, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Chip, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import React, { useEffect, useRef, useState } from 'react';
@@ -14,6 +14,8 @@ const Note = () => {
     const { noteId } = useParams();
     const [noteData, setNoteData] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [error, setError] = useState('');
+    const [title, setTitle] = useState('');
 
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "notes", noteId));
@@ -38,20 +40,40 @@ const Note = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user && user.uid]);
 
-    const editorRef = useRef(null);
-    const log = () => {
-        if (editorRef.current) {
-            console.log(editorRef.current.getContent());
-        }
-    }
+    // const editorRef = useRef(null);
+    // const log = () => {
+    //     if (editorRef.current) {
+    //         console.log(editorRef.current.getContent());
+    //     }
+    // }
 
-    if (!noteData) return <div>Loading...</div>
+    const editorRef = useRef(null);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        try {
+            //await signIn(email, password);
+            //navigate('/dashboard');
+            if (editorRef.current) {
+                console.log(title);
+                console.log(editorRef.current.getContent());
+            }
+        } catch (error) {
+            setError(error.message);
+            console.log(error);
+        }
+    };
+
+    if (!noteData) return <div>Loading...</div>;
 
     return (
         <Box>
             <NavBar />
-            <Container>
-                <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={noteData.title} InputProps={{ readOnly: !isEditing }} />
+            {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
+            <Container component="form" onSubmit={handleSubmit}>
+                {/* Default value isn't picked up by form submission until the field is changed */}
+                <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={noteData.title} InputProps={{ readOnly: !isEditing }} onChange={(e) => setTitle(e.target.value)} />
                 <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
                     <Grid item xs={4}>
                         <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
@@ -85,10 +107,13 @@ const Note = () => {
                         plugins: [
                             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount', 'save'
                         ],
-                        toolbar: 'undo redo save | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+                        toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+                        // save_onsavecallback: () => {
+                        //     handleSubmit();
+                        // }
                     }}
                 />
-                <button onClick={log}>Log editor content</button>
+                <button type="submit">Log editor content</button>
             </Container>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>

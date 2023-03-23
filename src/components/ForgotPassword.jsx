@@ -1,3 +1,5 @@
+import { LoadingButton } from "@mui/lab";
+import { Alert, AlertTitle, Box, Container, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -28,23 +30,23 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div>
-            <div>
-                <h1>Forgot Password</h1>
-                <p><Link to='/signup'>Don't have an account yet? Sign Up.</Link></p>
-                <p><Link to='/login'>Already have an account? Sign In.</Link></p>
-            </div>
-            {error && <div>{error}</div>}
-            {message && <div>{message}</div>}
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+            <Container>
+                <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Forgot Password?</Typography>
+                <Typography variant="body1" sx={{ mb: 2 }}>Don't worry, it happens! Please enter the email associated with your account.</Typography>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email Address</label>
-                    <input onChange={(e) => setEmail(e.target.value)} type="email"></input>
-                </div>
-                <button disabled={loading}>Reset Password</button>
-            </form>
-        </div>
+                <Stack spacing={2}>
+                    {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
+                    {message && <Alert severity="success"><AlertTitle><strong>Success</strong></AlertTitle>{message}</Alert>}
+
+                    <Stack component="form" spacing={2} onSubmit={handleSubmit}>
+                        <TextField required label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
+                        <LoadingButton type="submit" loading={loading} variant="contained">Reset Password</LoadingButton>
+                    </Stack>
+                    <Typography variant="body1">Remember your password? <Link to='/login'>Login</Link></Typography>
+                </Stack>
+            </Container>
+        </Box>
     );
 };
 
