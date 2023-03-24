@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "firebase/auth";
-import { setDoc, doc, addDoc, collection, Timestamp, onSnapshot, query, updateDoc } from "firebase/firestore";
+import { setDoc, doc, addDoc, collection, Timestamp, onSnapshot, query, updateDoc, deleteDoc } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 
 const UserContext = createContext();
@@ -84,9 +84,6 @@ export const AuthContextProvider = ({ children }) => {
 	}, [location]);
 
 	const updateNote = async (noteId, title, content) => {
-		//console.log(title);
-		//console.log(content);
-
 		await updateDoc(doc(db, "users", user.uid, "notes", noteId), {
 			title: title,
 			content: content,
@@ -94,7 +91,11 @@ export const AuthContextProvider = ({ children }) => {
 		});
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, updateNote }}>{children}</UserContext.Provider>;
+	const deleteNote = async (noteId) => {
+		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
+	};
+
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, updateNote, deleteNote }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
