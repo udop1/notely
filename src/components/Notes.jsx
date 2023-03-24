@@ -37,7 +37,7 @@ const Notes = () => {
                                     <CardActionArea component={Link} to={`/notes/${note.id}`}>
                                         <CardContent>
                                             <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{note.title}</Typography>
-                                            <Typography variant="body2" color="text.secondary">{note.date.toDate().toDateString()}, {note.date.toDate().toLocaleTimeString('en-GB')}</Typography>
+                                            <Typography variant="body2" color="text.secondary">{note.modifiedDate.toDate().toDateString()}, {note.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
                                             <Stack direction="row" spacing={2} sx={{ mt: 1, mb: 1.5 }}>
                                                 {
                                                     note.tags.map((tag) => {
@@ -48,6 +48,7 @@ const Notes = () => {
                                                 }
                                             </Stack>
                                             <Typography variant="body2">{note.content}</Typography>
+                                            {/* <Typography variant="body" dangerouslySetInnerHTML={{ __html: note.content }}></Typography> */}
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>

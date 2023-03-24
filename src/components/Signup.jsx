@@ -37,7 +37,7 @@ const Signup = () => {
     };
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Box sx={{ mt: 5 }} /*display="flex" justifyContent="center" alignItems="center" minHeight="100vh"*/>
             <Container>
                 <Typography variant="h5" sx={{ fontWeight: "700", mb: 2 }}>Create an account</Typography>
 

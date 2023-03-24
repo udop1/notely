@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "firebase/auth";
-import { setDoc, doc, addDoc, collection, Timestamp, onSnapshot, query } from "firebase/firestore";
+import { setDoc, doc, addDoc, collection, Timestamp, onSnapshot, query, updateDoc } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 
 const UserContext = createContext();
@@ -27,7 +27,8 @@ export const AuthContextProvider = ({ children }) => {
 							title: "Welcome to your notes!",
 							content: "This is an example note to help you get started.",
 							tags: ["Tutorial", "Example"],
-							date: Timestamp.now(),
+							createdDate: Timestamp.now(),
+							modifiedDate: Timestamp.now(),
 						});
 					});
 			} catch (error) {
@@ -82,7 +83,18 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	}, [location]);
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes }}>{children}</UserContext.Provider>;
+	const updateNote = async (noteId, title, content) => {
+		//console.log(title);
+		//console.log(content);
+
+		await updateDoc(doc(db, "users", user.uid, "notes", noteId), {
+			title: title,
+			content: content,
+			modifiedDate: Timestamp.now(),
+		});
+	};
+
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, updateNote }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {

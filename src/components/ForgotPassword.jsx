@@ -30,7 +30,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Box sx={{ mt: 5 }} /*display="flex" justifyContent="center" alignItems="center" minHeight="100vh"*/>
             <Container>
                 <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Forgot Password?</Typography>
                 <Typography variant="body1" sx={{ mb: 2 }}>Don't worry, it happens! Please enter the email associated with your account.</Typography>
