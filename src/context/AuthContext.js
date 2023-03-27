@@ -29,6 +29,7 @@ export const AuthContextProvider = ({ children }) => {
 							tags: ["Tutorial", "Example"],
 							createdDate: Timestamp.now(),
 							modifiedDate: Timestamp.now(),
+							revisionNumber: 0,
 						});
 					});
 			} catch (error) {
@@ -83,11 +84,26 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	}, [location]);
 
-	const updateNote = async (noteId, title, content) => {
+	const createNote = async () => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "notes"), {
+			title: "",
+			content: "",
+			tags: [],
+			createdDate: Timestamp.now(),
+			modifiedDate: Timestamp.now(),
+			revisionNumber: 0,
+		});
+
+		return docRef.id;
+	};
+
+	const updateNote = async (noteId, title, content, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "notes", noteId), {
 			title: title,
 			content: content,
+			tags: tags,
 			modifiedDate: Timestamp.now(),
+			revisionNumber: revisionNumber,
 		});
 	};
 
@@ -95,7 +111,7 @@ export const AuthContextProvider = ({ children }) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, updateNote, deleteNote }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {

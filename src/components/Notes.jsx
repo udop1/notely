@@ -8,10 +8,17 @@ import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutl
 import React from 'react';
 import NavBar from "./NavBar";
 import { UserAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const Notes = () => {
-    const { notes } = UserAuth();
+    const { notes, createNote } = UserAuth();
+    const navigate = useNavigate();
+
+    const handleNewNote = async () => {
+        var docId = await createNote();
+        navigate(`/notes/${docId}`);
+    };
 
     return (
         <Box>
@@ -47,8 +54,7 @@ const Notes = () => {
                                                     })
                                                 }
                                             </Stack>
-                                            <Typography variant="body2">{note.content}</Typography>
-                                            {/* <Typography variant="body" dangerouslySetInnerHTML={{ __html: note.content }}></Typography> */}
+                                            <Typography variant="body" dangerouslySetInnerHTML={{ __html: `${DOMPurify.sanitize(note.content, { USE_PROFILES: { html: true } }).substring(0, 50)}...` }}></Typography>
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>
@@ -60,7 +66,7 @@ const Notes = () => {
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
                 <SpeedDialAction icon={<CreateNewFolderOutlinedIcon />} tooltipTitle="New Folder" sx={{ color: "black" }} />
-                <SpeedDialAction icon={<NoteAddOutlinedIcon />} tooltipTitle="New Note" sx={{ color: "black" }} />
+                <SpeedDialAction onClick={handleNewNote} icon={<NoteAddOutlinedIcon />} tooltipTitle="New Note" sx={{ color: "black" }} />
             </SpeedDial>
         </Box>
     );
