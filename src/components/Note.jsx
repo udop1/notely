@@ -25,7 +25,7 @@ const Note = () => {
     const [modalTagOpen, setModalTagOpen] = useState(false);
     const [tagFields, setTagFields] = useState([]);
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
-    const isSavingRef = useRef(false); //When changed, update page info
+    const [isSaving, setIsSaving] = useState(0); //When changed, update page info
 
 
     async function getData(userId) {
@@ -37,23 +37,21 @@ const Note = () => {
     useEffect(() => {
         const userId = user && user.uid;
         // let detached = false;
-        if (!isSavingRef.current) {
-            getData(userId)
-                .then((note) => {
-                    // if (detached) return;
-                    setNoteData(note.data());
-                    setTitle(note.data().title);
-                    setTagFields(note.data().tags);
-                    setSaveRevision(note.data().revisionNumber);
-                })
-                .catch((error) => {
-                    // if (detached) return;
-                    console.error("Failed to get user session data:", error);
-                });
-        }
+        getData(userId)
+            .then((note) => {
+                // if (detached) return;
+                setNoteData(note.data());
+                setTitle(note.data().title);
+                setTagFields(note.data().tags);
+                setSaveRevision(note.data().revisionNumber);
+            })
+            .catch((error) => {
+                // if (detached) return;
+                console.error("Failed to get user session data:", error);
+            });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user && user.uid, isSavingRef]);
+    }, [user && user.uid, isSaving]);
 
     const handleDelete = async (removeNote) => {
         if (removeNote === true) {
@@ -68,7 +66,6 @@ const Note = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        isSavingRef.current = true;
 
         try {
             if (editorRef.current) {
@@ -80,7 +77,7 @@ const Note = () => {
             console.log(error);
         }
 
-        isSavingRef.current = false;
+        setIsSaving((isSaving) => isSaving + 1);
     };
 
     const handleAddTag = () => {
