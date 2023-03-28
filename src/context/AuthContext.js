@@ -10,6 +10,7 @@ export const AuthContextProvider = ({ children }) => {
 	const location = useLocation();
 	const [user, setUser] = useState({});
 	const [notes, setNotes] = useState([]);
+	const [todo, settodo] = useState([]);
 
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
@@ -83,6 +84,24 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	}, [location]);
 
+	useEffect(() => {
+		if (location.pathname.includes("/todo")) {
+			onAuthStateChanged(auth, async (currentUser) => {
+				const todoQuery = query(collection(db, "users", currentUser.uid, "todo"));
+				const unsubscribe = onSnapshot(todoQuery, (querySnapshot) => {
+					var todoArr = [];
+					querySnapshot.forEach((doc) => {
+						todoArr.push({ ...doc.data(), id: doc.id });
+					});
+					settodo(todoArr);
+				});
+				return () => {
+					unsubscribe();
+				};
+			});
+		}
+	}, [location]);
+
 	const updateNote = async (noteId, title, content) => {
 		//console.log(title);
 		//console.log(content);
@@ -94,7 +113,7 @@ export const AuthContextProvider = ({ children }) => {
 		});
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, updateNote }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, updateNote, todo }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
