@@ -113,6 +113,16 @@ export const AuthContextProvider = ({ children }) => {
 			revisionNumber: 0,
 		});
 
+	const createNote = async () => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "notes"), {
+			title: "",
+			content: "",
+			tags: [],
+			createdDate: Timestamp.now(),
+			modifiedDate: Timestamp.now(),
+			revisionNumber: 0,
+		});
+
 		return docRef.id;
 	};
 
