@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "firebase/auth";
-import { setDoc, doc, addDoc, collection, Timestamp, onSnapshot, query, updateDoc } from "firebase/firestore";
+import { setDoc, doc, addDoc, collection, Timestamp, onSnapshot, query, updateDoc, deleteDoc } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 
 const UserContext = createContext();
@@ -30,6 +30,7 @@ export const AuthContextProvider = ({ children }) => {
 							tags: ["Tutorial", "Example"],
 							createdDate: Timestamp.now(),
 							modifiedDate: Timestamp.now(),
+							revisionNumber: 0,
 						});
 					});
 			} catch (error) {
@@ -83,8 +84,8 @@ export const AuthContextProvider = ({ children }) => {
 			});
 		}
 	}, [location]);
-
-	useEffect(() => {
+  
+  useEffect(() => {
 		if (location.pathname.includes("/todo")) {
 			onAuthStateChanged(auth, async (currentUser) => {
 				const todoQuery = query(collection(db, "users", currentUser.uid, "todo"));
@@ -102,18 +103,34 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	}, [location]);
 
-	const updateNote = async (noteId, title, content) => {
-		//console.log(title);
-		//console.log(content);
+	const createNote = async () => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "notes"), {
+			title: "",
+			content: "",
+			tags: [],
+			createdDate: Timestamp.now(),
+			modifiedDate: Timestamp.now(),
+			revisionNumber: 0,
+		});
 
+		return docRef.id;
+	};
+
+	const updateNote = async (noteId, title, content, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "notes", noteId), {
 			title: title,
 			content: content,
+			tags: tags,
 			modifiedDate: Timestamp.now(),
+			revisionNumber: revisionNumber,
 		});
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, updateNote, todo }}>{children}</UserContext.Provider>;
+	const deleteNote = async (noteId) => {
+		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
+	};
+
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todo }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
