@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Dashboard, Flashcards, ForgotPassword, Note, Notes, Pomodoro, ProtectedRoute, Settings, Signin, Signup, Todo, Whiteboard } from "./components/Components";
+import { Dashboard, Flashcards, ForgotPassword, Note, Notes, Pomodoro, ProtectedRoute, Settings, Signin, Signup, Todos, Whiteboard } from "./components/Components";
 import { AuthContextProvider } from "./context/AuthContext";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
 					<Route path="/signup" element={ <Signup /> } />
 					<Route path="/dashboard" element={ <ProtectedRoute><Dashboard /></ProtectedRoute> } />
 					<Route path="/settings" element={ <ProtectedRoute><Settings /></ProtectedRoute> } />
-					<Route path="/todo" element={ <ProtectedRoute><Todo /></ProtectedRoute> } />
+					<Route path="/todos" element={ <ProtectedRoute><Todos /></ProtectedRoute> } />
 					<Route path="/notes" element={ <ProtectedRoute><Notes /></ProtectedRoute> } />
 					<Route path="/notes/:noteId" element={<ProtectedRoute><Note /></ProtectedRoute>} />
 					<Route path="/whiteboard" element={ <ProtectedRoute><Whiteboard /></ProtectedRoute> } />

@@ -10,7 +10,7 @@ export const AuthContextProvider = ({ children }) => {
 	const location = useLocation();
 	const [user, setUser] = useState({});
 	const [notes, setNotes] = useState([]);
-	const [todo, settodo] = useState([]);
+	const [todos, setTodos] = useState([]);
 
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
@@ -28,6 +28,20 @@ export const AuthContextProvider = ({ children }) => {
 							title: "Welcome to your notes!",
 							content: "This is an example note to help you get started.",
 							tags: ["Tutorial", "Example"],
+							createdDate: Timestamp.now(),
+							modifiedDate: Timestamp.now(),
+							revisionNumber: 0,
+						});
+					})
+					.then(async () => {
+						await addDoc(collection(db, "users", auth.currentUser.uid, "todos"), {
+							title: "Welcome to your tasks!",
+							content: "This is an example task to help you get started.",
+							tags: ["Tutorial", "Example"],
+							tasks: [
+								{ task: "Task 1", completed: false },
+								{ task: "Task 2", completed: true },
+							],
 							createdDate: Timestamp.now(),
 							modifiedDate: Timestamp.now(),
 							revisionNumber: 0,
@@ -84,17 +98,17 @@ export const AuthContextProvider = ({ children }) => {
 			});
 		}
 	}, [location]);
-  
-  useEffect(() => {
-		if (location.pathname.includes("/todo")) {
+
+	useEffect(() => {
+		if (location.pathname.includes("/todos")) {
 			onAuthStateChanged(auth, async (currentUser) => {
-				const todoQuery = query(collection(db, "users", currentUser.uid, "todo"));
+				const todoQuery = query(collection(db, "users", currentUser.uid, "todos"));
 				const unsubscribe = onSnapshot(todoQuery, (querySnapshot) => {
 					var todoArr = [];
 					querySnapshot.forEach((doc) => {
 						todoArr.push({ ...doc.data(), id: doc.id });
 					});
-					settodo(todoArr);
+					setTodos(todoArr);
 				});
 				return () => {
 					unsubscribe();
@@ -113,6 +127,9 @@ export const AuthContextProvider = ({ children }) => {
 			revisionNumber: 0,
 		});
 
+		return docRef.id;
+	};
+
 	const updateNote = async (noteId, title, content, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "notes", noteId), {
 			title: title,
@@ -127,7 +144,7 @@ export const AuthContextProvider = ({ children }) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todo }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {

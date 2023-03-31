@@ -1,6 +1,6 @@
 export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as Settings } from "./Settings";
-export { default as Todo } from "./Todo";
+export { default as Todos } from "./Todos";
 export { default as Notes } from "./Notes";
 export { default as Note } from "./Note";
 export { default as Whiteboard } from "./Whiteboard";

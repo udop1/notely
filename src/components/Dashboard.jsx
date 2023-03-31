@@ -23,7 +23,7 @@ const Dashboard = () => {
                     <Grid container spacing={2} columns={12}>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea component={Link} to="/todo">
+                                <CardActionArea component={Link} to="/todos">
                                     <CardContent>
                                         <ListRoundedIcon sx={{ mb: 1, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>To-do list</Typography>

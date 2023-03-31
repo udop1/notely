@@ -55,7 +55,7 @@ const NavBar = () => {
                     <Divider />
                     <List>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/todo">
+                            <ListItemButton component={Link} to="/todos">
                                 <ListItemIcon><ListRoundedIcon /></ListItemIcon>
                                 <ListItemText primary="To-do list" />
                             </ListItemButton>
