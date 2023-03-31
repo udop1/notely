@@ -111,6 +111,7 @@ export const AuthContextProvider = ({ children }) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
 
+	//Exports functions
 	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote }}>{children}</UserContext.Provider>;
 };
 
