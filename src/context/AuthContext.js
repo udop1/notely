@@ -144,7 +144,17 @@ export const AuthContextProvider = ({ children }) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos }}>{children}</UserContext.Provider>;
+	//TODO CONSTRUCTORS
+
+	const createToDo = async (newTodo) => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "todos"), newTodo);
+
+		return docRef.id;
+	};
+
+
+
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
