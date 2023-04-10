@@ -3,6 +3,7 @@ export { default as Settings } from "./Settings";
 export { default as Todos } from "./Todos";
 export { default as Notes } from "./Notes";
 export { default as Note } from "./Note";
+export { default as Whiteboards } from "./Whiteboards";
 export { default as Whiteboard } from "./Whiteboard";
 export { default as Flashcards } from "./Flashcards";
 export { default as Pomodoro } from "./Pomodoro";
