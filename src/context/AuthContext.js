@@ -172,7 +172,7 @@ export const AuthContextProvider = ({ children }) => {
 	const deleteNote = async (noteId) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
-
+  
 	const createWhiteboard = async () => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "whiteboards"), {
 			title: "",
@@ -199,8 +199,20 @@ export const AuthContextProvider = ({ children }) => {
 	const deleteWhiteboard = async (whiteboardId) => {
 		await deleteDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId));
 	};
+  
+  //TODO CONSTRUCTORS
+	const createToDo = async (newTodo) => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "todos"), newTodo);
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard }}>{children}</UserContext.Provider>;
+		return docRef.id;
+	};
+	//As you cannot update a specific array index. We will remove the current subtask and replace it with it being completed
+	const updateToDoSubTask = async (docId, taskIndex) => {
+		const docRef = await updateDoc(doc(db, "users", user.uid, "todos", docId), taskIndex);
+		return docId;
+	};
+
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
