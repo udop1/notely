@@ -45,7 +45,7 @@ const Dashboard = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea component={Link} to="/whiteboard">
+                                <CardActionArea component={Link} to="/whiteboards">
                                     <CardContent>
                                         <DeveloperBoardIcon sx={{ mb: 1, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Whiteboard</Typography>
