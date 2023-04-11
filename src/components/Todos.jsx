@@ -1,16 +1,16 @@
-import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField  } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from "@mui/material";
 import NavBar from "./NavBar";
 import ListRoundedIcon from '@mui/icons-material/ListRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
 import { UserAuth } from "../context/AuthContext";
 import * as React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
-import {Timestamp, fromDate} from 'firebase/firestore';
+import { Timestamp, fromDate } from 'firebase/firestore';
 
 const Todos = () => {
     const navigate = useNavigate();
@@ -48,23 +48,23 @@ const Todos = () => {
     }
 
     const handleOpen = () => {
-      setOpen(true);
+        setOpen(true);
     };
-  
+
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
 
     const handleDateChange = (newDate) => {
         const today = dayjs();
         const selectedDate = dayjs(newDate);
-        
-         if (selectedDate.isBefore(today, 'day')) {
-           console.log('Selected date is in the past');
-         } else {
-           setDate(selectedDate);
-         }
-      };
+
+        if (selectedDate.isBefore(today, 'day')) {
+            console.log('Selected date is in the past');
+        } else {
+            setDate(selectedDate);
+        }
+    };
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -72,68 +72,69 @@ const Todos = () => {
     const [subTasks, setSubTasks] = useState([{ id: 0, task: '', completed: false }]);
 
     const handleAddSubTask = () => {
-      const newId = subTasks.length;
-      setSubTasks([...subTasks, { id: newId, task: '', completed: false }]);
+        const newId = subTasks.length;
+        setSubTasks([...subTasks, { id: newId, task: '', completed: false }]);
     };
-  
+
     const handleSubTaskChange = (id, e) => {
-      const updatedSubTasks = subTasks.map((subTask) => {
-        if (subTask.id === id) {
-          return { ...subTask, task: e.target.value };
-        } else {
-          return subTask;
-        }
-      });
-      setSubTasks(updatedSubTasks);
+        const updatedSubTasks = subTasks.map((subTask) => {
+            if (subTask.id === id) {
+                return { ...subTask, task: e.target.value };
+            } else {
+                return subTask;
+            }
+        });
+        setSubTasks(updatedSubTasks);
     };
     const handleRemoveSubTask = () => {
-    if (subTasks.length > 1) {
-      const updatedSubTasks = [...subTasks];
-      updatedSubTasks.pop();
-      setSubTasks(updatedSubTasks);
-    }
-  };
-  const handleAddTodo = async () => {
-    const newTodo = {
-      title: title,
-      content: description,
-      createdDate: Timestamp.now(),
-      modifiedDate: Timestamp.now(),
-      revisionNumber: 0,
-      taskDate: correctDate(date.toISOString()),
-      tasks: subTasks.map(subTask => subTask),
-      tags: []
+        if (subTasks.length > 1) {
+            const updatedSubTasks = [...subTasks];
+            updatedSubTasks.pop();
+            setSubTasks(updatedSubTasks);
+        }
     };
-    var docId = await createToDo(newTodo);
-    //navigate(`/todo/${docId}`);
-};
+    const handleAddTodo = async () => {
+        const newTodo = {
+            title: title,
+            content: description,
+            createdDate: Timestamp.now(),
+            modifiedDate: Timestamp.now(),
+            revisionNumber: 0,
+            taskDate: correctDate(date.toISOString()),
+            tasks: subTasks.map(subTask => subTask),
+            tags: []
+        };
+        var docId = await createToDo(newTodo);
+        //navigate(`/todo/${docId}`);
+    };
 
 
-//DATA VALIDATION
-function correctDate(str){
-    const dateformat = new Date(str);
-    const ts = Timestamp.fromDate(dateformat);
-    return ts;
-}
-
-
-const onCheckChanged = async(id, task, index, check)=>{
-    console.log(id);
-    if(check){
-        task[index].completed = true;
-    } 
-    else {task[index].completed = false;
+    //DATA VALIDATION
+    function correctDate(str) {
+        const dateformat = new Date(str);
+        const ts = Timestamp.fromDate(dateformat);
+        return ts;
     }
-    const newResult = {
-        tasks: task.map(subTask => subTask),
+
+
+    const onCheckChanged = async (id, task, index, check) => {
+        console.log(id);
+        if (check) {
+            task[index].completed = true;
+        }
+        else {
+            task[index].completed = false;
+        }
+        const newResult = {
+            tasks: task.map(subTask => subTask),
+        }
+        var docId = await updateToDoSubTask(id, newResult);
     }
-    var docId = await updateToDoSubTask(id, newResult);
-}
-function handleCheckboxChange(id, task, index, e) {
-    const isChecked = e.target.checked;
-    onCheckChanged(id, task, index, isChecked);
-  }
-//<!-- component={Link} to={`/todos/${card.id}`}-->
+    function handleCheckboxChange(id, task, index, e) {
+        const isChecked = e.target.checked;
+        onCheckChanged(id, task, index, isChecked);
+    }
+    //<!-- component={Link} to={`/todos/${card.id}`}-->
     return (
         <Box>
             <NavBar />
@@ -155,14 +156,14 @@ function handleCheckboxChange(id, task, index, e) {
                         onChange={(e) => setDescription(e.target.value)}
                         margin="normal"
                     />
-                    
+
 
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DateTimePicker label="Basic date time picker" value={date} onChange={e => handleDateChange(e.$d)} />
                     </LocalizationProvider>
-                    
-                    
+
+
                     <Button
                         variant="contained"
                         color="primary"
@@ -172,15 +173,15 @@ function handleCheckboxChange(id, task, index, e) {
                     </Button>
                     {showSubField &&
                         subTasks.map((subTask) => (
-                        <TextField
-                            key={subTask.id}
-                            label="Add a Subtask"
-                            fullWidth
-                            value={subTask.title}
-                            margin="normal"
-                            onChange={(e) => handleSubTaskChange(subTask.id, e)}
-                            style={{ display: showSubField ? 'block' : 'none' }}
-                        />
+                            <TextField
+                                key={subTask.id}
+                                label="Add a Subtask"
+                                fullWidth
+                                value={subTask.title}
+                                margin="normal"
+                                onChange={(e) => handleSubTaskChange(subTask.id, e)}
+                                style={{ display: showSubField ? 'block' : 'none' }}
+                            />
                         ))}
                     <Button
                         variant="outlined"
@@ -191,13 +192,13 @@ function handleCheckboxChange(id, task, index, e) {
                         Add Another Sub Task
                     </Button>
                     <Button
-        variant="outlined"
-        color="secondary"
-        style={{ display: showSubField ? 'block' : 'none' }}
-        onClick={handleRemoveSubTask}
-      >
-        Remove Last Sub Task
-      </Button>
+                        variant="outlined"
+                        color="secondary"
+                        style={{ display: showSubField ? 'block' : 'none' }}
+                        onClick={handleRemoveSubTask}
+                    >
+                        Remove Last Sub Task
+                    </Button>
                     <Button>Tags</Button>
                     <Button>Reminders</Button>
 
@@ -245,20 +246,20 @@ function handleCheckboxChange(id, task, index, e) {
                                     {card.tasks.map((task, index) => {
                                         return (
                                             <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-                                            {task.completed ? (
-                                                <Checkbox 
-                                                    checked 
-                                                    onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                {task.completed ? (
+                                                    <Checkbox
+                                                        checked
+                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
                                                     />
-                                            ) : (
-                                                <Checkbox 
-                                                onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
-                                                />
-                                            )}
-                                            <div style={{ marginLeft: 8 }}>{task.task}</div>
+                                                ) : (
+                                                    <Checkbox
+                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                    />
+                                                )}
+                                                <div style={{ marginLeft: 8 }}>{task.task}</div>
                                             </div>
                                         )
-                                        })
+                                    })
                                     }
                                     {/* <Typography variant="body" dangerouslySetInnerHTML={{ __html: note.content }}></Typography> */}
                                 </CardContent>

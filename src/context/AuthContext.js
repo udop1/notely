@@ -172,7 +172,7 @@ export const AuthContextProvider = ({ children }) => {
 	const deleteNote = async (noteId) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
-  
+
 	const createWhiteboard = async () => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "whiteboards"), {
 			title: "",
@@ -199,8 +199,8 @@ export const AuthContextProvider = ({ children }) => {
 	const deleteWhiteboard = async (whiteboardId) => {
 		await deleteDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId));
 	};
-  
-  //TODO CONSTRUCTORS
+
+	//TODO CONSTRUCTORS
 	const createToDo = async (newTodo) => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "todos"), newTodo);
 
