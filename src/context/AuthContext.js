@@ -11,6 +11,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
 	const [notes, setNotes] = useState([]);
 	const [todos, setTodos] = useState([]);
+	const [whiteboards, setWhiteboards] = useState([]);
 
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
@@ -42,6 +43,16 @@ export const AuthContextProvider = ({ children }) => {
 								{ task: "Task 1", completed: false },
 								{ task: "Task 2", completed: true },
 							],
+							createdDate: Timestamp.now(),
+							modifiedDate: Timestamp.now(),
+							revisionNumber: 0,
+						});
+					})
+					.then(async () => {
+						await addDoc(collection(db, "users", auth.currentUser.uid, "whiteboards"), {
+							title: "Welcome to your whiteboard!",
+							content: null,
+							tags: ["Tutorial", "Example"],
 							createdDate: Timestamp.now(),
 							modifiedDate: Timestamp.now(),
 							revisionNumber: 0,
@@ -117,6 +128,24 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	}, [location]);
 
+	useEffect(() => {
+		if (location.pathname.includes("/whiteboards")) {
+			onAuthStateChanged(auth, async (currentUser) => {
+				const notesQuery = query(collection(db, "users", currentUser.uid, "whiteboards"));
+				const unsubscribe = onSnapshot(notesQuery, (querySnapshot) => {
+					var whiteboardsArr = [];
+					querySnapshot.forEach((doc) => {
+						whiteboardsArr.push({ ...doc.data(), id: doc.id });
+					});
+					setWhiteboards(whiteboardsArr);
+				});
+				return () => {
+					unsubscribe();
+				};
+			});
+		}
+	}, [location]);
+
 	const createNote = async () => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "notes"), {
 			title: "",
@@ -143,9 +172,35 @@ export const AuthContextProvider = ({ children }) => {
 	const deleteNote = async (noteId) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
+  
+	const createWhiteboard = async () => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "whiteboards"), {
+			title: "",
+			content: null,
+			tags: [],
+			createdDate: Timestamp.now(),
+			modifiedDate: Timestamp.now(),
+			revisionNumber: 0,
+		});
 
-	//TODO CONSTRUCTORS
+		return docRef.id;
+	};
 
+	const updateWhiteboard = async (whiteboardId, title, content, tags, revisionNumber) => {
+		await updateDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId), {
+			title: title,
+			content: content,
+			tags: tags,
+			modifiedDate: Timestamp.now(),
+			revisionNumber: revisionNumber,
+		});
+	};
+
+	const deleteWhiteboard = async (whiteboardId) => {
+		await deleteDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId));
+	};
+  
+  //TODO CONSTRUCTORS
 	const createToDo = async (newTodo) => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "todos"), newTodo);
 
@@ -157,8 +212,7 @@ export const AuthContextProvider = ({ children }) => {
 		return docId;
 	};
 
-
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {

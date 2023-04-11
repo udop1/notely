@@ -67,7 +67,7 @@ const NavBar = () => {
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/whiteboard">
+                            <ListItemButton component={Link} to="/whiteboards">
                                 <ListItemIcon><DeveloperBoardIcon /></ListItemIcon>
                                 <ListItemText primary="Whiteboard" />
                             </ListItemButton>
