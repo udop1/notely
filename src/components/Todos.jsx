@@ -17,17 +17,13 @@ const Todos = () => {
     const [date, setDate] = useState(dayjs());
     const [showSubField, setShowSubField] = useState(false);
     const [open, setOpen] = useState(false);
-    const { todos, createToDo } = UserAuth();
+    const { todos, createToDo, updateToDoSubTask } = UserAuth();
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const today = new Date().toLocaleDateString('en-UK', options);
     const split = today.split(" ");
     // Date info
     const stringify = split[0] + " " + split[1] + ", " + split[2];
 
-    function handleClick() {
-        //Load Modal to add a task
-
-    }
     function dayToString(no) {
         if (no === 0) { return "Sunday" } else if (no === 1) { return "Monday" } else if (no === 2) { return "Tuesday" } else if (no === 3) { return "Wednesday" } else if (no === 4) { return "Thursday" } else if (no === 5) { return "Friday" } else if (no === 6) { return "Saturday" }
     }
@@ -109,7 +105,7 @@ const Todos = () => {
       tags: []
     };
     var docId = await createToDo(newTodo);
-    navigate(`/todo/${docId}`);
+    //navigate(`/todo/${docId}`);
 };
 
 
@@ -120,6 +116,24 @@ function correctDate(str){
     return ts;
 }
 
+
+const onCheckChanged = async(id, task, index, check)=>{
+    console.log(id);
+    if(check){
+        task[index].completed = true;
+    } 
+    else {task[index].completed = false;
+    }
+    const newResult = {
+        tasks: task.map(subTask => subTask),
+    }
+    var docId = await updateToDoSubTask(id, newResult);
+}
+function handleCheckboxChange(id, task, index, e) {
+    const isChecked = e.target.checked;
+    onCheckChanged(id, task, index, isChecked);
+  }
+//<!-- component={Link} to={`/todos/${card.id}`}-->
     return (
         <Box>
             <NavBar />
@@ -222,7 +236,7 @@ function correctDate(str){
                 {todos.map((card) => {
                     return (
                         <Card key={card.id}>
-                            <CardActionArea component={Link} to={`/todos/${card.id}`}>
+                            <CardActionArea>
                                 <CardContent>
                                     <Checkbox />
                                     <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
@@ -232,9 +246,14 @@ function correctDate(str){
                                         return (
                                             <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
                                             {task.completed ? (
-                                                <Checkbox checked />
+                                                <Checkbox 
+                                                    checked 
+                                                    onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                    />
                                             ) : (
-                                                <Checkbox />
+                                                <Checkbox 
+                                                onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                />
                                             )}
                                             <div style={{ marginLeft: 8 }}>{task.task}</div>
                                             </div>

@@ -151,10 +151,14 @@ export const AuthContextProvider = ({ children }) => {
 
 		return docRef.id;
 	};
+	//As you cannot update a specific array index. We will remove the current subtask and replace it with it being completed
+	const updateToDoSubTask = async (docId, taskIndex) => {
+		const docRef = await updateDoc(doc(db, "users", user.uid, "todos", docId), taskIndex);
+		return docId;
+	};
 
 
-
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
