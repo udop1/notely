@@ -11,6 +11,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
 import { Timestamp, fromDate } from 'firebase/firestore';
+import WeekRow from "./WeekRow";
+import MonthRow from "./MonthRow";
 
 const Todos = () => {
     const navigate = useNavigate();
@@ -23,6 +25,10 @@ const Todos = () => {
     const split = today.split(" ");
     // Date info
     const stringify = split[0] + " " + split[1] + ", " + split[2];
+
+    //Get Date
+    const nowD = dayjs(); //Get todays Date
+
 
     function dayToString(no) {
         if (no === 0) { return "Sunday" } else if (no === 1) { return "Monday" } else if (no === 2) { return "Tuesday" } else if (no === 3) { return "Wednesday" } else if (no === 4) { return "Thursday" } else if (no === 5) { return "Friday" } else if (no === 6) { return "Saturday" }
@@ -134,6 +140,32 @@ const Todos = () => {
         const isChecked = e.target.checked;
         onCheckChanged(id, task, index, isChecked);
     }
+    
+    function handleTaskCheckboxChange(id, e) {
+        const isChecked = e.target.checked;
+        completeTask(id, {completed: isChecked});
+    }
+    const completeTask = async (id, task) => {var docId = await updateToDoSubTask(id, task);}
+
+    const [showToday, setShowToday] = useState(true);
+    const [showWeek, setShowWeek] = useState(false);
+    const [showMonth, setShowMonth] = useState(false);
+    function handleToday(){
+        setShowToday(true);
+        setShowWeek(false);
+        setShowMonth(false);
+    }
+    function handleWeek(){
+        setShowToday(false);
+        setShowWeek(true);
+        setShowMonth(false);
+    }
+    function handleMonth(){
+        setShowToday(false);
+        setShowWeek(false);
+        setShowMonth(true);
+    }
+    const handleWeekClick = () => {console.log("Click From TODO")};
     //<!-- component={Link} to={`/todos/${card.id}`}-->
     return (
         <Box>
@@ -216,10 +248,12 @@ const Todos = () => {
 
             <Container>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Button>Today</Button>
-                    <Button>Week</Button>
-                    <Button>Month</Button>
+                    <Button onClick={handleToday}>Today</Button>
+                    <Button onClick={handleWeek}>Week</Button>
+                    <Button onClick={handleMonth}>Month</Button>
                 </div>
+                {showWeek && (<WeekRow handleWeek={handleWeekClick}/>)}
+                {showMonth && (<MonthRow />)}
                 <Typography>Today</Typography>
                 <Typography>{stringify}</Typography>
 
@@ -239,7 +273,7 @@ const Todos = () => {
                         <Card key={card.id}>
                             <CardActionArea>
                                 <CardContent>
-                                    <Checkbox />
+                                    <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)}/>
                                     <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
                                     <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
                                     <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{card.content}</Typography>
