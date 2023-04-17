@@ -12,6 +12,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [notes, setNotes] = useState([]);
 	const [todos, setTodos] = useState([]);
 	const [whiteboards, setWhiteboards] = useState([]);
+	const [flashcards, setFlashcards] = useState([]);
 
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
@@ -52,6 +53,19 @@ export const AuthContextProvider = ({ children }) => {
 						await addDoc(collection(db, "users", auth.currentUser.uid, "whiteboards"), {
 							title: "Welcome to your whiteboard!",
 							content: null,
+							tags: ["Tutorial", "Example"],
+							createdDate: Timestamp.now(),
+							modifiedDate: Timestamp.now(),
+							revisionNumber: 0,
+						});
+					})
+					.then(async () => {
+						await addDoc(collection(db, "users", auth.currentUser.uid, "flashcards"), {
+							title: "Welcome to your Flashcards!",
+							cards: [
+								{ term: "Click me to see the definition", definition: "Well done!" },
+								{ term: "Try creating your own flashcard", definition: "Shh, I'm hiding!" },
+							],
 							tags: ["Tutorial", "Example"],
 							createdDate: Timestamp.now(),
 							modifiedDate: Timestamp.now(),
@@ -108,9 +122,6 @@ export const AuthContextProvider = ({ children }) => {
 				};
 			});
 		}
-	}, [location]);
-
-	useEffect(() => {
 		if (location.pathname.includes("/todos")) {
 			onAuthStateChanged(auth, async (currentUser) => {
 				const todoQuery = query(collection(db, "users", currentUser.uid, "todos"));
@@ -126,18 +137,30 @@ export const AuthContextProvider = ({ children }) => {
 				};
 			});
 		}
-	}, [location]);
-
-	useEffect(() => {
 		if (location.pathname.includes("/whiteboards")) {
 			onAuthStateChanged(auth, async (currentUser) => {
-				const notesQuery = query(collection(db, "users", currentUser.uid, "whiteboards"));
-				const unsubscribe = onSnapshot(notesQuery, (querySnapshot) => {
+				const boardQuery = query(collection(db, "users", currentUser.uid, "whiteboards"));
+				const unsubscribe = onSnapshot(boardQuery, (querySnapshot) => {
 					var whiteboardsArr = [];
 					querySnapshot.forEach((doc) => {
 						whiteboardsArr.push({ ...doc.data(), id: doc.id });
 					});
 					setWhiteboards(whiteboardsArr);
+				});
+				return () => {
+					unsubscribe();
+				};
+			});
+		}
+		if (location.pathname.includes("/flashcards")) {
+			onAuthStateChanged(auth, async (currentUser) => {
+				const cardsQuery = query(collection(db, "users", currentUser.uid, "flashcards"));
+				const unsubscribe = onSnapshot(cardsQuery, (querySnapshot) => {
+					var flashcardsArr = [];
+					querySnapshot.forEach((doc) => {
+						flashcardsArr.push({ ...doc.data(), id: doc.id });
+					});
+					setFlashcards(flashcardsArr);
 				});
 				return () => {
 					unsubscribe();
@@ -200,6 +223,33 @@ export const AuthContextProvider = ({ children }) => {
 		await deleteDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId));
 	};
 
+	const createFlashcard = async () => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "flashcards"), {
+			title: "",
+			cards: null,
+			tags: [],
+			createdDate: Timestamp.now(),
+			modifiedDate: Timestamp.now(),
+			revisionNumber: 0,
+		});
+
+		return docRef.id;
+	};
+
+	const updateFlashcard = async (flashcardId, title, cards, tags, revisionNumber) => {
+		await updateDoc(doc(db, "users", user.uid, "whiteboards", flashcardId), {
+			title: title,
+			cards: cards,
+			tags: tags,
+			modifiedDate: Timestamp.now(),
+			revisionNumber: revisionNumber,
+		});
+	};
+
+	const deleteFlashcard = async (flashcardId) => {
+		await deleteDoc(doc(db, "users", user.uid, "flashcards", flashcardId));
+	};
+
 	//TODO CONSTRUCTORS
 	const createToDo = async (newTodo) => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "todos"), newTodo);
@@ -212,7 +262,7 @@ export const AuthContextProvider = ({ children }) => {
 		return docId;
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcard, updateFlashcard, deleteFlashcard }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {

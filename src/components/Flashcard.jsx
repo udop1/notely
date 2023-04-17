@@ -4,21 +4,18 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from "./NavBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { UserAuth } from "../context/AuthContext";
-import { Canvas, ContextMenu, TldrawEditor, TldrawUi, TldrawUiContextProvider, useLocalSyncClient } from "@tldraw/tldraw";
-import "@tldraw/tldraw/editor.css";
-import "@tldraw/tldraw/ui.css";
 
-const Whiteboard = () => {
+const Flashcard = () => {
     const navigate = useNavigate();
-    const { user, updateWhiteboard, deleteWhiteboard } = UserAuth();
-    const { boardId } = useParams();
-    const [whiteboardData, setWhiteboardData] = useState('');
+    const { user, updateFlashcard, deleteFlashcard } = UserAuth();
+    const { cardId } = useParams();
+    const [flashcardData, setFlashcardData] = useState(null);
     const [error, setError] = useState('');
     const [title, setTitle] = useState('');
     const [modalDelOpen, setModalDelOpen] = useState(false);
@@ -26,32 +23,24 @@ const Whiteboard = () => {
     const [tagFields, setTagFields] = useState([]);
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const refsHeight = [useRef(null), useRef(null), useRef(null)];
-    const refEditorHeight = useRef(null);
+
 
     async function getData(userId) {
-        const queryData = await getDoc(doc(db, "users", userId, "whiteboards", boardId));
+        const queryData = await getDoc(doc(db, "users", userId, "flashcards", cardId));
 
         return queryData;
     }
-
-    const syncedStore = useLocalSyncClient({
-        instanceId: `instance:${boardId}`,
-        userId: `user:${user.uid}`,
-        universalPersistenceKey: boardId,
-    });
 
     useEffect(() => {
         const userId = user && user.uid;
         // let detached = false;
         getData(userId)
-            .then((whiteboard) => {
+            .then((flashcard) => {
                 // if (detached) return;
-                setWhiteboardData(whiteboard.data());
-                setTitle(whiteboard.data().title);
-                setTagFields(whiteboard.data().tags);
-                setSaveRevision(whiteboard.data().revisionNumber);
+                setFlashcardData(flashcard.data());
+                setTitle(flashcard.data().title);
+                setTagFields(flashcard.data().tags);
+                setSaveRevision(flashcard.data().revisionNumber);
             })
             .catch((error) => {
                 // if (detached) return;
@@ -61,10 +50,10 @@ const Whiteboard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user && user.uid, isSaving]);
 
-    const handleDelete = async (removeWhiteboard) => {
-        if (removeWhiteboard === true) {
-            await deleteWhiteboard(boardId);
-            navigate("/whiteboards");
+    const handleDelete = async (removeFlashcard) => {
+        if (removeFlashcard === true) {
+            await deleteFlashcard(cardId);
+            navigate("/flashcards");
         } else {
             setModalDelOpen(false);
         }
@@ -76,7 +65,7 @@ const Whiteboard = () => {
 
         try {
             setSaveRevision((saveRevision) => saveRevision + 1);
-            await updateWhiteboard(boardId, title, syncedStore.store.serialize(), tagFields, saveRevision);
+            // await updateFlashcard(cardId, title, editorRef.current.getContent(), tagFields, saveRevision);
         } catch (error) {
             setError(error.message);
             console.log(error);
@@ -105,40 +94,21 @@ const Whiteboard = () => {
         });
     };
 
-    useEffect(() => {
-        if (refEditorHeight.current) {
-            const compHeight = refsHeight[0].current.clientHeight + refsHeight[1].current.clientHeight + refsHeight[2].current.clientHeight;
-
-            refEditorHeight.current.style.height = `calc(100vh - ${compHeight}px - 200px)`;
-        }
-    }, [refsHeight]);
-
-    useEffect(() => {
-        if (whiteboardData.content) {
-            syncedStore.store.deserialize(whiteboardData.content);
-        } else {
-            console.log("No whiteboard data");
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [whiteboardData.content]);
-
-    if (!whiteboardData) return <div>Loading...</div>;
+    if (!flashcardData) return <div>Loading...</div>;
 
     return (
         <Box>
-            <Box ref={refsHeight[0]}>
-                <NavBar />
-            </Box>
+            <NavBar />
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
             <Box component="form" onSubmit={handleSubmit}>
                 <Container>
-                    <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} ref={refsHeight[1]} />
-                    <Grid container spacing={1} columns={12} ref={refsHeight[2]} sx={{ mt: 1.5, mb: 2.5 }}>
+                    <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} />
+                    <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
                         <Grid item xs={4}>
                             <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
                         </Grid>
                         <Grid item xs={8}>
-                            <Typography variant="body2" color="text.secondary">{whiteboardData.modifiedDate.toDate().toDateString()}, {whiteboardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                            <Typography variant="body2" color="text.secondary">{flashcardData.modifiedDate.toDate().toDateString()}, {flashcardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
                         </Grid>
                         <Grid item xs={4}>
                             <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
@@ -146,7 +116,7 @@ const Whiteboard = () => {
                         <Grid item xs={8}>
                             <Stack direction="row" spacing={1} sx={{ overflow: "scroll" }}>
                                 {
-                                    whiteboardData.tags.map((tag) => {
+                                    flashcardData.tags.map((tag) => {
                                         return (
                                             <Chip key={tag} size="small" label={tag} />
                                         );
@@ -157,28 +127,19 @@ const Whiteboard = () => {
                     </Grid>
                 </Container>
 
-                <Box ref={refEditorHeight}>
-                    <TldrawEditor instanceId={`instance:${boardId}`} userId={`user:${user.uid}`} store={syncedStore}>
-                        <TldrawUiContextProvider>
-                            <ContextMenu>
-                                <Canvas />
-                            </ContextMenu>
-                            <TldrawUi />
-                        </TldrawUiContextProvider>
-                    </TldrawEditor>
-                </Box>
+
             </Box>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Whiteboard" sx={{ color: "black" }} />
+                <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Flashcard" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
-                <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Whiteboard" sx={{ color: "black" }} />
+                <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Flashcard" sx={{ color: "black" }} />
             </SpeedDial>
 
             <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
                 <DialogContent>
                     <DialogContentText>
-                        Delete this whiteboard?
+                        Delete this Flashcard?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -191,7 +152,7 @@ const Whiteboard = () => {
                 <DialogTitle>Add Tags</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
-                        Add some tags to your whiteboard here.
+                        Add some tags to your flashcard here.
                     </DialogContentText>
 
                     {tagFields.map((tagValue, index) => (
@@ -210,4 +171,4 @@ const Whiteboard = () => {
     );
 };
 
-export default Whiteboard;
+export default Flashcard;
