@@ -25,7 +25,7 @@ const Flashcards = () => {
             <Container sx={{ mb: 2 }}>
                 <Grid container columns={12} justifyItems="center">
                     <Grid item xs={6}>
-                        <Button startIcon={<DescriptionOutlinedIcon />} endIcon={<ArrowForwardIosRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>Flashcards</Typography></Button>
+                        <Button startIcon={<DescriptionOutlinedIcon />} endIcon={<ArrowForwardIosRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>Flashcard Groups</Typography></Button>
                     </Grid>
                     <Grid item xs={6} container justifyContent="flex-end">
                         <IconButton sx={{ color: "black", pt: 0.75 }}><SortRoundedIcon /></IconButton>
@@ -64,7 +64,7 @@ const Flashcards = () => {
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
                 <SpeedDialAction icon={<CreateNewFolderOutlinedIcon />} tooltipTitle="New Folder" sx={{ color: "black" }} />
-                <SpeedDialAction onClick={handleNewFlashcard} icon={<PostAddIcon />} tooltipTitle="New Flashcard" sx={{ color: "black" }} />
+                <SpeedDialAction onClick={handleNewFlashcard} icon={<PostAddIcon />} tooltipTitle="New Flashcard Group" sx={{ color: "black" }} />
             </SpeedDial>
         </Box>
     );

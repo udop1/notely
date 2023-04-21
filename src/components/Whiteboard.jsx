@@ -144,7 +144,7 @@ const Whiteboard = () => {
                             <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
                         </Grid>
                         <Grid item xs={8}>
-                            <Stack direction="row" spacing={1} sx={{ overflow: "scroll" }}>
+                            <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
                                 {
                                     whiteboardData.tags.map((tag) => {
                                         return (

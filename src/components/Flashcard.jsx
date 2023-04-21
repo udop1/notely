@@ -1,9 +1,10 @@
-import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import React, { useEffect, useState } from 'react';
 import NavBar from "./NavBar";
 import { useNavigate, useParams } from "react-router-dom";
@@ -114,7 +115,7 @@ const Flashcard = () => {
                             <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
                         </Grid>
                         <Grid item xs={8}>
-                            <Stack direction="row" spacing={1} sx={{ overflow: "scroll" }}>
+                            <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
                                 {
                                     flashcardData.tags.map((tag) => {
                                         return (
@@ -127,11 +128,73 @@ const Flashcard = () => {
                     </Grid>
                 </Container>
 
+                <Container>
+                    <Card sx={{ mb: 5, py: 10, textAlign: "center" }}>
+                        <CardActionArea>
+                            <CardContent>
+                                <Typography variant="h5" sx={{ fontWeight: "700" }}>Adult Stem Cell</Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
 
+                    <Stack spacing={2}>
+                        <Card>
+                            <Grid container spacing={1} sx={{ alignItems: "center" }}>
+                                <Grid item xs={10}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Adult Stem Cell</Typography>
+                                            <Typography variant="body2" sx={{ mb: 0.5 }}>A type of stem cell that can form many types of cells.</Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <IconButton>
+                                        <MoreHorizRoundedIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                        </Card>
+                        <Card>
+                            <Grid container spacing={1} sx={{ alignItems: "center" }}>
+                                <Grid item xs={10}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Cell Differentiation</Typography>
+                                            <Typography variant="body2" sx={{ mb: 0.5 }}>The process where a cell become specialised to its function.</Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <IconButton>
+                                        <MoreHorizRoundedIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                        </Card>
+                        <Card>
+                            <Grid container spacing={1} sx={{ alignItems: "center" }}>
+                                <Grid item xs={10}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Cell Membrane</Typography>
+                                            <Typography variant="body2" sx={{ mb: 0.5 }}>A partially permeable barrier that surrounds the cell.</Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <IconButton>
+                                        <MoreHorizRoundedIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                        </Card>
+                    </Stack>
+                </Container>
             </Box>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Flashcard" sx={{ color: "black" }} />
+                <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Flashcard Group" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Flashcard" sx={{ color: "black" }} />
             </SpeedDial>
@@ -167,7 +230,7 @@ const Flashcard = () => {
                     <Button type="submit" variant="contained" autoFocus>Confirm</Button>
                 </DialogActions>
             </Dialog>
-        </Box>
+        </Box >
     );
 };
 
