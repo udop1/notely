@@ -20,19 +20,22 @@ const Todos = () => {
     const [showSubField, setShowSubField] = useState(false);
     const [open, setOpen] = useState(false);
     const { todos, createToDo, updateToDoSubTask } = UserAuth();
+    //const { todosRender, setTodoRender } = useState([]);
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const today = new Date().toLocaleDateString('en-UK', options);
     const split = today.split(" ");
     // Date info
     const stringify = split[0] + " " + split[1] + ", " + split[2];
 
+    //Render Todo
+
     //Get Date
     const nowD = dayjs(); //Get todays Date
 
 
-    function dayToString(no) {
-        if (no === 0) { return "Sunday" } else if (no === 1) { return "Monday" } else if (no === 2) { return "Tuesday" } else if (no === 3) { return "Wednesday" } else if (no === 4) { return "Thursday" } else if (no === 5) { return "Friday" } else if (no === 6) { return "Saturday" }
-    }
+    // function dayToString(no) {
+    //     if (no === 0) { return "Sunday" } else if (no === 1) { return "Monday" } else if (no === 2) { return "Tuesday" } else if (no === 3) { return "Wednesday" } else if (no === 4) { return "Thursday" } else if (no === 5) { return "Friday" } else if (no === 6) { return "Saturday" }
+    // }
     function fixMins(no) {
         if (no > 9) {
             return no;
@@ -74,7 +77,6 @@ const Todos = () => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-
     const [subTasks, setSubTasks] = useState([{ id: 0, task: '', completed: false }]);
 
     const handleAddSubTask = () => {
@@ -150,6 +152,7 @@ const Todos = () => {
     const [showToday, setShowToday] = useState(true);
     const [showWeek, setShowWeek] = useState(false);
     const [showMonth, setShowMonth] = useState(false);
+    const [selectedDate, setSelectedDate] = useState();
     function handleToday(){
         setShowToday(true);
         setShowWeek(false);
@@ -165,7 +168,9 @@ const Todos = () => {
         setShowWeek(false);
         setShowMonth(true);
     }
-    const handleWeekClick = () => {console.log("Click From TODO")};
+    const handleWeekClick = (day) => {
+        setSelectedDate(day.format('YYYY-MM-DD'));
+    };
     //<!-- component={Link} to={`/todos/${card.id}`}-->
     return (
         <Box>
@@ -269,39 +274,75 @@ const Todos = () => {
 
             <Container>
                 {todos.map((card) => {
-                    return (
-                        <Card key={card.id}>
-                            <CardActionArea>
-                                <CardContent>
-                                    <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)}/>
-                                    <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
-                                    <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
-                                    <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{card.content}</Typography>
-                                    {card.tasks.map((task, index) => {
-                                        return (
-                                            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-                                                {task.completed ? (
-                                                    <Checkbox
-                                                        checked
-                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
-                                                    />
-                                                ) : (
-                                                    <Checkbox
-                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
-                                                    />
-                                                )}
-                                                <div style={{ marginLeft: 8 }}>{task.task}</div>
-                                            </div>
-                                        )
-                                    })
-                                    }
-                                    {/* <Typography variant="body" dangerouslySetInnerHTML={{ __html: note.content }}></Typography> */}
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    )
-
-                })}
+                    //console.log(selectedDate + " vs " + dayjs(card.taskDate.toDate()).format('YYYY-MM-DD'));
+                    if(selectedDate == "" || selectedDate == null){
+                        return (
+                            <Card key={card.id}>
+                                <CardActionArea>
+                                    <CardContent>
+                                        <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)}/>
+                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{card.content}</Typography>
+                                        {card.tasks.map((task, index) => {
+                                            return (
+                                                <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+                                                    {task.completed ? (
+                                                        <Checkbox
+                                                            checked
+                                                            onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                        />
+                                                    ) : (
+                                                        <Checkbox
+                                                            onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                        />
+                                                    )}
+                                                    <div style={{ marginLeft: 8 }}>{task.task}</div>
+                                                </div>
+                                            )
+                                        })
+                                        }
+                                        {/* <Typography variant="body" dangerouslySetInnerHTML={{ __html: note.content }}></Typography> */}
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                        )
+                    } else if(selectedDate == dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')){
+                        return (
+                            <Card key={card.id}>
+                                <CardActionArea>
+                                    <CardContent>
+                                        <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)}/>
+                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{card.content}</Typography>
+                                        {card.tasks.map((task, index) => {
+                                            return (
+                                                <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+                                                    {task.completed ? (
+                                                        <Checkbox
+                                                            checked
+                                                            onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                        />
+                                                    ) : (
+                                                        <Checkbox
+                                                            onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                        />
+                                                    )}
+                                                    <div style={{ marginLeft: 8 }}>{task.task}</div>
+                                                </div>
+                                            )
+                                        })
+                                        }
+                                        {/* <Typography variant="body" dangerouslySetInnerHTML={{ __html: note.content }}></Typography> */}
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                        )
+                    }
+                }
+                
+                )}
             </Container>
         </Box>
     );
