@@ -223,7 +223,7 @@ export const AuthContextProvider = ({ children }) => {
 		await deleteDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId));
 	};
 
-	const createFlashcard = async () => {
+	const createFlashcardGroup = async () => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "flashcards"), {
 			title: "",
 			cards: null,
@@ -236,7 +236,7 @@ export const AuthContextProvider = ({ children }) => {
 		return docRef.id;
 	};
 
-	const updateFlashcard = async (flashcardId, title, cards, tags, revisionNumber) => {
+	const updateFlashcardGroup = async (flashcardId, title, cards, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "whiteboards", flashcardId), {
 			title: title,
 			cards: cards,
@@ -246,7 +246,7 @@ export const AuthContextProvider = ({ children }) => {
 		});
 	};
 
-	const deleteFlashcard = async (flashcardId) => {
+	const deleteFlashcardGroup = async (flashcardId) => {
 		await deleteDoc(doc(db, "users", user.uid, "flashcards", flashcardId));
 	};
 
@@ -262,7 +262,7 @@ export const AuthContextProvider = ({ children }) => {
 		return docId;
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcard, updateFlashcard, deleteFlashcard }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcardGroup, updateFlashcardGroup, deleteFlashcardGroup }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {

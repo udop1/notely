@@ -11,11 +11,11 @@ import { UserAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 const Flashcards = () => {
-    const { flashcards, createFlashcard } = UserAuth();
+    const { flashcards, createFlashcardGroup } = UserAuth();
     const navigate = useNavigate();
 
     const handleNewFlashcard = async () => {
-        var docId = await createFlashcard();
+        var docId = await createFlashcardGroup();
         navigate(`/flashcards/${docId}`);
     };
 

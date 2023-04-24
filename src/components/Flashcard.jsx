@@ -5,7 +5,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import NavBar from "./NavBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
@@ -14,11 +14,14 @@ import { UserAuth } from "../context/AuthContext";
 
 const Flashcard = () => {
     const navigate = useNavigate();
-    const { user, updateFlashcard, deleteFlashcard } = UserAuth();
+    const { user, updateFlashcardGroup, deleteFlashcardGroup } = UserAuth();
     const { cardId } = useParams();
     const [flashcardData, setFlashcardData] = useState(null);
     const [error, setError] = useState('');
     const [title, setTitle] = useState('');
+    const [flip, setFlip] = useState(false);
+    const [mainTerm, setMainTerm] = useState('');
+    const [mainDef, setMainDef] = useState('');
     const [modalDelOpen, setModalDelOpen] = useState(false);
     const [modalTagOpen, setModalTagOpen] = useState(false);
     const [tagFields, setTagFields] = useState([]);
@@ -53,7 +56,7 @@ const Flashcard = () => {
 
     const handleDelete = async (removeFlashcard) => {
         if (removeFlashcard === true) {
-            await deleteFlashcard(cardId);
+            await deleteFlashcardGroup(cardId);
             navigate("/flashcards");
         } else {
             setModalDelOpen(false);
@@ -66,7 +69,7 @@ const Flashcard = () => {
 
         try {
             setSaveRevision((saveRevision) => saveRevision + 1);
-            // await updateFlashcard(cardId, title, editorRef.current.getContent(), tagFields, saveRevision);
+            // await updateFlashcardGroup(cardId, title, editorRef.current.getContent(), tagFields, saveRevision);
         } catch (error) {
             setError(error.message);
             console.log(error);
@@ -94,6 +97,19 @@ const Flashcard = () => {
             return newTagValues;
         });
     };
+
+    const setMainCard = (index) => {
+        setFlip(false);
+        setMainTerm(flashcardData.cards[index].term);
+        setMainDef(flashcardData.cards[index].definition);
+    }
+
+    const elemRef = useCallback((node) => {
+        if (node !== null) {
+            setMainCard(0);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [flashcardData]);
 
     if (!flashcardData) return <div>Loading...</div>;
 
@@ -129,66 +145,38 @@ const Flashcard = () => {
                 </Container>
 
                 <Container>
-                    <Card sx={{ mb: 5, py: 10, textAlign: "center" }}>
-                        <CardActionArea>
+                    <Card ref={elemRef} sx={{ mb: 5, textAlign: "center" }}>
+                        <CardActionArea onClick={() => setFlip(!flip)} sx={{ py: 10 }}>
                             <CardContent>
-                                <Typography variant="h5" sx={{ fontWeight: "700" }}>Adult Stem Cell</Typography>
+                                <Typography variant="h5" sx={{ fontWeight: "700" }}>{flip ? mainDef : mainTerm}</Typography>
                             </CardContent>
                         </CardActionArea>
                     </Card>
 
                     <Stack spacing={2}>
-                        <Card>
-                            <Grid container spacing={1} sx={{ alignItems: "center" }}>
-                                <Grid item xs={10}>
-                                    <CardActionArea>
-                                        <CardContent>
-                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Adult Stem Cell</Typography>
-                                            <Typography variant="body2" sx={{ mb: 0.5 }}>A type of stem cell that can form many types of cells.</Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <IconButton>
-                                        <MoreHorizRoundedIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                        </Card>
-                        <Card>
-                            <Grid container spacing={1} sx={{ alignItems: "center" }}>
-                                <Grid item xs={10}>
-                                    <CardActionArea>
-                                        <CardContent>
-                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Cell Differentiation</Typography>
-                                            <Typography variant="body2" sx={{ mb: 0.5 }}>The process where a cell become specialised to its function.</Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <IconButton>
-                                        <MoreHorizRoundedIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                        </Card>
-                        <Card>
-                            <Grid container spacing={1} sx={{ alignItems: "center" }}>
-                                <Grid item xs={10}>
-                                    <CardActionArea>
-                                        <CardContent>
-                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Cell Membrane</Typography>
-                                            <Typography variant="body2" sx={{ mb: 0.5 }}>A partially permeable barrier that surrounds the cell.</Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <IconButton>
-                                        <MoreHorizRoundedIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                        </Card>
+                        {
+                            flashcardData.cards.map((flashcard, index) => {
+                                return (
+                                    <Card key={index}>
+                                        <Grid container spacing={1} sx={{ alignItems: "center" }}>
+                                            <Grid item xs={10}>
+                                                <CardActionArea onClick={() => setMainCard(index)}>
+                                                    <CardContent>
+                                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{flashcard.term}</Typography>
+                                                        <Typography variant="body2" sx={{ mb: 0.5 }}>{flashcard.definition}</Typography>
+                                                    </CardContent>
+                                                </CardActionArea>
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <IconButton>
+                                                    <MoreHorizRoundedIcon />
+                                                </IconButton>
+                                            </Grid>
+                                        </Grid>
+                                    </Card>
+                                );
+                            })
+                        }
                     </Stack>
                 </Container>
             </Box>
