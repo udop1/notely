@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, Container } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CircleIcon from '@mui/icons-material/Circle';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-const WeekRow = ({ startDate, handleWeek }) => {
+const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const today = dayjs();
+
+
   const weekDays = [...Array(7).keys()].map((day) =>
-    dayjs(startDate).add(day, 'day')
+    dayjs(today.add(-dayjs().day()+1, 'day')).add(day, 'day')
   );
+
+  const [renderDays, setRenterDays] = useState(weekDays);
+
 
   const handleWeekdayClick = (day) => {
     console.log(day.format('YYYY-MM-DD'));
@@ -15,19 +23,53 @@ const WeekRow = ({ startDate, handleWeek }) => {
     handleWeek(day);
   };
 
+  function addWeekToArray() {
+    console.log(renderDays[6]);
+    const endDate = renderDays[6]; //Get the last day in current
+    const newWeekDays = [...Array(7).keys()].map((day) =>
+      dayjs(endDate.add(1, 'day')).add(day, 'day')
+    );
+    setRenterDays(newWeekDays);
+  }
+
+  function previousWeekToArray() {
+    console.log(renderDays);
+    const prevDate = renderDays[0]; //Get the last day in current
+    const newWeekDays = [...Array(7).keys()].map((day) =>
+      dayjs(prevDate.add(-7, 'day')).add(day, 'day')
+    );
+    setRenterDays(newWeekDays);
+  }
+
   return (
+    
+    <Container>
     <Grid container>
-      {weekDays.map((day) => (
-        <Grid item key={day} xs>
-          <Typography variant="subtitle1" sx={{ color: day.isSame(today, 'day') ? 'primary.main' : 'text.primary' }}>
-            {day.format('ddd')}
-          </Typography>
-          <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'text.primary' }} onClick={() => handleWeekdayClick(day)}>
-            {day.format('D')}
-          </Typography>
-        </Grid>
-      ))}
+      {renderDays.map((day) => {
+
+        return (
+          <Grid item key={day} xs>
+            <Typography variant="subtitle1" sx={{ color: day.isSame(today, 'day') ? 'primary.main' : 'text.primary' }}>
+              {day.format('ddd')}
+            </Typography>
+            <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'text.primary' }} onClick={() => handleWeekdayClick(day)}>
+              {day.format('D')}
+            </Typography>
+            {mappedTasks.map((card, index) => {
+              if(day.format('YYYY-MM-DD') == dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')){
+                //This Date Has a Task
+                return(
+                  <CircleIcon key={card.id} style={{ fontSize: "8px", paddingLeft: "5px", color: "orange" }} />
+                )
+              }
+            })}
+          </Grid>
+      )})}
     </Grid>
+    <ArrowBackIcon onClick={previousWeekToArray}/>
+    <ArrowForwardIcon onClick={addWeekToArray}/>
+
+    </Container>
   );
 };
 

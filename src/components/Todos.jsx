@@ -203,6 +203,8 @@ const Todos = () => {
     }
     var previousDate = "";
     //<!-- component={Link} to={`/todos/${card.id}`}-->
+
+    var noOfCards = 0;
     return (
         <Box>
             <NavBar />
@@ -288,8 +290,8 @@ const Todos = () => {
                     <Button onClick={handleWeek}>Week</Button>
                     <Button onClick={handleMonth}>Month</Button>
                 </div>
-                {showWeek && (<WeekRow handleWeek={handleWeekClick}/>)}
-                {showMonth && (<MonthRow handleWeek={handleWeekClick}/>)}
+                {showWeek && (<WeekRow handleWeek={handleWeekClick} mappedTasks={todos} />)}
+                {showMonth && (<MonthRow handleWeek={handleWeekClick}  mappedTasks={todos}/>)}
                 <Typography>Today</Typography>
                 <Typography>{stringify}</Typography>
 
@@ -313,12 +315,12 @@ const Todos = () => {
                         <Button>Tags</Button>
                     </Container>
                 }
-                {todos.map((card) => {
+                {todos.map((card, index) => {
                     if(menuView){return};
                     //console.log(selectedDate + " vs " + dayjs(card.taskDate.toDate()).format('YYYY-MM-DD'));
                     if(selectedDate == "Upcomming"){
                         //Shows the next 5 tasks
-
+                        noOfCards += 1;
                         //Cluster Them TO DATE
                         if(previousDate != dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')){
                             previousDate = dayjs(card.taskDate.toDate()).format('YYYY-MM-DD');
@@ -330,6 +332,10 @@ const Todos = () => {
                                         <CardContent>
                                             <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)}/>
                                             <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
+                                            {
+                                            dayjs() > dayjs(card.taskDate.toDate()) ? 
+                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
+                                            }
                                             <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
                                             <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{card.content}</Typography>
                                             {card.tasks.map((task, index) => {
@@ -391,6 +397,7 @@ const Todos = () => {
                         }
                         //Update this date as the last date
                     } else if(selectedDate == dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')){
+                        noOfCards += 1;
                         return (
                             <Card key={card.id}>
                                 <CardActionArea>
@@ -422,6 +429,18 @@ const Todos = () => {
                                 </CardActionArea>
                             </Card>
                         )
+                    }
+
+                    //Check if it is the last one
+                    if(index == todos.length-1){
+                        //Last one in the MAP
+                        if(noOfCards == 0){
+                            return (
+                                <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>No Tasks Today</Typography>
+                            );
+                        } else {
+                            noOfCards = 0;
+                        }
                     }
                 }
                 
