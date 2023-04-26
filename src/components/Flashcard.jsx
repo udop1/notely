@@ -1,16 +1,26 @@
-import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Collapse, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography, styled } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import React, { useCallback, useEffect, useState } from 'react';
 import NavBar from "./NavBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { UserAuth } from "../context/AuthContext";
+
+const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+    }),
+}));
 
 const Flashcard = () => {
     const navigate = useNavigate();
@@ -19,12 +29,14 @@ const Flashcard = () => {
     const [flashcardData, setFlashcardData] = useState(null);
     const [error, setError] = useState('');
     const [title, setTitle] = useState('');
+    const [cards, setCards] = useState('');
     const [flip, setFlip] = useState(false);
     const [mainTerm, setMainTerm] = useState('');
     const [mainDef, setMainDef] = useState('');
-    const [modalDelOpen, setModalDelOpen] = useState(false);
+    const [modalDelGroupOpen, setModalDelGroupOpen] = useState(false);
     const [modalTagOpen, setModalTagOpen] = useState(false);
     const [tagFields, setTagFields] = useState([]);
+    const [expanded, setExpanded] = useState(false);
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
 
@@ -44,6 +56,7 @@ const Flashcard = () => {
                 setFlashcardData(flashcard.data());
                 setTitle(flashcard.data().title);
                 setTagFields(flashcard.data().tags);
+                setCards(flashcard.data().cards);
                 setSaveRevision(flashcard.data().revisionNumber);
             })
             .catch((error) => {
@@ -54,12 +67,18 @@ const Flashcard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user && user.uid, isSaving]);
 
-    const handleDelete = async (removeFlashcard) => {
+    const handleCardDelete = async (cardIndex) => {
+        var newCards = cards.slice();
+        newCards.splice(cardIndex, 1);
+        setCards(newCards);
+    };
+
+    const handleCardGroupDelete = async (removeFlashcard) => {
         if (removeFlashcard === true) {
             await deleteFlashcardGroup(cardId);
             navigate("/flashcards");
         } else {
-            setModalDelOpen(false);
+            setModalDelGroupOpen(false);
         }
     };
 
@@ -69,7 +88,7 @@ const Flashcard = () => {
 
         try {
             setSaveRevision((saveRevision) => saveRevision + 1);
-            // await updateFlashcardGroup(cardId, title, editorRef.current.getContent(), tagFields, saveRevision);
+            // await updateFlashcardGroup(cardId, title, cards, tagFields, saveRevision);
         } catch (error) {
             setError(error.message);
             console.log(error);
@@ -110,6 +129,10 @@ const Flashcard = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [flashcardData]);
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
 
     if (!flashcardData) return <div>Loading...</div>;
 
@@ -154,48 +177,47 @@ const Flashcard = () => {
                     </Card>
 
                     <Stack spacing={2}>
-                        {
-                            flashcardData.cards.map((flashcard, index) => {
-                                return (
-                                    <Card key={index}>
-                                        <Grid container spacing={1} sx={{ alignItems: "center" }}>
-                                            <Grid item xs={10}>
-                                                <CardActionArea onClick={() => setMainCard(index)}>
-                                                    <CardContent>
-                                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{flashcard.term}</Typography>
-                                                        <Typography variant="body2" sx={{ mb: 0.5 }}>{flashcard.definition}</Typography>
-                                                    </CardContent>
-                                                </CardActionArea>
-                                            </Grid>
-                                            <Grid item xs={2}>
-                                                <IconButton>
-                                                    <MoreHorizRoundedIcon />
-                                                </IconButton>
-                                            </Grid>
-                                        </Grid>
-                                    </Card>
-                                );
-                            })
-                        }
+                        {cards.map((flashcard, index) => {
+                            return (
+                                <Card key={index}>
+                                    <CardActionArea onClick={() => setMainCard(index)}>
+                                        <CardContent>
+                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{flashcard.term}</Typography>
+                                            <Typography variant="body2" sx={{ mb: 0.5 }}>{flashcard.definition}</Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                    <CardActions disableSpacing>
+                                        <ExpandMore expand={expanded} onClick={handleExpandClick}>
+                                            <ExpandMoreRoundedIcon />
+                                        </ExpandMore>
+                                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                            <Button onClick={() => console.log("Edit Button")}>Edit</Button>
+                                            <Button onClick={() => handleCardDelete(index)}>Delete</Button>
+                                        </Collapse>
+                                    </CardActions>
+                                </Card>
+                            );
+                        })}
                     </Stack>
                 </Container>
             </Box>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Flashcard Group" sx={{ color: "black" }} />
+                <SpeedDialAction onClick={() => setModalDelGroupOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Flashcard Group" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
-                <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Flashcard" sx={{ color: "black" }} />
+                {/* <SpeedDialAction onClick={() => setModalAddOpen(true)} icon={<SpeedDialIcon />} tooltipTitle="Add Flashcard" sx={{ color: "black" }} /> */}
+                <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Flashcard Group" sx={{ color: "black" }} />
             </SpeedDial>
 
-            <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
+            <Dialog open={modalDelGroupOpen} onClose={() => setModalDelGroupOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
                 <DialogContent>
                     <DialogContentText>
-                        Delete this Flashcard?
+                        Delete this Flashcard Group?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="outlined" onClick={() => handleDelete(false)} autoFocus>Cancel</Button>
-                    <Button variant="contained" color="error" onClick={() => handleDelete(true)}>Delete</Button>
+                    <Button variant="outlined" onClick={() => handleCardGroupDelete(false)} autoFocus>Cancel</Button>
+                    <Button variant="contained" color="error" onClick={() => handleCardGroupDelete(true)}>Delete</Button>
                 </DialogActions>
             </Dialog>
 
