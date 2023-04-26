@@ -369,6 +369,10 @@ const Todos = () => {
                                         <CardContent>
                                             <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)}/>
                                             <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
+                                            {
+                                            dayjs() > dayjs(card.taskDate.toDate()) ? 
+                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
+                                            }
                                             <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
                                             <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{card.content}</Typography>
                                             {card.tasks.map((task, index) => {
@@ -404,6 +408,10 @@ const Todos = () => {
                                     <CardContent>
                                         <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)}/>
                                         <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
+                                        {
+                                            dayjs() > dayjs(card.taskDate.toDate()) ? 
+                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
+                                            }
                                         <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
                                         <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{card.content}</Typography>
                                         {card.tasks.map((task, index) => {

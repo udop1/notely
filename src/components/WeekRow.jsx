@@ -7,8 +7,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+
   const today = dayjs();
 
+  const [monthName, setMonthName] = useState(printMonth(today));
 
   const weekDays = [...Array(7).keys()].map((day) =>
     dayjs(today.add(-dayjs().day()+1, 'day')).add(day, 'day')
@@ -30,20 +32,41 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
       dayjs(endDate.add(1, 'day')).add(day, 'day')
     );
     setRenterDays(newWeekDays);
+
+    //Check to see if there are two dates
+    setMonthName(printMonth(newWeekDays[0]));
   }
 
   function previousWeekToArray() {
     console.log(renderDays);
-    const prevDate = renderDays[0]; //Get the last day in current
+    const prevDate = renderDays[0]; //Get the first day in current
     const newWeekDays = [...Array(7).keys()].map((day) =>
       dayjs(prevDate.add(-7, 'day')).add(day, 'day')
     );
     setRenterDays(newWeekDays);
+    
+    setMonthName(printMonth(newWeekDays[0]));
   }
-
+  function printMonth(stamp){
+    var dateObject = stamp.month();
+    if (dateObject === 0){return 'January'}
+    if (dateObject === 1){return 'Febuary'}
+    if (dateObject === 2){return 'March'}
+    if (dateObject === 3){return 'April'}
+    if (dateObject === 4){return 'May'}
+    if (dateObject === 5){return 'June'}
+    if (dateObject === 6){return 'July'}
+    if (dateObject === 7){return 'August'}
+    if (dateObject === 8){return 'September'}
+    if (dateObject === 9){return 'October'}
+    if (dateObject === 10){return 'November'}
+    if (dateObject === 11){return 'December'}
+  }
   return (
     
     <Container>
+      <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: 'normal', color: 'grey' }}>{monthName}</Typography>
+      <ArrowBackIcon onClick={previousWeekToArray}/>
     <Grid container>
       {renderDays.map((day) => {
 
@@ -66,7 +89,6 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
           </Grid>
       )})}
     </Grid>
-    <ArrowBackIcon onClick={previousWeekToArray}/>
     <ArrowForwardIcon onClick={addWeekToArray}/>
 
     </Container>
