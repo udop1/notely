@@ -237,7 +237,7 @@ export const AuthContextProvider = ({ children }) => {
 	};
 
 	const updateFlashcardGroup = async (flashcardId, title, cards, tags, revisionNumber) => {
-		await updateDoc(doc(db, "users", user.uid, "whiteboards", flashcardId), {
+		await updateDoc(doc(db, "users", user.uid, "flashcards", flashcardId), {
 			title: title,
 			cards: cards,
 			tags: tags,

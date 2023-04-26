@@ -35,8 +35,15 @@ const Flashcard = () => {
     const [mainDef, setMainDef] = useState('');
     const [modalDelGroupOpen, setModalDelGroupOpen] = useState(false);
     const [modalTagOpen, setModalTagOpen] = useState(false);
+    const [modalAddOpen, setModalAddOpen] = useState(false);
+    const [modalEditOpen, setModalEditOpen] = useState(false);
     const [tagFields, setTagFields] = useState([]);
     const [expanded, setExpanded] = useState(false);
+    const [addTerm, setAddTerm] = useState('');
+    const [addDef, setAddDef] = useState('');
+    const [editTerm, setEditTerm] = useState('');
+    const [editDef, setEditDef] = useState('');
+    const [editCardIndex, setEditCardIndex] = useState(0);
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
 
@@ -67,12 +74,6 @@ const Flashcard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user && user.uid, isSaving]);
 
-    const handleCardDelete = async (cardIndex) => {
-        var newCards = cards.slice();
-        newCards.splice(cardIndex, 1);
-        setCards(newCards);
-    };
-
     const handleCardGroupDelete = async (removeFlashcard) => {
         if (removeFlashcard === true) {
             await deleteFlashcardGroup(cardId);
@@ -88,7 +89,7 @@ const Flashcard = () => {
 
         try {
             setSaveRevision((saveRevision) => saveRevision + 1);
-            // await updateFlashcardGroup(cardId, title, cards, tagFields, saveRevision);
+            await updateFlashcardGroup(cardId, title, cards, tagFields, saveRevision);
         } catch (error) {
             setError(error.message);
             console.log(error);
@@ -132,6 +133,30 @@ const Flashcard = () => {
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
+    };
+
+    const handleAddCard = (e) => {
+        e.preventDefault();
+        var newCards = cards.slice();
+        newCards.push({ term: addTerm, definition: addDef });
+        setCards(newCards);
+
+        setModalAddOpen(false);
+    }
+
+    const handleEditCard = (e) => {
+        e.preventDefault();
+        var newCards = cards.slice();
+        newCards.splice(editCardIndex, 1, { term: editTerm, definition: editDef });
+        setCards(newCards);
+
+        setModalEditOpen(false);
+    }
+
+    const handleCardDelete = (cardIndex) => {
+        var newCards = cards.slice();
+        newCards.splice(cardIndex, 1);
+        setCards(newCards);
     };
 
     if (!flashcardData) return <div>Loading...</div>;
@@ -191,7 +216,7 @@ const Flashcard = () => {
                                             <ExpandMoreRoundedIcon />
                                         </ExpandMore>
                                         <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                            <Button onClick={() => console.log("Edit Button")}>Edit</Button>
+                                            <Button onClick={() => { setEditCardIndex(index); setEditTerm(cards[index].term); setEditDef(cards[index].definition); setModalEditOpen(true) }}>Edit</Button>
                                             <Button onClick={() => handleCardDelete(index)}>Delete</Button>
                                         </Collapse>
                                     </CardActions>
@@ -205,9 +230,41 @@ const Flashcard = () => {
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
                 <SpeedDialAction onClick={() => setModalDelGroupOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Flashcard Group" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
-                {/* <SpeedDialAction onClick={() => setModalAddOpen(true)} icon={<SpeedDialIcon />} tooltipTitle="Add Flashcard" sx={{ color: "black" }} /> */}
+                <SpeedDialAction onClick={() => setModalAddOpen(true)} icon={<SpeedDialIcon />} tooltipTitle="Add Flashcard" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Flashcard Group" sx={{ color: "black" }} />
             </SpeedDial>
+
+            <Dialog component="form" open={modalAddOpen} onSubmit={handleAddCard} aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
+                <DialogTitle>Add Flashcards</DialogTitle>
+                <DialogContent>
+                    <DialogContentText sx={{ mb: 2 }}>
+                        Add some cards to your flashcard group here.
+                    </DialogContentText>
+
+                    <Stack>
+                        <TextField required onChange={(e) => setAddTerm(e.target.value)} label="Term" sx={{ mb: 2 }}></TextField>
+                        <TextField required onChange={(e) => setAddDef(e.target.value)} label="Definition"></TextField>
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={() => setModalAddOpen(false)}>Cancel</Button>
+                    <Button type="submit" variant="contained" autoFocus>Add</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog component="form" open={modalEditOpen} onSubmit={handleEditCard} aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
+                <DialogTitle>Edit Flashcards</DialogTitle>
+                <DialogContent>
+                    <Stack>
+                        <TextField required value={editTerm} onChange={(e) => setEditTerm(e.target.value)} label="Term" sx={{ my: 2 }}></TextField>
+                        <TextField required value={editDef} onChange={(e) => setEditDef(e.target.value)} label="Definition"></TextField>
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={() => setModalEditOpen(false)} autoFocus>Cancel</Button>
+                    <Button type="submit" variant="contained">Confirm</Button>
+                </DialogActions>
+            </Dialog>
 
             <Dialog open={modalDelGroupOpen} onClose={() => setModalDelGroupOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
                 <DialogContent>
@@ -240,7 +297,7 @@ const Flashcard = () => {
                     <Button type="submit" variant="contained" autoFocus>Confirm</Button>
                 </DialogActions>
             </Dialog>
-        </Box >
+        </Box>
     );
 };
 
