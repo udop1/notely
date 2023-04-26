@@ -77,7 +77,7 @@ const Todos = () => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [subTasks, setSubTasks] = useState([{ id: 0, task: '', completed: false }]);
+    const [subTasks, setSubTasks] = useState([]); //{ id: 0, task: '', completed: false }
 
     const handleAddSubTask = () => {
         const newId = subTasks.length;
@@ -99,19 +99,39 @@ const Todos = () => {
             const updatedSubTasks = [...subTasks];
             updatedSubTasks.pop();
             setSubTasks(updatedSubTasks);
+        } else {
+            const updatedSubTasks = [...subTasks];
+            updatedSubTasks.pop();
+            setSubTasks(updatedSubTasks);
+            setShowSubField(!showSubField);
         }
     };
     const handleAddTodo = async () => {
-        const newTodo = {
-            title: title,
-            content: description,
-            createdDate: Timestamp.now(),
-            modifiedDate: Timestamp.now(),
-            revisionNumber: 0,
-            taskDate: correctDate(date.toISOString()),
-            tasks: subTasks.map(subTask => subTask),
-            tags: []
-        };
+        console.log(subTasks.length);
+        var newTodo = {};
+        if(subTasks.length > 0){
+            newTodo = {
+                title: title,
+                content: description,
+                createdDate: Timestamp.now(),
+                modifiedDate: Timestamp.now(),
+                revisionNumber: 0,
+                taskDate: correctDate(date.toISOString()),
+                tasks: subTasks.map(subTask => subTask),
+                tags: []
+            };
+        } else {
+            newTodo = {
+                title: title,
+                content: description,
+                createdDate: Timestamp.now(),
+                modifiedDate: Timestamp.now(),
+                revisionNumber: 0,
+                taskDate: correctDate(date.toISOString()),
+                tags: []
+            };
+        }
+        
         var docId = await createToDo(newTodo);
         //navigate(`/todo/${docId}`);
         handleClose();
@@ -205,6 +225,7 @@ const Todos = () => {
     //<!-- component={Link} to={`/todos/${card.id}`}-->
 
     var noOfCards = 0;
+    console.log(todos);
     return (
         <Box>
             <NavBar />
