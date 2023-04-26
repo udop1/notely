@@ -1,5 +1,4 @@
 import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -20,7 +19,6 @@ const Whiteboard = () => {
     const { user, updateWhiteboard, deleteWhiteboard } = UserAuth();
     const { boardId } = useParams();
     const [whiteboardData, setWhiteboardData] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
     const [error, setError] = useState('');
     const [title, setTitle] = useState('');
     const [modalDelOpen, setModalDelOpen] = useState(false);
@@ -79,7 +77,6 @@ const Whiteboard = () => {
         try {
             setSaveRevision((saveRevision) => saveRevision + 1);
             await updateWhiteboard(boardId, title, syncedStore.store.serialize(), tagFields, saveRevision);
-
         } catch (error) {
             setError(error.message);
             console.log(error);
@@ -112,13 +109,12 @@ const Whiteboard = () => {
         if (refEditorHeight.current) {
             const compHeight = refsHeight[0].current.clientHeight + refsHeight[1].current.clientHeight + refsHeight[2].current.clientHeight;
 
-            refEditorHeight.current.style.height = `calc(100vh - ${compHeight}px - 175px)`;
+            refEditorHeight.current.style.height = `calc(100vh - ${compHeight}px - 200px)`;
         }
     }, [refsHeight]);
 
     useEffect(() => {
         if (whiteboardData.content) {
-            console.log("test");
             syncedStore.store.deserialize(whiteboardData.content);
         } else {
             console.log("No whiteboard data");
@@ -134,30 +130,32 @@ const Whiteboard = () => {
                 <NavBar />
             </Box>
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
-            <Container component="form" onSubmit={handleSubmit}>
-                <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} InputProps={{ readOnly: !isEditing }} onChange={(e) => setTitle(e.target.value)} ref={refsHeight[1]} />
-                <Grid container spacing={1} columns={12} ref={refsHeight[2]} sx={{ mt: 1.5, mb: 2.5 }}>
-                    <Grid item xs={4}>
-                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+            <Box component="form" onSubmit={handleSubmit}>
+                <Container>
+                    <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} ref={refsHeight[1]} />
+                    <Grid container spacing={1} columns={12} ref={refsHeight[2]} sx={{ mt: 1.5, mb: 2.5 }}>
+                        <Grid item xs={4}>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Typography variant="body2" color="text.secondary">{whiteboardData.modifiedDate.toDate().toDateString()}, {whiteboardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
+                                {
+                                    whiteboardData.tags.map((tag) => {
+                                        return (
+                                            <Chip key={tag} size="small" label={tag} />
+                                        );
+                                    })
+                                }
+                            </Stack>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={8}>
-                        <Typography variant="body2" color="text.secondary">{whiteboardData.modifiedDate.toDate().toDateString()}, {whiteboardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Stack direction="row" spacing={1} sx={{ overflow: "scroll" }}>
-                            {
-                                whiteboardData.tags.map((tag) => {
-                                    return (
-                                        <Chip key={tag} size="small" label={tag} />
-                                    );
-                                })
-                            }
-                        </Stack>
-                    </Grid>
-                </Grid>
+                </Container>
 
                 <Box ref={refEditorHeight}>
                     <TldrawEditor instanceId={`instance:${boardId}`} userId={`user:${user.uid}`} store={syncedStore}>
@@ -169,12 +167,11 @@ const Whiteboard = () => {
                         </TldrawUiContextProvider>
                     </TldrawEditor>
                 </Box>
-            </Container>
+            </Box>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
                 <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Whiteboard" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
-                <SpeedDialAction onClick={() => setIsEditing(true)} icon={<EditOutlinedIcon />} tooltipTitle="Edit Whiteboard" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Whiteboard" sx={{ color: "black" }} />
             </SpeedDial>
 
