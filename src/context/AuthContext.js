@@ -47,7 +47,7 @@ export const AuthContextProvider = ({ children }) => {
 							createdDate: Timestamp.now(),
 							modifiedDate: Timestamp.now(),
 							revisionNumber: 0,
-                			taskDate: Timestamp.now()
+							taskDate: Timestamp.now(),
 						});
 					})
 					.then(async () => {
