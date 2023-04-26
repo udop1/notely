@@ -1,5 +1,4 @@
 import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -18,7 +17,6 @@ const Note = () => {
     const { user, updateNote, deleteNote } = UserAuth();
     const { noteId } = useParams();
     const [noteData, setNoteData] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
     const [error, setError] = useState('');
     const [title, setTitle] = useState('');
     const [modalDelOpen, setModalDelOpen] = useState(false);
@@ -106,36 +104,37 @@ const Note = () => {
         <Box>
             <NavBar />
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
-            <Container component="form" onSubmit={handleSubmit}>
-                <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} InputProps={{ readOnly: !isEditing }} onChange={(e) => setTitle(e.target.value)} />
-                <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
-                    <Grid item xs={4}>
-                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+            <Box component="form" onSubmit={handleSubmit}>
+                <Container>
+                    <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} />
+                    <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
+                        <Grid item xs={4}>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Typography variant="body2" color="text.secondary">{noteData.modifiedDate.toDate().toDateString()}, {noteData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
+                                {
+                                    noteData.tags.map((tag) => {
+                                        return (
+                                            <Chip key={tag} size="small" label={tag} />
+                                        );
+                                    })
+                                }
+                            </Stack>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={8}>
-                        <Typography variant="body2" color="text.secondary">{noteData.modifiedDate.toDate().toDateString()}, {noteData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Stack direction="row" spacing={1} sx={{ overflow: "scroll" }}>
-                            {
-                                noteData.tags.map((tag) => {
-                                    return (
-                                        <Chip key={tag} size="small" label={tag} />
-                                    );
-                                })
-                            }
-                        </Stack>
-                    </Grid>
-                </Grid>
+                </Container>
 
                 <Editor
                     tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     onInit={(evt, editor) => editorRef.current = editor}
                     initialValue={noteData.content}
-                    disabled={!isEditing}
                     init={{
                         height: 500,
                         plugins: [
@@ -144,12 +143,11 @@ const Note = () => {
                         toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
                     }}
                 />
-            </Container>
+            </Box>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
                 <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Note" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
-                <SpeedDialAction onClick={() => setIsEditing(true)} icon={<EditOutlinedIcon />} tooltipTitle="Edit Note" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Note" sx={{ color: "black" }} />
             </SpeedDial>
 

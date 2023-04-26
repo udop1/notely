@@ -1,10 +1,14 @@
 # Notely
 Notely is an all-in-one productivity app for students and professionals allowing them to take notes, make lists, set timers, and use flashcards to manage their work and stay organised.
 
+## Requirements
+- Firebase Authentication
+- Firebase Firestore Database
+
 ## Setup
 - Clone the repository
 - Install packages with `npm install`
-- Setup an environment file `.env.local` in the root folder using this layout
+- Setup an environment file `.env.local` in the root folder using this layout:
   ```env
   REACT_APP_FIREBASE_API_KEY=
   REACT_APP_FIREBASE_AUTH_DOMAIN=
