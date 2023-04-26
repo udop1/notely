@@ -20,13 +20,11 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
 
 
   const handleWeekdayClick = (day) => {
-    console.log(day.format('YYYY-MM-DD'));
     setSelectedDate(day);
     handleWeek(day);
   };
 
   function addWeekToArray() {
-    console.log(renderDays[6]);
     const endDate = renderDays[6]; //Get the last day in current
     const newWeekDays = [...Array(7).keys()].map((day) =>
       dayjs(endDate.add(1, 'day')).add(day, 'day')
@@ -38,7 +36,6 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
   }
 
   function previousWeekToArray() {
-    console.log(renderDays);
     const prevDate = renderDays[0]; //Get the first day in current
     const newWeekDays = [...Array(7).keys()].map((day) =>
       dayjs(prevDate.add(-7, 'day')).add(day, 'day')
@@ -69,7 +66,6 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
       <ArrowBackIcon onClick={previousWeekToArray}/>
     <Grid container>
       {renderDays.map((day) => {
-
         return (
           <Grid item key={day} xs>
             <Typography variant="subtitle1" sx={{ color: day.isSame(today, 'day') ? 'primary.main' : 'text.primary' }}>
@@ -79,6 +75,7 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
               {day.format('D')}
             </Typography>
             {mappedTasks.map((card, index) => {
+        if(card.id === "tags"){return};
               if(day.format('YYYY-MM-DD') == dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')){
                 //This Date Has a Task
                 return(

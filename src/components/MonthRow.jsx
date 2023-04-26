@@ -153,6 +153,8 @@ const MonthRow = ({handleWeek, mappedTasks}) => {
             {day.format('D')}
           </Typography>
           {mappedTasks.map((card, index) => {
+            
+            if(card.id === "tags"){return};
               if(day.format('YYYY-MM-DD') == dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')){
                 //This Date Has a Task
                 return(

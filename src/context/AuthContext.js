@@ -261,8 +261,22 @@ export const AuthContextProvider = ({ children }) => {
 		const docRef = await updateDoc(doc(db, "users", user.uid, "todos", docId), taskIndex);
 		return docId;
 	};
-
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcardGroup, updateFlashcardGroup, deleteFlashcardGroup }}>{children}</UserContext.Provider>;
+	const setToDoTags = async (docId, arr) => {
+		const docRef = doc(db, "users", user.uid, "todos", docId);
+		const data = { saved: arr };
+		try {
+			await setDoc(docRef, data, { merge: true });
+			return docId;
+		} catch (error) {
+			if (error.code === "not-found") {
+				await setDoc(docRef, data);
+				return docId;
+			} else {
+				throw error;
+			}
+		}
+	};
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, setToDoTags, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcardGroup, updateFlashcardGroup, deleteFlashcardGroup }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
