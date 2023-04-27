@@ -5,10 +5,9 @@ import CircleIcon from '@mui/icons-material/Circle';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-const MonthRow = ({handleWeek, mappedTasks}) => {
+const MonthRow = ({ handleWeek, mappedTasks }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const today = dayjs();
-  const daysInMonth = today.daysInMonth();
   const monthStart = today.startOf('month');
   const monthEnd = today.endOf('month');
   const days = [];
@@ -22,107 +21,107 @@ const MonthRow = ({handleWeek, mappedTasks}) => {
     setSelectedDate(day);
     handleWeek(day);
   };
-  const preDays = monthStart.day()-1;
+  const preDays = monthStart.day() - 1;
   const leakedDays = [...Array(preDays).keys()].map((day) =>
-      dayjs(monthStart.add(-preDays, 'day')).add(day, 'day')
-    );
-  function printMonth(stamp){
+    dayjs(monthStart.add(-preDays, 'day')).add(day, 'day')
+  );
+  function printMonth(stamp) {
     var dateObject = stamp.month();
-    if (dateObject === 0){return 'January'}
-    if (dateObject === 1){return 'Febuary'}
-    if (dateObject === 2){return 'March'}
-    if (dateObject === 3){return 'April'}
-    if (dateObject === 4){return 'May'}
-    if (dateObject === 5){return 'June'}
-    if (dateObject === 6){return 'July'}
-    if (dateObject === 7){return 'August'}
-    if (dateObject === 8){return 'September'}
-    if (dateObject === 9){return 'October'}
-    if (dateObject === 10){return 'November'}
-    if (dateObject === 11){return 'December'}
+    if (dateObject === 0) { return 'January' }
+    if (dateObject === 1) { return 'Febuary' }
+    if (dateObject === 2) { return 'March' }
+    if (dateObject === 3) { return 'April' }
+    if (dateObject === 4) { return 'May' }
+    if (dateObject === 5) { return 'June' }
+    if (dateObject === 6) { return 'July' }
+    if (dateObject === 7) { return 'August' }
+    if (dateObject === 8) { return 'September' }
+    if (dateObject === 9) { return 'October' }
+    if (dateObject === 10) { return 'November' }
+    if (dateObject === 11) { return 'December' }
   }
-  
+
   const [monthRender, setMonthRender] = useState(days);
   const [monthPreRender, setMonthPreRender] = useState(leakedDays);
   const [monthAfterRender, setMonthAfterRender] = useState([]);
   const [monthName, setMonthName] = useState(printMonth(today));
 
-  
-  function addMonthToArray(){
+
+  function addMonthToArray() {
     //Get Next Months Information
     const nextMonth = monthRender[5].add(1, 'month').startOf('month');
     const nextMonthEnd = monthRender[5].add(1, 'month').endOf('month');
 
     const nDays = [];
     let nDay = nextMonth;
-    while(nDay <= nextMonthEnd){
+    while (nDay <= nextMonthEnd) {
       nDays.push(nDay);
       nDay = nDay.add(1, 'day');
     }
-    const nPreDays = nextMonth.day()-1;
-    if(nPreDays === -1){
+    const nPreDays = nextMonth.day() - 1;
+    if (nPreDays === -1) {
       const nLeakedDays = [...Array(6).keys()].map((day) =>
-        dayjs(nextMonth.add(-6,'day')).add(day, 'day'));
-      
+        dayjs(nextMonth.add(-6, 'day')).add(day, 'day'));
+
       setMonthPreRender(nLeakedDays);
     } else {
       const nLeakedDays = [...Array(nPreDays).keys()].map((day) =>
-      dayjs(nextMonth.add(-nPreDays, 'day')).add(day, 'day'));
+        dayjs(nextMonth.add(-nPreDays, 'day')).add(day, 'day'));
       setMonthPreRender(nLeakedDays);
     }
-    
-    const e = 6-nextMonthEnd.day()+1;
-    if(e != 7){
+
+    const e = 6 - nextMonthEnd.day() + 1;
+    if (e !== 7) {
       const nOverflowDays = [...Array(e).keys()].map((day) =>
         dayjs(nextMonthEnd.add(1, 'day')).add(day, 'day')
       );
       setMonthAfterRender(nOverflowDays);
     } else {
-      
+
       setMonthAfterRender([]);
     }
     setMonthName(printMonth(nextMonth));
     setMonthRender(nDays);
   }
 
-  function preMonthToArray(){
+  function preMonthToArray() {
     //Get Next Months Information
     const nextMonth = monthRender[5].add(-1, 'month').startOf('month');
     const nextMonthEnd = monthRender[5].add(-1, 'month').endOf('month');
 
     const nDays = [];
     let nDay = nextMonth;
-    while(nDay <= nextMonthEnd){
+    while (nDay <= nextMonthEnd) {
       nDays.push(nDay);
       nDay = nDay.add(1, 'day');
     }
-    const nPreDays = nextMonth.day()-1;
-    if(nPreDays === -1){
+    const nPreDays = nextMonth.day() - 1;
+    if (nPreDays === -1) {
       const nLeakedDays = [...Array(6).keys()].map((day) =>
-        dayjs(nextMonth.add(-6,'day')).add(day, 'day')
+        dayjs(nextMonth.add(-6, 'day')).add(day, 'day')
       );
-      
-    setMonthPreRender(nLeakedDays);
+
+      setMonthPreRender(nLeakedDays);
     } else {
       const nLeakedDays = [...Array(nPreDays).keys()].map((day) =>
-      dayjs(nextMonth.add(-nPreDays, 'day')).add(day, 'day')
-    );
+        dayjs(nextMonth.add(-nPreDays, 'day')).add(day, 'day')
+      );
 
 
-    setMonthPreRender(nLeakedDays);
+      setMonthPreRender(nLeakedDays);
     }
 
-    const e = 6-nextMonthEnd.day()+1;
-    if(e != 7){
+    const e = 6 - nextMonthEnd.day() + 1;
+    if (e !== 7) {
       const nOverflowDays = [...Array(e).keys()].map((day) =>
         dayjs(nextMonthEnd.add(1, 'day')).add(day, 'day')
       );
       setMonthAfterRender(nOverflowDays);
     } else {
-      
+
       setMonthAfterRender([]);
     }
-    
+
     setMonthName(printMonth(nextMonth));
     setMonthRender(nDays);
   }
@@ -131,48 +130,50 @@ const MonthRow = ({handleWeek, mappedTasks}) => {
   return (
     <Container>
       <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: 'normal', color: 'grey' }}>{monthName}</Typography>
-    <ArrowBackIcon onClick={preMonthToArray}/>
-    <Grid container  spacing={2} columns={7}>
-      <Grid item xs={1} ><Typography>Mon</Typography></Grid>
-      <Grid item xs={1} ><Typography>Tue</Typography></Grid>
-      <Grid item xs={1} ><Typography>Wed</Typography></Grid>
-      <Grid item xs={1} ><Typography>Thu</Typography></Grid>
-      <Grid item xs={1} ><Typography>Fri</Typography></Grid>
-      <Grid item xs={1} ><Typography>Sat</Typography></Grid>
-      <Grid item xs={1} ><Typography>Sun</Typography></Grid>
-      {monthPreRender.map((day) => (
-        <Grid item key={day} xs={1} >
-          <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'grey' }} onClick={() => handleDateClick(day)}>
-            {day.format('D')}
-        </Typography>
-      </Grid>
-      ))}
-      {monthRender.map((day) => (
-        <Grid item key={day} xs={1} >
-          <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'text.primary' }} onClick={() => handleDateClick(day)}>
-            {day.format('D')}
-          </Typography>
-          {mappedTasks.map((card, index) => {
-            
-            if(card.id === "tags"){return};
-              if(day.format('YYYY-MM-DD') == dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')){
+      <ArrowBackIcon onClick={preMonthToArray} />
+      <Grid container spacing={2} columns={7}>
+        <Grid item xs={1} ><Typography>Mon</Typography></Grid>
+        <Grid item xs={1} ><Typography>Tue</Typography></Grid>
+        <Grid item xs={1} ><Typography>Wed</Typography></Grid>
+        <Grid item xs={1} ><Typography>Thu</Typography></Grid>
+        <Grid item xs={1} ><Typography>Fri</Typography></Grid>
+        <Grid item xs={1} ><Typography>Sat</Typography></Grid>
+        <Grid item xs={1} ><Typography>Sun</Typography></Grid>
+        {monthPreRender.map((day) => (
+          <Grid item key={day} xs={1} >
+            <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'grey' }} onClick={() => handleDateClick(day)}>
+              {day.format('D')}
+            </Typography>
+          </Grid>
+        ))}
+        {monthRender.map((day) => (
+          <Grid item key={day} xs={1} >
+            <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'text.primary' }} onClick={() => handleDateClick(day)}>
+              {day.format('D')}
+            </Typography>
+            {mappedTasks.map((card, index) => {
+
+              // eslint-disable-next-line array-callback-return
+              if (card.id === "tags") { return };
+              if (day.format('YYYY-MM-DD') === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
                 //This Date Has a Task
-                return(
+                return (
                   <CircleIcon key={card.id} style={{ fontSize: "8px", paddingLeft: "5px", color: "orange" }} />
                 )
+                // eslint-disable-next-line array-callback-return
               } else return
             })}
-        </Grid>
-      ))}
-      {monthAfterRender.map((day) => (
-        <Grid item key={day} xs={1} >
-          <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'grey' }} onClick={() => handleDateClick(day)}>
-            {day.format('D')}
-        </Typography>
+          </Grid>
+        ))}
+        {monthAfterRender.map((day) => (
+          <Grid item key={day} xs={1} >
+            <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'grey' }} onClick={() => handleDateClick(day)}>
+              {day.format('D')}
+            </Typography>
+          </Grid>
+        ))}
       </Grid>
-      ))}
-    </Grid>
-    <ArrowForwardIcon onClick={addMonthToArray}/>
+      <ArrowForwardIcon onClick={addMonthToArray} />
     </Container>
   );
 };

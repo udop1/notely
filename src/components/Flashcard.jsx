@@ -120,8 +120,8 @@ const Flashcard = () => {
 
     const setMainCard = (index) => {
         setFlip(false);
-        setMainTerm(flashcardData.cards[index].term);
-        setMainDef(flashcardData.cards[index].definition);
+        setMainTerm(cards[index].term);
+        setMainDef(cards[index].definition);
     }
 
     const elemRef = useCallback((node) => {
