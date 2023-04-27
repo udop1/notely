@@ -27,7 +27,7 @@
     "react-scripts": "5.0.1",
     "signia": "^0.1.1",
     "signia-react": "^0.1.1",
-    "tinymce": "^6.4.1",
+    "tinymce": "^6.4.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
