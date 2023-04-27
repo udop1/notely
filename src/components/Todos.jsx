@@ -14,6 +14,7 @@ import { Timestamp, fromDate } from 'firebase/firestore';
 import WeekRow from "./WeekRow";
 import MonthRow from "./MonthRow";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { splitColor } from "gsap";
 
 const Todos = () => {
     const navigate = useNavigate();
@@ -27,8 +28,10 @@ const Todos = () => {
     const today = new Date().toLocaleDateString('en-UK', options);
     const split = today.split(" ");
     // Date info
-    const stringify = split[0] + " " + split[1] + ", " + split[2];
+    const setaStringify = split[0] + " " + split[1] + ", " + split[2];
 
+    const [stringify, setStringify] = useState(setaStringify);
+    const [isToday, setIsToday] = useState(true);
     //Render Todo
 
     //Get Date
@@ -200,7 +203,8 @@ const Todos = () => {
         setShowToday(true);
         setShowWeek(false);
         setShowMonth(false);
-        setSelectedDate(dayjs().format('YYYY-MM-DD'));
+        handleWeekClick(dayjs());
+        isToday(true);
     }
     function handleWeek(){
         setShowToday(false);
@@ -215,6 +219,18 @@ const Todos = () => {
     const handleWeekClick = (day) => {
         setSelectedDate(day.format('YYYY-MM-DD'));
         setMenuView(false);
+
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const thiday = new Date(day).toLocaleDateString('en-UK', options);
+        const split = thiday.split(" ");
+        const readableDate = split[0] + " " + split[1] + ", " + split[2];
+        setStringify(readableDate);
+        setIsToday(false);
+
+        //Check to see if it is today
+        if(day.format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')){
+            setIsToday(true);
+        }
     };
 
     function todaysBtn(){
@@ -429,7 +445,7 @@ const Todos = () => {
                 </div>
                 {showWeek && (<WeekRow handleWeek={handleWeekClick} mappedTasks={todos} />)}
                 {showMonth && (<MonthRow handleWeek={handleWeekClick}  mappedTasks={todos}/>)}
-                <Typography>Today</Typography>
+                {isToday && (<Typography>Today</Typography>)}
                 <Typography>{stringify}</Typography>
 
             </Container>
