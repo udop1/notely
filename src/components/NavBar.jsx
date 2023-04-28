@@ -23,7 +23,7 @@ const NavBar = () => {
             <Drawer anchor="left" open={toggleDrawer} onClose={() => setToggleDrawer(false)}>
                 <Box sx={{ width: 250 }}>
                     <List sx={{ py: 0, boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)" }}>
-                        <ListItem sx={{ backgroundColor: "#D9D9D9", py: 0.5 }}>
+                        <ListItem sx={{ backgroundColor: "#DBE192", py: 0.5 }}>
                             <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: "700" }}>Notely</Typography>
                             <IconButton onClick={() => setToggleDrawer(false)} size="large" edge="end" color="inherit" sx={{ ml: 2 }}>
                                 <ArrowForwardIosRoundedIcon />

@@ -6,11 +6,12 @@ const theme = createTheme({
 		fontFamily: "Montserrat",
 	},
 	components: {
+		//NavBar
 		MuiAppBar: {
 			styleOverrides: {
 				colorPrimary: {
 					//Change default background and text colour
-					backgroundColor: "#D9D9D9",
+					backgroundColor: "#DBE192",
 					color: "#000000",
 				},
 			},
