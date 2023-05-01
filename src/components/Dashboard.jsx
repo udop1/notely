@@ -20,7 +20,7 @@ const Dashboard = () => {
                             <Card>
                                 <CardActionArea component={Link} to="/todos">
                                     <CardContent>
-                                        <img src="./IconTodo.svg" alt="Todo Icon" loading="lazy" style={{ marginBottom: 8, fontSize: 50 }} />
+                                        <img src="./IconTodo.svg" alt="Todo Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>To-do list</Typography>
                                         <Typography variant="body2">Stay organised with our easy to use to-do list.</Typography>
                                     </CardContent>
@@ -31,7 +31,7 @@ const Dashboard = () => {
                             <Card>
                                 <CardActionArea component={Link} to="/notes">
                                     <CardContent>
-                                        <img src="./IconNotes.svg" alt="Notes Icon" loading="lazy" style={{ marginBottom: 8, fontSize: 50 }} />
+                                        <img src="./IconNotes.svg" alt="Notes Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Notes</Typography>
                                         <Typography variant="body2">Capture your thoughts on the go with our notes.</Typography>
                                     </CardContent>
@@ -42,7 +42,7 @@ const Dashboard = () => {
                             <Card>
                                 <CardActionArea component={Link} to="/whiteboards">
                                     <CardContent>
-                                        <img src="./IconWhiteboard.svg" alt="Whiteboards Icon" loading="lazy" style={{ marginBottom: 8, fontSize: 50 }} />
+                                        <img src="./IconWhiteboard.svg" alt="Whiteboards Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Whiteboard</Typography>
                                         <Typography variant="body2">Visualise your ideas with our digital whiteboard.</Typography>
                                     </CardContent>
@@ -53,7 +53,7 @@ const Dashboard = () => {
                             <Card>
                                 <CardActionArea component={Link} to="/flashcards">
                                     <CardContent>
-                                        <img src="./IconFlashcard.svg" alt="Flashcards Icon" loading="lazy" style={{ marginBottom: 8, fontSize: 50 }} />
+                                        <img src="./IconFlashcard.svg" alt="Flashcards Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Flashcards</Typography>
                                         <Typography variant="body2">Master any subject with our interactive flashcards.</Typography>
                                     </CardContent>
@@ -64,7 +64,7 @@ const Dashboard = () => {
                             <Card>
                                 <CardActionArea component={Link} to="/pomodoro">
                                     <CardContent>
-                                        <img src="./IconPomodoro.svg" alt="Pomodoro Timer Icon" loading="lazy" style={{ marginBottom: 8, fontSize: 50 }} />
+                                        <img src="./IconPomodoro.svg" alt="Pomodoro Timer Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Pomodoro Timer</Typography>
                                         <Typography variant="body2">Stay focused with our Pomodoro timer.</Typography>
                                     </CardContent>

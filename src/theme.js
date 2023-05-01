@@ -24,11 +24,37 @@ const theme = createTheme({
 				},
 			},
 		},
-		MuiListItemText: {
+		MuiListItemButton: {
 			styleOverrides: {
-				primary: {
-					//Change default text colour
-					color: "#000000",
+				root: {
+					"&.Mui-selected": {
+						backgroundColor: "#F2F5C8",
+
+						"& .MuiListItemIcon-root": {
+							color: "#5D6716",
+						},
+						"& .MuiListItemText-root": {
+							color: "#5D6716",
+
+							"& .MuiTypography-root": {
+								fontWeight: "bold",
+							},
+						},
+					},
+
+					"& .MuiListItemIcon-root": {
+						color: "#000000",
+					},
+					"& .MuiListItemText-root": {
+						color: "#000000",
+					},
+				},
+			},
+		},
+		MuiCard: {
+			styleOverrides: {
+				root: {
+					borderRadius: 15,
 				},
 			},
 		},

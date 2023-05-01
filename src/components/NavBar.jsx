@@ -24,7 +24,8 @@ const NavBar = () => {
                 <Box sx={{ width: 250 }}>
                     <List sx={{ py: 0, boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)" }}>
                         <ListItem sx={{ backgroundColor: "#DBE192", py: 0.5 }}>
-                            <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: "700" }}>Notely</Typography>
+                            <img src="./IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, fontSize: 50 }} />
+                            <Typography variant="h5" sx={{ flexGrow: 1, fontFamily: "DKSmilingCat", color: "#5D6716" }}>notely</Typography>
                             <IconButton onClick={() => setToggleDrawer(false)} size="large" edge="end" color="inherit" sx={{ ml: 2 }}>
                                 <ArrowForwardIosRoundedIcon />
                             </IconButton>
@@ -40,13 +41,13 @@ const NavBar = () => {
                             </ListItemText>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/dashboard">
+                            <ListItemButton component={Link} to="/dashboard" selected={window.location.pathname === "/dashboard"}>
                                 <ListItemIcon><HomeOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Dashboard" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/settings">
+                            <ListItemButton component={Link} to="/settings" selected={window.location.pathname === "/settings"}>
                                 <ListItemIcon><SettingsOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Settings" />
                             </ListItemButton>
@@ -55,31 +56,31 @@ const NavBar = () => {
                     <Divider />
                     <List>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/todos">
+                            <ListItemButton component={Link} to="/todos" selected={window.location.pathname === "/todos"}>
                                 <ListItemIcon><ListRoundedIcon /></ListItemIcon>
                                 <ListItemText primary="To-do list" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/notes">
+                            <ListItemButton component={Link} to="/notes" selected={window.location.pathname === "/notes"}>
                                 <ListItemIcon><DescriptionOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Notes" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/whiteboards">
+                            <ListItemButton component={Link} to="/whiteboards" selected={window.location.pathname === "/whiteboards"}>
                                 <ListItemIcon><DeveloperBoardIcon /></ListItemIcon>
                                 <ListItemText primary="Whiteboard" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/flashcards">
+                            <ListItemButton component={Link} to="/flashcards" selected={window.location.pathname === "/flashcards"}>
                                 <ListItemIcon><StyleOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Flashcards" />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/pomodoro">
+                            <ListItemButton component={Link} to="/pomodoro" selected={window.location.pathname === "/pomodoro"}>
                                 <ListItemIcon><TimerOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Pomodoro Timer" />
                             </ListItemButton>
@@ -92,7 +93,10 @@ const NavBar = () => {
                 <IconButton onClick={() => setToggleDrawer(true)} size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
                     <MenuRoundedIcon />
                 </IconButton>
-                <Typography variant="h5" sx={{ flexGrow: 1, textAlign: "center", fontWeight: "700" }}>Notely</Typography>
+                <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
+                    <img src="./IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, fontSize: 50 }} />
+                    <Typography variant="h5" sx={{ fontFamily: "DKSmilingCat", color: "#5D6716" }}>notely</Typography>
+                </Box>
                 <IconButton size="large" edge="end" color="inherit" sx={{ ml: 2 }}>
                     <SearchRoundedIcon />
                 </IconButton>

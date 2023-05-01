@@ -10,3 +10,8 @@ body {
 code {
   	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+@font-face {
+	font-family: "DKSmilingCat";
+	src: url("../public/fonts/DK-Smiling-Cat.otf");
+}
