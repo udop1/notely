@@ -82,6 +82,8 @@ const Signup = () => {
                             }
                             />
                         </FormControl>
+                        {/* <Typography variant="body2">By clicking Sign Up, you are agreeing to the <Link to='/terms-of-use'>Terms of Use</Link> and you are acknowledging the <Link to='/privacy'>Privacy Policy</Link>.
+                        </Typography> */}
                         <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { mx: 3 } }}>Sign Up</LoadingButton>
                     </Stack>
                     {/* <Divider>Or Register with</Divider> */}

@@ -1,6 +1,11 @@
 import { createTheme } from "@mui/material";
+import "./index.css";
 import "@fontsource/montserrat/400.css";
 import "@fontsource/montserrat/700.css";
+
+function getColour(colour) {
+	return getComputedStyle(document.querySelector(":root")).getPropertyValue(colour);
+}
 
 const theme = createTheme({
 	typography: {
@@ -10,7 +15,7 @@ const theme = createTheme({
 		MuiAppBar: {
 			styleOverrides: {
 				colorPrimary: {
-					backgroundColor: "#DBE192",
+					backgroundColor: getColour("--green-200"),
 					color: "#000000",
 				},
 			},
@@ -26,13 +31,13 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					"&.Mui-selected": {
-						backgroundColor: "#F2F5C8",
+						backgroundColor: getColour("--green-100"),
 
 						"& .MuiListItemIcon-root": {
-							color: "#5D6716",
+							color: getColour("--green-400"),
 						},
 						"& .MuiListItemText-root": {
-							color: "#5D6716",
+							color: getColour("--green-400"),
 
 							"& .MuiTypography-root": {
 								fontWeight: "bold",
@@ -59,20 +64,25 @@ const theme = createTheme({
 		MuiButton: {
 			styleOverrides: {
 				contained: {
-					backgroundColor: "#5D6716",
+					backgroundColor: getColour("--green-400"),
 					fontWeight: "bold",
+					borderRadius: 50,
+				},
+				outlined: {
+					color: getColour("--green-400"),
+					borderColor: getColour("--green-400"),
 					borderRadius: 50,
 				},
 
 				root: {
 					"&:hover": {
-						backgroundColor: "#5D6716",
-						borderColor: "#A4AE4D",
+						backgroundColor: getColour("--green-400"),
+						borderColor: getColour("--green-300"),
 						boxShadow: "none",
 					},
 					"&:active": {
-						backgroundColor: "#5D6716",
-						borderColor: "#A4AE4D",
+						backgroundColor: getColour("--green-400"),
+						borderColor: getColour("--green-300"),
 						boxShadow: "none",
 					},
 				},
@@ -82,7 +92,7 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					"&:after": {
-						borderColor: "#A4AE4D",
+						borderColor: getColour("--green-300"),
 					},
 				},
 			},
@@ -91,8 +101,28 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					"&.Mui-focused": {
-						color: "#A4AE4D",
+						color: getColour("--green-300"),
 					},
+				},
+			},
+		},
+		MuiSpeedDial: {
+			styleOverrides: {
+				fab: {
+					backgroundColor: getColour("--green-400"),
+
+					"&:hover": {
+						backgroundColor: getColour("--green-400"),
+					},
+				},
+			},
+		},
+		MuiChip: {
+			styleOverrides: {
+				root: {
+					backgroundColor: getColour("--green-100"),
+					color: getColour("--green-400"),
+					borderRadius: 5,
 				},
 			},
 		},

@@ -38,28 +38,32 @@ const Notes = () => {
             <Container>
                 <Stack spacing={2}>
                     {
-                        notes.map((note) => {
-                            return (
-                                <Card key={note.id}>
-                                    <CardActionArea component={Link} to={`/notes/${note.id}`}>
-                                        <CardContent>
-                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{note.title}</Typography>
-                                            <Typography variant="body2" color="text.secondary">{note.modifiedDate.toDate().toDateString()}, {note.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
-                                            <Stack direction="row" spacing={2} sx={{ mt: 1, mb: 1.5 }}>
-                                                {
-                                                    note.tags.map((tag) => {
-                                                        return (
-                                                            <Chip key={tag} size="small" label={tag} />
-                                                        );
-                                                    })
-                                                }
-                                            </Stack>
-                                            <Typography variant="body" dangerouslySetInnerHTML={{ __html: `${DOMPurify.sanitize(note.content, { USE_PROFILES: { html: true } }).substring(0, 50)}...` }}></Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            );
-                        })
+                        notes.length > 0 ? (
+                            notes.map((note) => {
+                                return (
+                                    <Card key={note.id}>
+                                        <CardActionArea component={Link} to={`/notes/${note.id}`}>
+                                            <CardContent>
+                                                <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{note.title}</Typography>
+                                                <Typography variant="body2" color="text.secondary">{note.modifiedDate.toDate().toDateString()}, {note.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                                                <Stack direction="row" spacing={2} sx={{ mt: 1, mb: 1.5 }}>
+                                                    {
+                                                        note.tags.map((tag) => {
+                                                            return (
+                                                                <Chip key={tag} size="small" label={tag} />
+                                                            );
+                                                        })
+                                                    }
+                                                </Stack>
+                                                <Typography variant="body" dangerouslySetInnerHTML={{ __html: `${DOMPurify.sanitize(note.content, { USE_PROFILES: { html: true } }).substring(0, 50)}...` }}></Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                );
+                            })
+                        ) : (
+                            <img src="../IconNoNotes.svg" alt="No Notes" loading="lazy" style={{ height: 350, marginTop: 50 }} />
+                        )
                     }
                 </Stack>
             </Container>

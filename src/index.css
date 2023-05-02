@@ -1,10 +1,21 @@
+:root {
+	--green-100: #F2F5C8;
+	--green-200: #DBE192;
+	--green-300: #A4AE4D;
+	--green-400: #5D6716;
+	--orange-100: #FFF8E9;
+	--orange-200: #FFD697;
+	--orange-300: #F2973E;
+	--orange-400: #A45314;
+}
+
 * {
 	font-family: "Montserrat", sans-serif;
 }
 
 body {
 	margin: 0;
-	background-color: #FFF8E9;
+	background-color: var(--orange-100);
 }
 
 code {
