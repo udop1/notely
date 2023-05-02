@@ -196,7 +196,7 @@ const Whiteboard = () => {
 
                     {tagFields.map((tagValue, index) => (
                         <Stack key={index} direction="row" sx={{ mb: 1 }}>
-                            <TextField required size="small" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
+                            <TextField required variant="standard" size="small" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
                             <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
                         </Stack>
                     ))}

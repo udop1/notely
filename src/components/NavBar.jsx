@@ -24,8 +24,8 @@ const NavBar = () => {
                 <Box sx={{ width: 250 }}>
                     <List sx={{ py: 0, boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)" }}>
                         <ListItem sx={{ backgroundColor: "#DBE192", py: 0.5 }}>
-                            <img src="./IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, fontSize: 50 }} />
-                            <Typography variant="h5" sx={{ flexGrow: 1, fontFamily: "DKSmilingCat", color: "#5D6716" }}>notely</Typography>
+                            <img src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px" }} />
+                            <Typography variant="h5" sx={{ flexGrow: 1, fontFamily: "DKSmilingCat", letterSpacing: 2, color: "#5D6716" }}>notely</Typography>
                             <IconButton onClick={() => setToggleDrawer(false)} size="large" edge="end" color="inherit" sx={{ ml: 2 }}>
                                 <ArrowForwardIosRoundedIcon />
                             </IconButton>
@@ -93,9 +93,9 @@ const NavBar = () => {
                 <IconButton onClick={() => setToggleDrawer(true)} size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
                     <MenuRoundedIcon />
                 </IconButton>
-                <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
-                    <img src="./IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, fontSize: 50 }} />
-                    <Typography variant="h5" sx={{ fontFamily: "DKSmilingCat", color: "#5D6716" }}>notely</Typography>
+                <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <img src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px" }} />
+                    <Typography variant="h5" sx={{ fontFamily: "DKSmilingCat", letterSpacing: 2, color: "#5D6716" }}>notely</Typography>
                 </Box>
                 <IconButton size="large" edge="end" color="inherit" sx={{ ml: 2 }}>
                     <SearchRoundedIcon />

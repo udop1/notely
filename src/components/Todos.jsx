@@ -287,6 +287,7 @@ const Todos = () => {
                 <DialogContent>
                     <TextField
                         label="Task Title"
+                        variant="standard"
                         fullWidth
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -296,6 +297,7 @@ const Todos = () => {
                     />
                     <TextField
                         label="Task Description (Optional)"
+                        variant="standard"
                         fullWidth
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -323,6 +325,7 @@ const Todos = () => {
                             <TextField
                                 key={subTask.id}
                                 label="Add a Subtask"
+                                variant="standard"
                                 fullWidth
                                 value={subTask.title}
                                 margin="normal"
@@ -376,6 +379,7 @@ const Todos = () => {
                             <TextField
                                 key={tagSavedList.length + 1}
                                 label="Add a Tag"
+                                variant="standard"
                                 fullWidth
                                 margin="normal"
                                 value={newTag}
@@ -458,6 +462,7 @@ const Todos = () => {
                         <TextField
                             key={tagSavedList.length + 1}
                             label="Add a Tag"
+                            variant="standard"
                             fullWidth
                             margin="normal"
                             value={newTag}

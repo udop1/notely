@@ -242,8 +242,8 @@ const Flashcard = () => {
                     </DialogContentText>
 
                     <Stack>
-                        <TextField required onChange={(e) => setAddTerm(e.target.value)} label="Term" sx={{ mb: 2 }}></TextField>
-                        <TextField required onChange={(e) => setAddDef(e.target.value)} label="Definition"></TextField>
+                        <TextField required onChange={(e) => setAddTerm(e.target.value)} label="Term" variant="standard" sx={{ mb: 2 }}></TextField>
+                        <TextField required onChange={(e) => setAddDef(e.target.value)} label="Definition" variant="standard"></TextField>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
@@ -256,8 +256,8 @@ const Flashcard = () => {
                 <DialogTitle>Edit Flashcards</DialogTitle>
                 <DialogContent>
                     <Stack>
-                        <TextField required value={editTerm} onChange={(e) => setEditTerm(e.target.value)} label="Term" sx={{ my: 2 }}></TextField>
-                        <TextField required value={editDef} onChange={(e) => setEditDef(e.target.value)} label="Definition"></TextField>
+                        <TextField required value={editTerm} onChange={(e) => setEditTerm(e.target.value)} label="Term" variant="standard" sx={{ my: 2 }}></TextField>
+                        <TextField required value={editDef} onChange={(e) => setEditDef(e.target.value)} label="Definition" variant="standard"></TextField>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
@@ -287,7 +287,7 @@ const Flashcard = () => {
 
                     {tagFields.map((tagValue, index) => (
                         <Stack key={index} direction="row" sx={{ mb: 1 }}>
-                            <TextField required size="small" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
+                            <TextField required size="small" variant="standard" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
                             <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
                         </Stack>
                     ))}

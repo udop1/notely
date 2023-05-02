@@ -3,6 +3,7 @@ import { Alert, AlertTitle, Box, Container, Stack, TextField, Typography } from 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
+import Header from "./Header";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -30,7 +31,8 @@ const ForgotPassword = () => {
     };
 
     return (
-        <Box sx={{ mt: 5 }} /*display="flex" justifyContent="center" alignItems="center" minHeight="100vh"*/>
+        <Box /*display="flex" justifyContent="center" alignItems="center" minHeight="100vh"*/>
+            <Header />
             <Container>
                 <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Forgot Password?</Typography>
                 <Typography variant="body1" sx={{ mb: 2 }}>Don't worry, it happens! Please enter the email associated with your account.</Typography>
@@ -40,10 +42,12 @@ const ForgotPassword = () => {
                     {message && <Alert severity="success"><AlertTitle><strong>Success</strong></AlertTitle>{message}</Alert>}
 
                     <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-                        <TextField required label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
-                        <LoadingButton type="submit" loading={loading} variant="contained">Reset Password</LoadingButton>
+                        <TextField required label="Email Address" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
+                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { mx: 3 } }}>Reset Password</LoadingButton>
                     </Stack>
-                    <Typography variant="body1">Remember your password? <Link to='/login'>Login</Link></Typography>
+                    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                        <Typography variant="body1">Remember your password? <Link to='/login'>Login</Link></Typography>
+                    </Box>
                 </Stack>
             </Container>
         </Box>

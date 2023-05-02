@@ -1,16 +1,15 @@
 import { createTheme } from "@mui/material";
-import "@fontsource/montserrat/";
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/700.css";
 
 const theme = createTheme({
 	typography: {
 		fontFamily: "Montserrat",
 	},
 	components: {
-		//NavBar
 		MuiAppBar: {
 			styleOverrides: {
 				colorPrimary: {
-					//Change default background and text colour
 					backgroundColor: "#DBE192",
 					color: "#000000",
 				},
@@ -19,7 +18,6 @@ const theme = createTheme({
 		MuiListItemIcon: {
 			styleOverrides: {
 				root: {
-					//Change default icon colour
 					color: "#000000",
 				},
 			},
@@ -55,6 +53,46 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					borderRadius: 15,
+				},
+			},
+		},
+		MuiButton: {
+			styleOverrides: {
+				contained: {
+					backgroundColor: "#5D6716",
+					fontWeight: "bold",
+					borderRadius: 50,
+				},
+
+				root: {
+					"&:hover": {
+						backgroundColor: "#5D6716",
+						borderColor: "#A4AE4D",
+						boxShadow: "none",
+					},
+					"&:active": {
+						backgroundColor: "#5D6716",
+						borderColor: "#A4AE4D",
+						boxShadow: "none",
+					},
+				},
+			},
+		},
+		MuiInput: {
+			styleOverrides: {
+				root: {
+					"&:after": {
+						borderColor: "#A4AE4D",
+					},
+				},
+			},
+		},
+		MuiInputLabel: {
+			styleOverrides: {
+				root: {
+					"&.Mui-focused": {
+						color: "#A4AE4D",
+					},
 				},
 			},
 		},
