@@ -234,7 +234,7 @@ const Flashcard = () => {
                 <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Flashcard Group" sx={{ color: "black" }} />
             </SpeedDial>
 
-            <Dialog component="form" open={modalAddOpen} onSubmit={handleAddCard} aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
+            <Dialog component="form" open={modalAddOpen} onSubmit={handleAddCard} fullWidth maxWidth="md" aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
                 <DialogTitle>Add Flashcards</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
@@ -252,7 +252,7 @@ const Flashcard = () => {
                 </DialogActions>
             </Dialog>
 
-            <Dialog component="form" open={modalEditOpen} onSubmit={handleEditCard} aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
+            <Dialog component="form" open={modalEditOpen} onSubmit={handleEditCard} fullWidth maxWidth="md" aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
                 <DialogTitle>Edit Flashcards</DialogTitle>
                 <DialogContent>
                     <Stack>

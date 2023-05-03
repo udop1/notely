@@ -473,12 +473,9 @@ const Todos = () => {
                 }
 
 
-                {/* eslint-disable-next-line array-callback-return */}
                 {todos.map((card, index) => {
-                    // eslint-disable-next-line array-callback-return
-                    if (menuView) { return };
-                    // eslint-disable-next-line array-callback-return
-                    if (card.id === "tags") { return };
+                    if (menuView) { return null };
+                    if (card.id === "tags") { return null };
                     if (selectedDate === "Upcomming") {
                         //Shows the next 5 tasks
                         noOfCards += 1;
@@ -619,9 +616,9 @@ const Todos = () => {
                                 <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>No Tasks Today</Typography>
                             );
                         } else {
-                            noOfCards = 0;
+                            return noOfCards = 0;
                         }
-                    }
+                    } else return null
                 }
 
                 )}

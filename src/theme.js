@@ -63,6 +63,13 @@ const theme = createTheme({
 		},
 		MuiButton: {
 			styleOverrides: {
+				text: {
+					color: getColour("--green-400"),
+
+					"&:hover": {
+						color: "#FFFFFF",
+					},
+				},
 				contained: {
 					backgroundColor: getColour("--green-400"),
 					fontWeight: "bold",
@@ -72,6 +79,10 @@ const theme = createTheme({
 					color: getColour("--green-400"),
 					borderColor: getColour("--green-400"),
 					borderRadius: 50,
+
+					"&:hover": {
+						color: "#FFFFFF",
+					},
 				},
 
 				root: {

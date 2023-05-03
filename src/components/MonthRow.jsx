@@ -153,15 +153,13 @@ const MonthRow = ({ handleWeek, mappedTasks }) => {
             </Typography>
             {mappedTasks.map((card, index) => {
 
-              // eslint-disable-next-line array-callback-return
-              if (card.id === "tags") { return };
+              if (card.id === "tags") { return null };
               if (day.format('YYYY-MM-DD') === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
                 //This Date Has a Task
                 return (
                   <CircleIcon key={card.id} style={{ fontSize: "8px", paddingLeft: "5px", color: "orange" }} />
                 )
-                // eslint-disable-next-line array-callback-return
-              } else return
+              } else return null
             })}
           </Grid>
         ))}

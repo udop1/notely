@@ -74,16 +74,15 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
               <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'text.primary' }} onClick={() => handleWeekdayClick(day)}>
                 {day.format('D')}
               </Typography>
-              {/* eslint-disable-next-line array-callback-return */}
+
               {mappedTasks.map((card, index) => {
-                // eslint-disable-next-line array-callback-return
-                if (card.id === "tags") { return };
+                if (card.id === "tags") { return null };
                 if (day.format('YYYY-MM-DD') === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
                   //This Date Has a Task
                   return (
                     <CircleIcon key={card.id} style={{ fontSize: "8px", paddingLeft: "5px", color: "orange" }} />
                   )
-                }
+                } else return null
               })}
             </Grid>
           )
