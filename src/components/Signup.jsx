@@ -58,33 +58,35 @@ const Signup = () => {
                     {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
 
                     <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-                        <TextField required variant="standard" label="Username" onChange={(e) => setUsername(e.target.value)} type="text"></TextField>
-                        <TextField required variant="standard" label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
-                        <FormControl required variant="standard" onChange={(e) => setPassword(e.target.value)} type="password">
-                            <InputLabel>Password</InputLabel>
-                            <Input type={showPassword ? "text" : "password"} endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            />
-                        </FormControl>
-                        <FormControl required variant="standard" onChange={(e) => setPasswordConfirm(e.target.value)} type="password">
-                            <InputLabel>Password Confirmation</InputLabel>
-                            <Input type={showPassword ? "text" : "password"} endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            />
-                        </FormControl>
+                        <Stack spacing={4} sx={{ mb: 2 }}>
+                            <TextField required variant="standard" label="Username" onChange={(e) => setUsername(e.target.value)} type="text"></TextField>
+                            <TextField required variant="standard" label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
+                            <FormControl required variant="standard" onChange={(e) => setPassword(e.target.value)} type="password">
+                                <InputLabel>Password</InputLabel>
+                                <Input type={showPassword ? "text" : "password"} endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                />
+                            </FormControl>
+                            <FormControl required variant="standard" onChange={(e) => setPasswordConfirm(e.target.value)} type="password">
+                                <InputLabel>Password Confirmation</InputLabel>
+                                <Input type={showPassword ? "text" : "password"} endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                />
+                            </FormControl>
+                        </Stack>
                         {/* <Typography variant="body2">By clicking Sign Up, you are agreeing to the <Link to='/terms-of-use'>Terms of Use</Link> and you are acknowledging the <Link to='/privacy'>Privacy Policy</Link>.
                         </Typography> */}
-                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { mx: 3 } }}>Sign Up</LoadingButton>
+                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { py: 1.5 } }}>Sign Up</LoadingButton>
                     </Stack>
                     {/* <Divider>Or Register with</Divider> */}
                     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">

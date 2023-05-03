@@ -3,7 +3,6 @@ import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
 import React from 'react';
 import NavBar from "./NavBar";
@@ -63,7 +62,6 @@ const Whiteboards = () => {
             </Container>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction icon={<CreateNewFolderOutlinedIcon />} tooltipTitle="New Folder" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={handleNewWhiteboard} icon={<DashboardCustomizeOutlinedIcon />} tooltipTitle="New Whiteboard" sx={{ color: "black" }} />
             </SpeedDial>
         </Box>

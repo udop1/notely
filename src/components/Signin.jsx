@@ -45,27 +45,29 @@ const Signin = () => {
         <Box /*display="flex" justifyContent="center" alignItems="center" minHeight="100vh"*/>
             <Header />
             <Container>
-                <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Login</Typography>
+                <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Log In</Typography>
                 <Typography variant="body1" sx={{ mb: 2 }}>Welcome back! Please enter your details.</Typography>
 
                 <Stack spacing={2}>
                     {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
 
                     <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-                        <TextField required label="Email Address" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
-                        <FormControl required variant="standard" onChange={(e) => setPassword(e.target.value)} type="password">
-                            <InputLabel>Password</InputLabel>
-                            <Input type={showPassword ? "text" : "password"} endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            />
-                        </FormControl>
+                        <Stack spacing={4} sx={{ mb: 2 }}>
+                            <TextField required label="Email Address" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
+                            <FormControl required variant="standard" onChange={(e) => setPassword(e.target.value)} type="password">
+                                <InputLabel>Password</InputLabel>
+                                <Input type={showPassword ? "text" : "password"} endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                />
+                            </FormControl>
+                        </Stack>
                         <Typography display="flex" justifyContent="flex-end"><Link to='/forgot-password'>Forgot Password?</Link></Typography>
-                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { mx: 3 } }}>Login</LoadingButton>
+                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { py: 1.5 } }}>Log In</LoadingButton>
                     </Stack>
                     {/* <Divider>Or Login with</Divider> */}
                     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">

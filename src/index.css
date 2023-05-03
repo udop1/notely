@@ -1,4 +1,5 @@
 :root {
+	--black: #210B03;
 	--green-100: #F2F5C8;
 	--green-200: #DBE192;
 	--green-300: #A4AE4D;
@@ -11,6 +12,7 @@
 
 * {
 	font-family: "Montserrat", sans-serif;
+	/* color: var(--black); */
 }
 
 body {
@@ -20,6 +22,10 @@ body {
 
 code {
   	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+a {
+	color: var(--green-400);
 }
 
 @font-face {

@@ -31,7 +31,7 @@ const Dashboard = () => {
                             <Card>
                                 <CardActionArea component={Link} to="/notes">
                                     <CardContent>
-                                        <img src="./IconNotes.svg" alt="Notes Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
+                                        <img src="./IconNotes.svg" alt="Notes Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50, shapeRendering: "crispEdges" }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Notes</Typography>
                                         <Typography variant="body2">Capture your thoughts on the go with our notes.</Typography>
                                     </CardContent>

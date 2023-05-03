@@ -42,8 +42,8 @@ const ForgotPassword = () => {
                     {message && <Alert severity="success"><AlertTitle><strong>Success</strong></AlertTitle>{message}</Alert>}
 
                     <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-                        <TextField required label="Email Address" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
-                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { mx: 3 } }}>Reset Password</LoadingButton>
+                        <TextField required label="Email Address" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email" sx={{ mb: 2 }}></TextField>
+                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { py: 1.5 } }}>Reset Password</LoadingButton>
                     </Stack>
                     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                         <Typography variant="body1">Remember your password? <Link to='/login'>Login</Link></Typography>

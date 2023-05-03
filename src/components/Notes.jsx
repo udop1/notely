@@ -4,7 +4,6 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
-import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import React from 'react';
 import NavBar from "./NavBar";
 import { UserAuth } from "../context/AuthContext";
@@ -69,7 +68,6 @@ const Notes = () => {
             </Container>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction icon={<CreateNewFolderOutlinedIcon />} tooltipTitle="New Folder" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={handleNewNote} icon={<NoteAddOutlinedIcon />} tooltipTitle="New Note" sx={{ color: "black" }} />
             </SpeedDial>
         </Box>

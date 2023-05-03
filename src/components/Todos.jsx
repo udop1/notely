@@ -420,7 +420,7 @@ const Todos = () => {
             <Container sx={{ mb: 2 }}>
                 <Grid container columns={12} justifyItems="center">
                     <Grid item xs={6}>
-                        <Button startIcon={<ListRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>To-DO</Typography></Button>
+                        <Button startIcon={<ListRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>To-do</Typography></Button>
                     </Grid>
                 </Grid>
             </Container>

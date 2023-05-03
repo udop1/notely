@@ -22,7 +22,7 @@ const NavBar = () => {
         <AppBar position="static" sx={{ mb: 3 }}>
             <Drawer anchor="left" open={toggleDrawer} onClose={() => setToggleDrawer(false)}>
                 <Box sx={{ width: 250 }}>
-                    <List sx={{ py: 0, boxShadow: "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)" }}>
+                    <List sx={{ py: 0 }}>
                         <ListItem sx={{ backgroundColor: "#DBE192", py: 0.5 }}>
                             <img src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px" }} />
                             <Typography variant="h5" sx={{ flexGrow: 1, fontFamily: "DKSmilingCat", letterSpacing: 2, color: "#5D6716" }}>notely</Typography>

@@ -1,26 +1,17 @@
-import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Collapse, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography, styled } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import React, { useCallback, useEffect, useState } from 'react';
 import NavBar from "./NavBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { UserAuth } from "../context/AuthContext";
-
-const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
-}));
 
 const Flashcard = () => {
     const navigate = useNavigate();
@@ -38,7 +29,6 @@ const Flashcard = () => {
     const [modalAddOpen, setModalAddOpen] = useState(false);
     const [modalEditOpen, setModalEditOpen] = useState(false);
     const [tagFields, setTagFields] = useState([]);
-    const [expanded, setExpanded] = useState(false);
     const [addTerm, setAddTerm] = useState('');
     const [addDef, setAddDef] = useState('');
     const [editTerm, setEditTerm] = useState('');
@@ -131,10 +121,6 @@ const Flashcard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [flashcardData]);
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
     const handleAddCard = (e) => {
         e.preventDefault();
         var newCards = cards.slice();
@@ -201,6 +187,8 @@ const Flashcard = () => {
                         </CardActionArea>
                     </Card>
 
+                    <Typography variant="body1" sx={{ fontWeight: "700", color: "black", mb: 2 }}>Other terms</Typography>
+
                     <Stack spacing={2}>
                         {cards.map((flashcard, index) => {
                             return (
@@ -211,14 +199,10 @@ const Flashcard = () => {
                                             <Typography variant="body2" sx={{ mb: 0.5 }}>{flashcard.definition}</Typography>
                                         </CardContent>
                                     </CardActionArea>
-                                    <CardActions disableSpacing>
-                                        <ExpandMore expand={expanded} onClick={handleExpandClick}>
-                                            <ExpandMoreRoundedIcon />
-                                        </ExpandMore>
-                                        <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                            <Button onClick={() => { setEditCardIndex(index); setEditTerm(cards[index].term); setEditDef(cards[index].definition); setModalEditOpen(true) }}>Edit</Button>
-                                            <Button onClick={() => handleCardDelete(index)}>Delete</Button>
-                                        </Collapse>
+                                    <CardActions disableSpacing sx={{ justifyContent: "space-evenly" }}>
+                                        <IconButton onClick={() => { setEditCardIndex(index); setEditTerm(cards[index].term); setEditDef(cards[index].definition); setModalEditOpen(true) }}><EditIcon /></IconButton>
+                                        <Divider orientation="vertical" flexItem />
+                                        <IconButton onClick={() => handleCardDelete(index)}><DeleteIcon /></IconButton>
                                     </CardActions>
                                 </Card>
                             );

@@ -4,7 +4,6 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import React from 'react';
 import NavBar from "./NavBar";
 import { UserAuth } from "../context/AuthContext";
@@ -25,7 +24,7 @@ const Flashcards = () => {
             <Container sx={{ mb: 2 }}>
                 <Grid container columns={12} justifyItems="center">
                     <Grid item xs={6}>
-                        <Button startIcon={<DescriptionOutlinedIcon />} endIcon={<ArrowForwardIosRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>Flashcard Groups</Typography></Button>
+                        <Button startIcon={<DescriptionOutlinedIcon />} endIcon={<ArrowForwardIosRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>Flashcards</Typography></Button>
                     </Grid>
                     <Grid item xs={6} container justifyContent="flex-end">
                         <IconButton sx={{ color: "black", pt: 0.75 }}><SortRoundedIcon /></IconButton>
@@ -63,7 +62,6 @@ const Flashcards = () => {
             </Container>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction icon={<CreateNewFolderOutlinedIcon />} tooltipTitle="New Folder" sx={{ color: "black" }} />
                 <SpeedDialAction onClick={handleNewFlashcard} icon={<PostAddIcon />} tooltipTitle="New Flashcard Group" sx={{ color: "black" }} />
             </SpeedDial>
         </Box>

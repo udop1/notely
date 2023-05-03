@@ -10,10 +10,16 @@ function getColour(colour) {
 const theme = createTheme({
 	typography: {
 		fontFamily: "Montserrat",
+		allVariants: {
+			color: getColour("--black"),
+		},
 	},
 	components: {
 		MuiAppBar: {
 			styleOverrides: {
+				root: {
+					boxShadow: "none",
+				},
 				colorPrimary: {
 					backgroundColor: getColour("--green-200"),
 					color: "#000000",
@@ -58,6 +64,7 @@ const theme = createTheme({
 			styleOverrides: {
 				root: {
 					borderRadius: 15,
+					boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
 				},
 			},
 		},
@@ -86,6 +93,8 @@ const theme = createTheme({
 				},
 
 				root: {
+					textTransform: "none",
+
 					"&:hover": {
 						backgroundColor: getColour("--green-400"),
 						borderColor: getColour("--green-300"),
@@ -134,6 +143,13 @@ const theme = createTheme({
 					backgroundColor: getColour("--green-100"),
 					color: getColour("--green-400"),
 					borderRadius: 5,
+				},
+			},
+		},
+		MuiIconButton: {
+			styleOverrides: {
+				root: {
+					color: getColour("--green-400"),
 				},
 			},
 		},
