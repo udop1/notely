@@ -167,7 +167,7 @@ const Flashcard = () => {
                         <Grid item xs={8}>
                             <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
                                 {
-                                    flashcardData.tags.map((tag) => {
+                                    tagFields.map((tag) => {
                                         return (
                                             <Chip key={tag} size="small" label={tag} />
                                         );

@@ -1,10 +1,11 @@
-import { Box, Button, Card, CardActionArea, CardContent, Chip, Container, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
-import React from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useState } from 'react';
 import NavBar from "./NavBar";
 import { UserAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +14,8 @@ import DOMPurify from "dompurify";
 const Notes = () => {
     const { notes, createNote } = UserAuth();
     const navigate = useNavigate();
+
+    const [modalDelOpen, setModalDelOpen] = useState(false);
 
     const handleNewNote = async () => {
         var docId = await createNote();
@@ -57,6 +60,9 @@ const Notes = () => {
                                                 <Typography variant="body" dangerouslySetInnerHTML={{ __html: `${DOMPurify.sanitize(note.content, { USE_PROFILES: { html: true } }).substring(0, 50)}...` }}></Typography>
                                             </CardContent>
                                         </CardActionArea>
+                                        <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
+                                            <IconButton onClick={() => setModalDelOpen(true)}><DeleteIcon /></IconButton>
+                                        </CardActions>
                                     </Card>
                                 );
                             })
@@ -70,6 +76,18 @@ const Notes = () => {
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
                 <SpeedDialAction onClick={handleNewNote} icon={<NoteAddOutlinedIcon />} tooltipTitle="New Note" sx={{ color: "black" }} />
             </SpeedDial>
+
+            <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
+                <DialogContent>
+                    <DialogContentText>
+                        Delete this note?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus>Cancel</Button>
+                    <Button variant="contained" color="error" /*onClick={() => handleDelete(true)}*/>Delete</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

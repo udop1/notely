@@ -153,6 +153,13 @@ const theme = createTheme({
 				},
 			},
 		},
+		MuiCheckbox: {
+			styleOverrides: {
+				colorPrimary: {
+					color: getColour("--green-400"),
+				},
+			},
+		},
 	},
 });
 
