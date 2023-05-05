@@ -64,6 +64,7 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
     <Container>
       <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: 'normal', color: 'grey' }}>{monthName}</Typography>
       <ArrowBackIcon onClick={previousWeekToArray} />
+      <ArrowForwardIcon onClick={addWeekToArray} />
       <Grid container>
         {renderDays.map((day) => {
           return (
@@ -88,8 +89,6 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
           )
         })}
       </Grid>
-      <ArrowForwardIcon onClick={addWeekToArray} />
-
     </Container>
   );
 };

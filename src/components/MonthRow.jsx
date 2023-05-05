@@ -131,6 +131,7 @@ const MonthRow = ({ handleWeek, mappedTasks }) => {
     <Container>
       <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: 'normal', color: 'grey' }}>{monthName}</Typography>
       <ArrowBackIcon onClick={preMonthToArray} />
+      <ArrowForwardIcon onClick={addMonthToArray} />
       <Grid container spacing={2} columns={7}>
         <Grid item xs={1} ><Typography>Mon</Typography></Grid>
         <Grid item xs={1} ><Typography>Tue</Typography></Grid>
@@ -171,7 +172,6 @@ const MonthRow = ({ handleWeek, mappedTasks }) => {
           </Grid>
         ))}
       </Grid>
-      <ArrowForwardIcon onClick={addMonthToArray} />
     </Container>
   );
 };

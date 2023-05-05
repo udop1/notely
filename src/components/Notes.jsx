@@ -1,6 +1,4 @@
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
@@ -26,9 +24,9 @@ const Notes = () => {
         <Box>
             <NavBar />
             <Container sx={{ mb: 2 }}>
-                <Grid container columns={12} justifyItems="center">
+                <Grid container columns={12} sx={{ display: "flex", alignItems: "center" }}>
                     <Grid item xs={6}>
-                        <Button startIcon={<DescriptionOutlinedIcon />} endIcon={<ArrowForwardIosRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>Notes</Typography></Button>
+                        <Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>Notes</Typography>
                     </Grid>
                     <Grid item xs={6} container justifyContent="flex-end">
                         <IconButton sx={{ color: "black", pt: 0.75 }}><SortRoundedIcon /></IconButton>

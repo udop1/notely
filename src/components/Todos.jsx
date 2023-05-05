@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Stack } from "@mui/material";
 import NavBar from "./NavBar";
-import ListRoundedIcon from '@mui/icons-material/ListRounded';
+// import ListRoundedIcon from '@mui/icons-material/ListRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
 import { UserAuth } from "../context/AuthContext";
 import React, { useState, useEffect } from 'react';
@@ -26,7 +26,7 @@ const Todos = () => {
     const setaStringify = split[0] + " " + split[1] + ", " + split[2];
 
     const [stringify, setStringify] = useState(setaStringify);
-    const [isToday, setIsToday] = useState(true);
+    // const [isToday, setIsToday] = useState(true);
     //Render Todo
 
     //Get Date
@@ -189,7 +189,7 @@ const Todos = () => {
         setShowWeek(false);
         setShowMonth(false);
         handleWeekClick(dayjs());
-        setIsToday(true);
+        // setIsToday(true);
     }
     function handleWeek() {
         setShowWeek(true);
@@ -208,12 +208,12 @@ const Todos = () => {
         const split = thiday.split(" ");
         const readableDate = split[0] + " " + split[1] + ", " + split[2];
         setStringify(readableDate);
-        setIsToday(false);
+        // setIsToday(false);
 
         //Check to see if it is today
-        if (day.format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')) {
-            setIsToday(true);
-        }
+        // if (day.format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')) {
+        //     setIsToday(true);
+        // }
     };
 
     // function handleUpcomming() {
@@ -392,8 +392,7 @@ const Todos = () => {
                 <SpeedDialAction icon={<NoteAddOutlinedIcon />} tooltipTitle="New ToDo" sx={{ color: "black" }} onClick={handleOpen} />
             </SpeedDial>
 
-            {/* isToday doesnt detect the button, but if the selected date is today */}
-            <Container sx={{ backgroundColor: isToday ? "#FFFFFF" : "transparent", mt: -3, py: 2 }}>
+            <Container sx={{ backgroundColor: showWeek || showMonth ? "#FFFFFF" : "transparent", mt: -3, mb: 2, py: 2 }}>
                 <Stack direction="row" spacing={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
                     <Button variant="outlined" onClick={handleToday} sx={{ borderRadius: 2, px: "0" }}>Today</Button>
                     <Button variant="outlined" onClick={handleWeek} sx={{ borderRadius: 2, px: "0" }}>Week</Button>
@@ -407,7 +406,7 @@ const Todos = () => {
             <Container sx={{ mb: 2 }}>
                 <Grid container columns={12} justifyItems="center">
                     <Grid item xs={6}>
-                        <Button startIcon={<ListRoundedIcon />} sx={{ color: "black" }}><Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>{stringify}</Typography></Button>
+                        <Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>{stringify}</Typography>
                     </Grid>
                 </Grid>
             </Container>
