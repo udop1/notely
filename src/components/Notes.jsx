@@ -1,8 +1,9 @@
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import React, { useState } from 'react';
 import NavBar from "./NavBar";
 import { UserAuth } from "../context/AuthContext";
@@ -10,14 +11,20 @@ import { Link, useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 
 const Notes = () => {
-    const { notes, createNote } = UserAuth();
+    const { notes, createNote, deleteNote } = UserAuth();
     const navigate = useNavigate();
 
     const [modalDelOpen, setModalDelOpen] = useState(false);
+    const [cardForDel, setCardForDel] = useState('');
 
     const handleNewNote = async () => {
         var docId = await createNote();
         navigate(`/notes/${docId}`);
+    };
+
+    const handleDelete = async () => {
+        await deleteNote(cardForDel);
+        setModalDelOpen(false);
     };
 
     return (
@@ -59,7 +66,9 @@ const Notes = () => {
                                             </CardContent>
                                         </CardActionArea>
                                         <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
-                                            <IconButton onClick={() => setModalDelOpen(true)}><DeleteIcon /></IconButton>
+                                            <IconButton component={Link} to={`/notes/${note.id}`}><EditIcon /></IconButton>
+                                            <Divider orientation="vertical" flexItem />
+                                            <IconButton onClick={() => { setCardForDel(note.id); setModalDelOpen(true) }}><DeleteIcon /></IconButton>
                                         </CardActions>
                                     </Card>
                                 );
@@ -83,7 +92,7 @@ const Notes = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus>Cancel</Button>
-                    <Button variant="contained" color="error" /*onClick={() => handleDelete(true)}*/>Delete</Button>
+                    <Button variant="contained" color="error" onClick={() => handleDelete()}>Delete</Button>
                 </DialogActions>
             </Dialog>
         </Box>

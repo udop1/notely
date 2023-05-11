@@ -28,6 +28,8 @@ const Flashcard = () => {
     const [modalTagOpen, setModalTagOpen] = useState(false);
     const [modalAddOpen, setModalAddOpen] = useState(false);
     const [modalEditOpen, setModalEditOpen] = useState(false);
+    const [modalDelOpen, setModalDelOpen] = useState(false);
+    const [flashcardForDel, setFlashcardForDel] = useState('');
     const [tagFields, setTagFields] = useState([]);
     const [addTerm, setAddTerm] = useState('');
     const [addDef, setAddDef] = useState('');
@@ -110,8 +112,13 @@ const Flashcard = () => {
 
     const setMainCard = (index) => {
         setFlip(false);
-        setMainTerm(cards[index].term);
-        setMainDef(cards[index].definition);
+
+        if (cards[index]) {
+            setMainTerm(cards[index].term);
+            setMainDef(cards[index].definition);
+        } else {
+            console.log("No cards");
+        }
     }
 
     const elemRef = useCallback((node) => {
@@ -139,10 +146,12 @@ const Flashcard = () => {
         setModalEditOpen(false);
     }
 
-    const handleCardDelete = (cardIndex) => {
+    const handleDelete = async () => {
         var newCards = cards.slice();
-        newCards.splice(cardIndex, 1);
+        newCards.splice(flashcardForDel, 1);
         setCards(newCards);
+
+        setModalDelOpen(false);
     };
 
     if (!flashcardData) return <div>Loading...</div>;
@@ -199,10 +208,10 @@ const Flashcard = () => {
                                             <Typography variant="body2" sx={{ mb: 0.5 }}>{flashcard.definition}</Typography>
                                         </CardContent>
                                     </CardActionArea>
-                                    <CardActions disableSpacing sx={{ justifyContent: "space-evenly" }}>
+                                    <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
                                         <IconButton onClick={() => { setEditCardIndex(index); setEditTerm(cards[index].term); setEditDef(cards[index].definition); setModalEditOpen(true) }}><EditIcon /></IconButton>
                                         <Divider orientation="vertical" flexItem />
-                                        <IconButton onClick={() => handleCardDelete(index)}><DeleteIcon /></IconButton>
+                                        <IconButton onClick={() => { setFlashcardForDel(index); setModalDelOpen(true) }}><DeleteIcon /></IconButton>
                                     </CardActions>
                                 </Card>
                             );
@@ -279,6 +288,18 @@ const Flashcard = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button type="submit" variant="contained" autoFocus>Confirm</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
+                <DialogContent>
+                    <DialogContentText>
+                        Delete this flashcard?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus>Cancel</Button>
+                    <Button variant="contained" color="error" onClick={() => handleDelete()}>Delete</Button>
                 </DialogActions>
             </Dialog>
         </Box>

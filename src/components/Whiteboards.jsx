@@ -1,19 +1,29 @@
-import { Box, Card, CardActionArea, CardContent, Chip, Container, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Typography } from "@mui/material";
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
-import React from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import React, { useState } from 'react';
 import NavBar from "./NavBar";
 import { UserAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 const Whiteboards = () => {
-    const { whiteboards, createWhiteboard } = UserAuth();
+    const { whiteboards, createWhiteboard, deleteWhiteboard } = UserAuth();
     const navigate = useNavigate();
+
+    const [modalDelOpen, setModalDelOpen] = useState(false);
+    const [boardForDel, setBoardForDel] = useState('');
 
     const handleNewWhiteboard = async () => {
         var docId = await createWhiteboard();
         navigate(`/whiteboards/${docId}`);
+    };
+
+    const handleDelete = async () => {
+        await deleteWhiteboard(boardForDel);
+        setModalDelOpen(false);
     };
 
     return (
@@ -52,6 +62,11 @@ const Whiteboards = () => {
                                             </Stack>
                                         </CardContent>
                                     </CardActionArea>
+                                    <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
+                                        <IconButton component={Link} to={`/whiteboards/${whiteboard.id}`}><EditIcon /></IconButton>
+                                        <Divider orientation="vertical" flexItem />
+                                        <IconButton onClick={() => { setBoardForDel(whiteboard.id); setModalDelOpen(true) }}><DeleteIcon /></IconButton>
+                                    </CardActions>
                                 </Card>
                             );
                         })
@@ -62,6 +77,18 @@ const Whiteboards = () => {
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
                 <SpeedDialAction onClick={handleNewWhiteboard} icon={<DashboardCustomizeOutlinedIcon />} tooltipTitle="New Whiteboard" sx={{ color: "black" }} />
             </SpeedDial>
+
+            <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
+                <DialogContent>
+                    <DialogContentText>
+                        Delete this whiteboard?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus>Cancel</Button>
+                    <Button variant="contained" color="error" onClick={() => handleDelete()}>Delete</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
