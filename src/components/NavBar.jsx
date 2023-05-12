@@ -80,7 +80,7 @@ const NavBar = () => {
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemButton component={Link} to="/pomodoro" selected={window.location.pathname === "/pomodoro"}>
+                            <ListItemButton component={Link} to="/pomodoros" selected={window.location.pathname === "/pomodoros"}>
                                 <ListItemIcon><TimerOutlinedIcon /></ListItemIcon>
                                 <ListItemText primary="Pomodoro Timer" />
                             </ListItemButton>

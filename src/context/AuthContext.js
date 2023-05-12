@@ -13,6 +13,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [todos, setTodos] = useState([]);
 	const [whiteboards, setWhiteboards] = useState([]);
 	const [flashcards, setFlashcards] = useState([]);
+	const [timers, setTimers] = useState([]);
 
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
@@ -67,6 +68,17 @@ export const AuthContextProvider = ({ children }) => {
 								{ term: "Click me to see the definition", definition: "Well done!" },
 								{ term: "Try creating your own flashcard", definition: "Shh, I'm hiding!" },
 							],
+							tags: ["Tutorial", "Example"],
+							createdDate: Timestamp.now(),
+							modifiedDate: Timestamp.now(),
+							revisionNumber: 0,
+						});
+					})
+					.then(async () => {
+						await addDoc(collection(db, "users", auth.currentUser.uid, "pomodoros"), {
+							title: "Welcome to your Timer!",
+							workTime: 25,
+							breakTime: 5,
 							tags: ["Tutorial", "Example"],
 							createdDate: Timestamp.now(),
 							modifiedDate: Timestamp.now(),
@@ -168,6 +180,21 @@ export const AuthContextProvider = ({ children }) => {
 				};
 			});
 		}
+		if (location.pathname.includes("/pomodoros")) {
+			onAuthStateChanged(auth, async (currentUser) => {
+				const timersQuery = query(collection(db, "users", currentUser.uid, "pomodoros"));
+				const unsubscribe = onSnapshot(timersQuery, (querySnapshot) => {
+					var timersArr = [];
+					querySnapshot.forEach((doc) => {
+						timersArr.push({ ...doc.data(), id: doc.id });
+					});
+					setTimers(timersArr);
+				});
+				return () => {
+					unsubscribe();
+				};
+			});
+		}
 	}, [location]);
 
 	const createNote = async () => {
@@ -251,7 +278,6 @@ export const AuthContextProvider = ({ children }) => {
 		await deleteDoc(doc(db, "users", user.uid, "flashcards", flashcardId));
 	};
 
-	//TODO CONSTRUCTORS
 	const createToDo = async (newTodo) => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "todos"), newTodo);
 		return docRef.id;
@@ -278,7 +304,36 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	};
 
-	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, setToDoTags, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcardGroup, updateFlashcardGroup, deleteFlashcardGroup }}>{children}</UserContext.Provider>;
+	const createTimer = async () => {
+		const docRef = await addDoc(collection(db, "users", user.uid, "pomodoros"), {
+			title: "",
+			workTime: 25,
+			breakTime: 5,
+			tags: [],
+			createdDate: Timestamp.now(),
+			modifiedDate: Timestamp.now(),
+			revisionNumber: 0,
+		});
+
+		return docRef.id;
+	};
+
+	const updateTimer = async (timerId, title, workTime, breakTime, tags, revisionNumber) => {
+		await updateDoc(doc(db, "users", user.uid, "whiteboards", timerId), {
+			title: title,
+			workTime: workTime,
+			breakTime: breakTime,
+			tags: tags,
+			modifiedDate: Timestamp.now(),
+			revisionNumber: revisionNumber,
+		});
+	};
+
+	const deleteTimer = async (timerId) => {
+		await deleteDoc(doc(db, "users", user.uid, "pomodoros", timerId));
+	};
+
+	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, setToDoTags, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcardGroup, updateFlashcardGroup, deleteFlashcardGroup, timers, createTimer, updateTimer, deleteTimer }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {
