@@ -308,7 +308,8 @@ export const AuthContextProvider = ({ children }) => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "pomodoros"), {
 			title: "",
 			workTime: 25,
-			breakTime: 5,
+			shortBreak: 5,
+			longBreak: 15,
 			tags: [],
 			createdDate: Timestamp.now(),
 			modifiedDate: Timestamp.now(),
@@ -318,11 +319,12 @@ export const AuthContextProvider = ({ children }) => {
 		return docRef.id;
 	};
 
-	const updateTimer = async (timerId, title, workTime, breakTime, tags, revisionNumber) => {
+	const updateTimer = async (timerId, title, workTime, shortBreak, longBreak, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "whiteboards", timerId), {
 			title: title,
 			workTime: workTime,
-			breakTime: breakTime,
+			shortBreak: shortBreak,
+			longBreak: longBreak,
 			tags: tags,
 			modifiedDate: Timestamp.now(),
 			revisionNumber: revisionNumber,

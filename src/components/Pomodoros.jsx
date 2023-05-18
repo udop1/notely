@@ -61,6 +61,7 @@ const Pomodoros = () => {
                                                         })
                                                     }
                                                 </Stack>
+                                                <Typography variant="body2" color="text.secondary">{timer.workTime} minutes</Typography>
                                             </CardContent>
                                         </CardActionArea>
                                         <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
@@ -72,7 +73,7 @@ const Pomodoros = () => {
                                 );
                             })
                         ) : (
-                            <img src="../IconNoNotes.svg" alt="No Notes" loading="lazy" style={{ height: 350, marginTop: 50 }} />
+                            <img src="../IconNoNotes.svg" alt="No Timers" loading="lazy" style={{ height: 350, marginTop: 50 }} />
                         )
                     }
                 </Stack>
