@@ -44,32 +44,36 @@ const Flashcards = () => {
             <Container>
                 <Stack spacing={2}>
                     {
-                        flashcards.map((flashcard) => {
-                            return (
-                                <Card key={flashcard.id}>
-                                    <CardActionArea component={Link} to={`/flashcards/${flashcard.id}`}>
-                                        <CardContent>
-                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{flashcard.title}</Typography>
-                                            <Typography variant="body2" color="text.secondary">{flashcard.modifiedDate.toDate().toDateString()}, {flashcard.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
-                                            <Stack direction="row" spacing={2} sx={{ mt: 1, mb: 1.5 }}>
-                                                {
-                                                    flashcard.tags.map((tag) => {
-                                                        return (
-                                                            <Chip key={tag} size="small" label={tag} />
-                                                        );
-                                                    })
-                                                }
-                                            </Stack>
-                                        </CardContent>
-                                    </CardActionArea>
-                                    <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
-                                        <IconButton component={Link} to={`/flashcards/${flashcard.id}`}><EditIcon /></IconButton>
-                                        <Divider orientation="vertical" flexItem />
-                                        <IconButton onClick={() => { setFlashcardForDel(flashcard.id); setModalDelOpen(true) }}><DeleteIcon /></IconButton>
-                                    </CardActions>
-                                </Card>
-                            );
-                        })
+                        flashcards.length > 0 ? (
+                            flashcards.map((flashcard) => {
+                                return (
+                                    <Card key={flashcard.id}>
+                                        <CardActionArea component={Link} to={`/flashcards/${flashcard.id}`}>
+                                            <CardContent>
+                                                <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{flashcard.title}</Typography>
+                                                <Typography variant="body2" color="text.secondary">{flashcard.modifiedDate.toDate().toDateString()}, {flashcard.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                                                <Stack direction="row" spacing={2} sx={{ mt: 1, mb: 1.5 }}>
+                                                    {
+                                                        flashcard.tags.map((tag) => {
+                                                            return (
+                                                                <Chip key={tag} size="small" label={tag} />
+                                                            );
+                                                        })
+                                                    }
+                                                </Stack>
+                                            </CardContent>
+                                        </CardActionArea>
+                                        <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
+                                            <IconButton component={Link} to={`/flashcards/${flashcard.id}`}><EditIcon /></IconButton>
+                                            <Divider orientation="vertical" flexItem />
+                                            <IconButton onClick={() => { setFlashcardForDel(flashcard.id); setModalDelOpen(true) }}><DeleteIcon /></IconButton>
+                                        </CardActions>
+                                    </Card>
+                                );
+                            })
+                        ) : (
+                            <img src="../IconNoNotes.svg" alt="No Notes" loading="lazy" style={{ height: 350, marginTop: 50 }} />
+                        )
                     }
                 </Stack>
             </Container>
