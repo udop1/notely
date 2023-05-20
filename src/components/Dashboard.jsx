@@ -62,7 +62,7 @@ const Dashboard = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <Card>
-                                <CardActionArea component={Link} to="/pomodoros">
+                                <CardActionArea component={Link} to="/pomodoro">
                                     <CardContent>
                                         <img src="./IconPomodoro.svg" alt="Pomodoro Timer Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
                                         <Typography variant="body1" sx={{ fontWeight: "700" }}>Pomodoro Timer</Typography>

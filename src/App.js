@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Dashboard, Flashcard, Flashcards, ForgotPassword, Homepage, Note, Notes, Pomodoro, Pomodoros, ProtectedRoute, Settings, Signin, Signup, Todos, Whiteboard, Whiteboards } from "./components/Components";
+import { Dashboard, Flashcard, Flashcards, ForgotPassword, Homepage, Note, Notes, Pomodoro, ProtectedRoute, Settings, Signin, Signup, Todos, Whiteboard, Whiteboards } from "./components/Components";
 import { AuthContextProvider } from "./context/AuthContext";
 
 function App() {
@@ -22,8 +22,7 @@ function App() {
 					<Route path="/whiteboards/:boardId" element={<ProtectedRoute><Whiteboard /></ProtectedRoute>} />
 					<Route path="/flashcards" element={ <ProtectedRoute><Flashcards /></ProtectedRoute> } />
 					<Route path="/flashcards/:cardId" element={<ProtectedRoute><Flashcard /></ProtectedRoute>} />
-					<Route path="/pomodoros" element={ <ProtectedRoute><Pomodoros /></ProtectedRoute> } />
-					<Route path="/pomodoros/:timerId" element={ <ProtectedRoute><Pomodoro /></ProtectedRoute> } />
+					<Route path="/pomodoro" element={ <ProtectedRoute><Pomodoro /></ProtectedRoute> } />
 				</Routes>
 			</AuthContextProvider>
 		</div>

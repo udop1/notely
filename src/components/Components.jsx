@@ -7,7 +7,6 @@ export { default as Whiteboards } from "./Whiteboards";
 export { default as Whiteboard } from "./Whiteboard";
 export { default as Flashcards } from "./Flashcards";
 export { default as Flashcard } from "./Flashcard";
-export { default as Pomodoros } from "./Pomodoros";
 export { default as Pomodoro } from "./Pomodoro";
 export { default as Signin } from "./Signin";
 export { default as ForgotPassword } from "./ForgotPassword";
