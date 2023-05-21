@@ -29,6 +29,20 @@ a {
 	color: var(--green-400);
 }
 
+@media (max-width: 600px) {
+	.desktop-side-view {
+		display: none;
+	}
+
+	body .desktop-form-view {
+		display: block;
+		flex-direction: unset;
+		justify-content: unset;
+		align-items: unset;
+		height: auto;
+	}
+}
+
 @font-face {
 	font-family: "DKSmilingCat";
 	src: url("../public/fonts/DK-Smiling-Cat.otf");

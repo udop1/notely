@@ -7,9 +7,9 @@ import NavBar from "./NavBar";
 
 const Pomodoro = () => {
     const timer = {
-        pomodoro: 0.05,
-        shortBreak: 0.1,
-        longBreak: 0.5,
+        pomodoro: 25,
+        shortBreak: 5,
+        longBreak: 15,
         longBreakInterval: 4,
         sessions: 0,
         remainingTime: {
