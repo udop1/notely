@@ -1,9 +1,9 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material"
 import React from 'react'
 
-const Header = () => {
+const Header = ({ backgroundColor, marginTop }) => {
     return (
-        <AppBar position="static" sx={{ mb: 3 }}>
+        <AppBar position="static" className="desktop-pre-app-bar" sx={{ mt: { marginTop }, mb: 3, backgroundColor: { backgroundColor } }}>
             <Toolbar>
                 <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <img src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px" }} />

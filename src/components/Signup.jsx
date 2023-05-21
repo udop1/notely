@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab';
-import { Alert, AlertTitle, Container, TextField, Typography, Stack, Box, FormControl, InputLabel, Input, InputAdornment, IconButton } from '@mui/material';
+import { Alert, AlertTitle, Container, TextField, Typography, Stack, Box, FormControl, InputLabel, Input, InputAdornment, IconButton, Grid } from '@mui/material';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -48,76 +48,57 @@ const Signup = () => {
     };
 
     return (
-        <Box /*display="flex" justifyContent="center" alignItems="center" minHeight="100vh"*/>
-            <Header />
-            <Container>
-                <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Create an account</Typography>
-                <Typography variant="body1" sx={{ mb: 2 }}>First step to creating greatness.</Typography>
+        <Grid container columns={12} className="desktop-pre-side-view-grid" sx={{ height: "100vh" }}>
+            <Grid item xs={6} sm={0} className="desktop-pre-side-view" sx={{ height: "inherit" }}>
+                <img src="./DesktopSideOrange.svg" alt="Desktop Side Orange" style={{ display: "block", objectFit: "cover", width: "100%", height: "100%" }}></img>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <Header backgroundColor={"transparent"} marginTop={16} />
+                <Container className="desktop-pre-form-view" sx={{ display: "flex", flexWrap: "wrap", alignContent: "stretch", justifyContent: "center", flexDirection: "column", height: "calc(100vh - 208px)" }}>
+                    <Box className="desktop-pre-form-box" margin="auto" width="75%">
+                        <Typography variant="h5" sx={{ fontWeight: "700", mb: 0.5 }}>Create an account</Typography>
+                        <Typography variant="body1" sx={{ mb: 2 }}>First step to creating greatness.</Typography>
 
-                <Stack spacing={2}>
-                    {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
+                        <Stack spacing={2}>
+                            {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
 
-                    <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-                        <Stack spacing={4} sx={{ mb: 2 }}>
-                            <TextField required variant="standard" label="Username" onChange={(e) => setUsername(e.target.value)} type="text"></TextField>
-                            <TextField required variant="standard" label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
-                            <FormControl required variant="standard" onChange={(e) => setPassword(e.target.value)} type="password">
-                                <InputLabel>Password</InputLabel>
-                                <Input type={showPassword ? "text" : "password"} endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                />
-                            </FormControl>
-                            <FormControl required variant="standard" onChange={(e) => setPasswordConfirm(e.target.value)} type="password">
-                                <InputLabel>Password Confirmation</InputLabel>
-                                <Input type={showPassword ? "text" : "password"} endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                />
-                            </FormControl>
+                            <Stack component="form" spacing={2} onSubmit={handleSubmit}>
+                                <Stack spacing={4} sx={{ mb: 2 }}>
+                                    <TextField required variant="standard" label="Username" onChange={(e) => setUsername(e.target.value)} type="text"></TextField>
+                                    <TextField required variant="standard" label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
+                                    <FormControl required variant="standard" onChange={(e) => setPassword(e.target.value)} type="password">
+                                        <InputLabel>Password</InputLabel>
+                                        <Input type={showPassword ? "text" : "password"} endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        />
+                                    </FormControl>
+                                    <FormControl required variant="standard" onChange={(e) => setPasswordConfirm(e.target.value)} type="password">
+                                        <InputLabel>Password Confirmation</InputLabel>
+                                        <Input type={showPassword ? "text" : "password"} endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        />
+                                    </FormControl>
+                                </Stack>
+                                <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { py: 1.25 } }}>Sign Up</LoadingButton>
+                            </Stack>
+                            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                                <Typography variant="body1">Already have an account? <Link to='/login'>Login</Link></Typography>
+                            </Box>
                         </Stack>
-                        {/* <Typography variant="body2">By clicking Sign Up, you are agreeing to the <Link to='/terms-of-use'>Terms of Use</Link> and you are acknowledging the <Link to='/privacy'>Privacy Policy</Link>.
-                        </Typography> */}
-                        <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { py: 1.5 } }}>Sign Up</LoadingButton>
-                    </Stack>
-                    {/* <Divider>Or Register with</Divider> */}
-                    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                        {/* <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                            <Card variant="outlined">
-                                <CardActionArea component={Link} to={"#"}>
-                                    <CardContent>
-                                        Facebook
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                            <Card variant="outlined">
-                                <CardActionArea component={Link} to={"#"}>
-                                    <CardContent>
-                                        Google
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                            <Card variant="outlined">
-                                <CardActionArea component={Link} to={"#"}>
-                                    <CardContent>
-                                        Apple
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Stack> */}
-                        <Typography variant="body1">Already have an account? <Link to='/login'>Login</Link></Typography>
                     </Box>
-                </Stack>
-            </Container>
-        </Box>
+                </Container>
+            </Grid>
+        </Grid>
     );
 };
 

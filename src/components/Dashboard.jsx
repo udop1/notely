@@ -10,9 +10,9 @@ const Dashboard = () => {
     return (
         <Box>
             <NavBar />
-            <Container>
-                <Typography variant="h6">Hey, {user && user.displayName}</Typography>
-                <Typography variant="h6" sx={{ fontWeight: "700" }}>Let's get productive!</Typography>
+            <Container id="desktop-dashboard-container" sx={{ "&&": { px: 10 } }}>
+                <Typography variant="h6" sx={{ fontWeight: "700" }}>Hey, {user && user.displayName}</Typography>
+                <Typography variant="h6">Let's get productive!</Typography>
 
                 <Box sx={{ mt: 2 }}>
                     <Grid container spacing={2} columns={12}>

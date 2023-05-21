@@ -13,7 +13,6 @@
 
 * {
 	font-family: "Montserrat", sans-serif;
-	/* color: var(--black); */
 }
 
 body {
@@ -27,19 +26,35 @@ code {
 
 a {
 	color: var(--green-400);
+	font-weight: 700;
 }
 
 @media (max-width: 600px) {
-	.desktop-side-view {
+	.desktop-pre-side-view {
 		display: none;
 	}
 
-	body .desktop-form-view {
+	body .desktop-pre-form-view {
 		display: block;
 		flex-direction: unset;
 		justify-content: unset;
 		align-items: unset;
 		height: auto;
+	}
+
+	body .desktop-pre-form-box {
+		margin: unset;
+		width: unset;
+	}
+
+	body .desktop-pre-app-bar {
+		background-color: var(--green-200);
+		margin-top: unset;
+	}
+
+	#desktop-dashboard-container {
+		padding-left: 16px;
+		padding-right: 16px;
 	}
 }
 
