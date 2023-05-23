@@ -9,6 +9,13 @@
 	--orange-200: #FFD697;
 	--orange-300: #F2973E;
 	--orange-400: #A45314;
+
+	--pomodoro-back: var(--orange-200);
+	--pomodoro-front: var(--orange-400);
+	--shortBreak-back: var(--green-200);
+	--shortBreak-front: var(--green-400);
+	--longBreak-back: #CBD3F1;
+	--longBreak-front: #344FAE;
 }
 
 * {
