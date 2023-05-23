@@ -56,6 +56,30 @@ a {
 		padding-left: 16px;
 		padding-right: 16px;
 	}
+
+	body .desktop-navbar-appbar {
+		position: static;
+		margin-bottom: 24px;
+	}
+
+	body .desktop-navbar-container {
+		display: block;
+	}
+
+	body .desktop-hide-logo {
+		visibility: visible !important;
+	}
+
+	body .desktop-undernav-content {
+		flex-grow: unset;
+		margin-top: unset;
+		margin-left: 0;
+		padding: 0;
+	}
+
+	body .desktop-undernav-toolbar {
+		display: none;
+	}
 }
 
 @font-face {

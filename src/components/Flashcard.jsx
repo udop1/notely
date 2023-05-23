@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography, styled } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -38,7 +38,7 @@ const Flashcard = () => {
     const [editCardIndex, setEditCardIndex] = useState(0);
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
-
+    const [toggleDrawer, setToggleDrawer] = useState(true);
 
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "flashcards", cardId));
@@ -154,70 +154,92 @@ const Flashcard = () => {
         setModalDelOpen(false);
     };
 
+    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+        ({ theme, open }) => ({
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            marginLeft: '-250px',
+            ...(open && {
+                transition: theme.transitions.create('margin', {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+                marginLeft: 0,
+            }),
+        }),
+    );
+
     if (!flashcardData) return <div>Loading...</div>;
 
     return (
-        <Box>
-            <NavBar />
+        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+            <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
-            <Box component="form" onSubmit={handleSubmit}>
-                <Container>
-                    <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} />
-                    <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
-                        <Grid item xs={4}>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+                <Toolbar className="desktop-undernav-toolbar" />
+                <Box component="form" onSubmit={handleSubmit}>
+                    <Container>
+                        <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} />
+                        <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
+                            <Grid item xs={4}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Typography variant="body2" color="text.secondary">{flashcardData.modifiedDate.toDate().toDateString()}, {flashcardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
+                                    {
+                                        tagFields.map((tag) => {
+                                            return (
+                                                <Chip key={tag} size="small" label={tag} />
+                                            );
+                                        })
+                                    }
+                                </Stack>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={8}>
-                            <Typography variant="body2" color="text.secondary">{flashcardData.modifiedDate.toDate().toDateString()}, {flashcardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
-                                {
-                                    tagFields.map((tag) => {
-                                        return (
-                                            <Chip key={tag} size="small" label={tag} />
-                                        );
-                                    })
-                                }
-                            </Stack>
-                        </Grid>
-                    </Grid>
-                </Container>
+                    </Container>
 
-                <Container>
-                    <Card ref={elemRef} sx={{ mb: 5, textAlign: "center" }}>
-                        <CardActionArea onClick={() => setFlip(!flip)} sx={{ py: 10 }}>
-                            <CardContent>
-                                <Typography variant="h5" sx={{ fontWeight: "700" }}>{flip ? mainDef : mainTerm}</Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
+                    <Container>
+                        <Card ref={elemRef} sx={{ mb: 5, textAlign: "center" }}>
+                            <CardActionArea onClick={() => setFlip(!flip)} sx={{ py: 10 }}>
+                                <CardContent>
+                                    <Typography variant="h5" sx={{ fontWeight: "700" }}>{flip ? mainDef : mainTerm}</Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
 
-                    <Typography variant="body1" sx={{ fontWeight: "700", color: "black", mb: 2 }}>Other terms</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: "700", color: "black", mb: 2 }}>Other terms</Typography>
 
-                    <Stack spacing={2}>
-                        {cards.map((flashcard, index) => {
-                            return (
-                                <Card key={index}>
-                                    <CardActionArea onClick={() => setMainCard(index)}>
-                                        <CardContent>
-                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{flashcard.term}</Typography>
-                                            <Typography variant="body2" sx={{ mb: 0.5 }}>{flashcard.definition}</Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                    <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
-                                        <IconButton onClick={() => { setEditCardIndex(index); setEditTerm(cards[index].term); setEditDef(cards[index].definition); setModalEditOpen(true) }}><EditIcon /></IconButton>
-                                        <Divider orientation="vertical" flexItem />
-                                        <IconButton onClick={() => { setFlashcardForDel(index); setModalDelOpen(true) }}><DeleteIcon /></IconButton>
-                                    </CardActions>
-                                </Card>
-                            );
-                        })}
-                    </Stack>
-                </Container>
+                        <Stack spacing={2}>
+                            {cards.map((flashcard, index) => {
+                                return (
+                                    <Card key={index}>
+                                        <CardActionArea onClick={() => setMainCard(index)}>
+                                            <CardContent>
+                                                <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{flashcard.term}</Typography>
+                                                <Typography variant="body2" sx={{ mb: 0.5 }}>{flashcard.definition}</Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                        <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>
+                                            <IconButton onClick={() => { setEditCardIndex(index); setEditTerm(cards[index].term); setEditDef(cards[index].definition); setModalEditOpen(true) }}><EditIcon /></IconButton>
+                                            <Divider orientation="vertical" flexItem />
+                                            <IconButton onClick={() => { setFlashcardForDel(index); setModalDelOpen(true) }}><DeleteIcon /></IconButton>
+                                        </CardActions>
+                                    </Card>
+                                );
+                            })}
+                        </Stack>
+                    </Container>
+                </Box>
             </Box>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>

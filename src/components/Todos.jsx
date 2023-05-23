@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Stack } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Stack, styled, Toolbar } from "@mui/material";
 import NavBar from "./NavBar";
 // import ListRoundedIcon from '@mui/icons-material/ListRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
@@ -14,11 +14,32 @@ import MonthRow from "./MonthRow";
 // import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 const Todos = () => {
+    const [toggleDrawer, setToggleDrawer] = useState(true);
     const [date, setDate] = useState(dayjs());
     const [showSubField, setShowSubField] = useState(false);
     const [showTagField, setTagField] = useState(false);
     const [open, setOpen] = useState(false);
     const { todos, createToDo, updateToDoSubTask, setToDoTags } = UserAuth();
+
+    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+        ({ theme, open }) => ({
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            marginLeft: '-250px',
+            ...(open && {
+                transition: theme.transitions.create('margin', {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+                marginLeft: 0,
+            }),
+        }),
+    );
+
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const today = new Date().toLocaleDateString('en-UK', options);
     const split = today.split(" ");
@@ -279,142 +300,144 @@ const Todos = () => {
     }, [todos]);
 
     return (
-        <Box>
-            <NavBar />
+        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+            <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
+            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+                <Toolbar className="desktop-undernav-toolbar" />
 
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle sx={{ pb: 0 }}>Add a New To-do Item</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        label="Task Title"
-                        variant="standard"
-                        fullWidth
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        margin="normal"
-                        error={!!titleError}
-                        helperText={titleError}
-                    />
-                    <TextField
-                        label="Task Description (Optional)"
-                        variant="standard"
-                        fullWidth
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        margin="normal"
-                    />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
-                            label="Basic date time picker"
-                            value={date}
-                            onChange={e => handleDateChange(e.$d)}
-                            sx={{ my: 4 }}
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle sx={{ pb: 0 }}>Add a New To-do Item</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            label="Task Title"
+                            variant="standard"
+                            fullWidth
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            margin="normal"
+                            error={!!titleError}
+                            helperText={titleError}
                         />
-                    </LocalizationProvider>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => setShowSubField(!showSubField)}
-                    >
-                        {showSubField ? 'Hide' : 'Show'} Sub Tasks
-                    </Button>
-                    {showSubField &&
-                        subTasks.map((subTask) => (
-                            <TextField
-                                key={subTask.id}
-                                label="Add a Subtask"
-                                variant="standard"
-                                fullWidth
-                                value={subTask.title}
-                                margin="normal"
-                                onChange={(e) => handleSubTaskChange(subTask.id, e)}
-                                style={{ display: showSubField ? 'block' : 'none' }}
+                        <TextField
+                            label="Task Description (Optional)"
+                            variant="standard"
+                            fullWidth
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            margin="normal"
+                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker
+                                label="Basic date time picker"
+                                value={date}
+                                onChange={e => handleDateChange(e.$d)}
+                                sx={{ my: 4 }}
                             />
-                        ))}
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        style={{ display: showSubField ? 'block' : 'none' }}
-                        onClick={handleAddSubTask}
-                    >
-                        Add Another Sub Task
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        style={{ display: showSubField ? 'block' : 'none' }}
-                        onClick={handleRemoveSubTask}
-                    >
-                        Remove Last Sub Task
-                    </Button>
-                    <Button
-                        onClick={() => setTagField(!showTagField)}
-                    >Tags</Button>
-                    {showTagField &&
-                        <Container>
-                            {tagSavedList.length > 0 ? (
-                                <div>
-                                    <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Saved Tags</Typography>
-                                    {tagSavedList.map((tag, index) => {
-                                        return (
-                                            <Button
-                                                key={index}
-                                                onClick={() => selectTag(tag)}
-                                            >
-                                                {tag}
-                                            </Button>
-                                        )
-                                    })}
-                                </div>
-                            ) : <Typography key={tagSavedList.length}>No Saved Tags</Typography>}
-                            <Typography>Add New Tags</Typography>
-                            <TextField
-                                key={tagSavedList.length + 1}
-                                label="Add a Tag"
-                                variant="standard"
-                                fullWidth
-                                margin="normal"
-                                value={newTag}
-                                onChange={handleNewTagChange}
-                            />
-                            <Button onClick={addNewTag}>Add new tag</Button>
-                        </Container>
-                    }
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleAddTodo}>OK</Button>
-                </DialogActions>
-            </Dialog>
+                        </LocalizationProvider>
 
-            <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction icon={<NoteAddOutlinedIcon />} tooltipTitle="New ToDo" sx={{ color: "black" }} onClick={handleOpen} />
-            </SpeedDial>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => setShowSubField(!showSubField)}
+                        >
+                            {showSubField ? 'Hide' : 'Show'} Sub Tasks
+                        </Button>
+                        {showSubField &&
+                            subTasks.map((subTask) => (
+                                <TextField
+                                    key={subTask.id}
+                                    label="Add a Subtask"
+                                    variant="standard"
+                                    fullWidth
+                                    value={subTask.title}
+                                    margin="normal"
+                                    onChange={(e) => handleSubTaskChange(subTask.id, e)}
+                                    style={{ display: showSubField ? 'block' : 'none' }}
+                                />
+                            ))}
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            style={{ display: showSubField ? 'block' : 'none' }}
+                            onClick={handleAddSubTask}
+                        >
+                            Add Another Sub Task
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            style={{ display: showSubField ? 'block' : 'none' }}
+                            onClick={handleRemoveSubTask}
+                        >
+                            Remove Last Sub Task
+                        </Button>
+                        <Button
+                            onClick={() => setTagField(!showTagField)}
+                        >Tags</Button>
+                        {showTagField &&
+                            <Container>
+                                {tagSavedList.length > 0 ? (
+                                    <div>
+                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>Saved Tags</Typography>
+                                        {tagSavedList.map((tag, index) => {
+                                            return (
+                                                <Button
+                                                    key={index}
+                                                    onClick={() => selectTag(tag)}
+                                                >
+                                                    {tag}
+                                                </Button>
+                                            )
+                                        })}
+                                    </div>
+                                ) : <Typography key={tagSavedList.length}>No Saved Tags</Typography>}
+                                <Typography>Add New Tags</Typography>
+                                <TextField
+                                    key={tagSavedList.length + 1}
+                                    label="Add a Tag"
+                                    variant="standard"
+                                    fullWidth
+                                    margin="normal"
+                                    value={newTag}
+                                    onChange={handleNewTagChange}
+                                />
+                                <Button onClick={addNewTag}>Add new tag</Button>
+                            </Container>
+                        }
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleAddTodo}>OK</Button>
+                    </DialogActions>
+                </Dialog>
 
-            <Container sx={{ backgroundColor: showWeek || showMonth ? "#FFFFFF" : "transparent", mt: -3, mb: 2, py: 2 }}>
-                <Stack direction="row" spacing={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Button variant="outlined" onClick={handleToday} sx={{ borderRadius: 2, px: "0" }}>Today</Button>
-                    <Button variant="outlined" onClick={handleWeek} sx={{ borderRadius: 2, px: "0" }}>Week</Button>
-                    <Button variant="outlined" onClick={handleMonth} sx={{ borderRadius: 2, px: "0" }}>Month</Button>
-                </Stack>
-                {showWeek && (<WeekRow handleWeek={handleWeekClick} mappedTasks={todos} />)}
-                {showMonth && (<MonthRow handleWeek={handleWeekClick} mappedTasks={todos} />)}
+                <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
+                    <SpeedDialAction icon={<NoteAddOutlinedIcon />} tooltipTitle="New ToDo" sx={{ color: "black" }} onClick={handleOpen} />
+                </SpeedDial>
 
-            </Container>
+                <Container sx={{ backgroundColor: showWeek || showMonth ? "#FFFFFF" : "transparent", mt: -3, mb: 2, py: 2 }}>
+                    <Stack direction="row" spacing={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Button variant="outlined" onClick={handleToday} sx={{ borderRadius: 2, px: "0" }}>Today</Button>
+                        <Button variant="outlined" onClick={handleWeek} sx={{ borderRadius: 2, px: "0" }}>Week</Button>
+                        <Button variant="outlined" onClick={handleMonth} sx={{ borderRadius: 2, px: "0" }}>Month</Button>
+                    </Stack>
+                    {showWeek && (<WeekRow handleWeek={handleWeekClick} mappedTasks={todos} />)}
+                    {showMonth && (<MonthRow handleWeek={handleWeekClick} mappedTasks={todos} />)}
 
-            <Container sx={{ mb: 2 }}>
-                <Grid container columns={12} justifyItems="center">
-                    <Grid item xs={6}>
-                        <Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>{stringify}</Typography>
+                </Container>
+
+                <Container sx={{ mb: 2 }}>
+                    <Grid container columns={12} justifyItems="center">
+                        <Grid item xs={6}>
+                            <Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>{stringify}</Typography>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Container>
+                </Container>
 
-            <Container>
+                <Container>
 
-                {/* First Offer the user the option of 3 Buttons. Todays Tasks, Upcomming and Tags */}
-                {/* {menuView &&
+                    {/* First Offer the user the option of 3 Buttons. Todays Tasks, Upcomming and Tags */}
+                    {/* {menuView &&
                     <Container>
                         <Button onClick={handleToday}>Todays Tasks</Button>
                         <Button onClick={handleUpcomming}>Upcoming Tasks</Button>
@@ -423,7 +446,7 @@ const Todos = () => {
                 } */}
 
 
-                {/* {tagView &&
+                    {/* {tagView &&
                     <Container>
                         {tagSavedList.length > 0 ? (
                             <div>
@@ -459,71 +482,117 @@ const Todos = () => {
                 } */}
 
 
-                {
-                    todos.length > 0 ? (
-                        todos.map((card, index) => {
-                            // if (menuView) { return null };
-                            if (card.id === "tags") { return null };
-                            if (selectedDate === "Upcomming") {
-                                //Shows the next 5 tasks
-                                noOfCards += 1;
-                                //Cluster Them TO DATE
-                                if (previousDate !== dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
-                                    previousDate = dayjs(card.taskDate.toDate()).format('YYYY-MM-DD');
-                                    return (
-                                        <Card key={card.id}>
-                                            <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleUpcommingDate(card.taskDate)}</Typography>
+                    {
+                        todos.length > 0 ? (
+                            todos.map((card, index) => {
+                                // if (menuView) { return null };
+                                if (card.id === "tags") { return null };
+                                if (selectedDate === "Upcomming") {
+                                    //Shows the next 5 tasks
+                                    noOfCards += 1;
+                                    //Cluster Them TO DATE
+                                    if (previousDate !== dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
+                                        previousDate = dayjs(card.taskDate.toDate()).format('YYYY-MM-DD');
+                                        return (
+                                            <Card key={card.id}>
+                                                <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>{handleUpcommingDate(card.taskDate)}</Typography>
 
-                                            <CardActionArea>
-                                                <CardContent>
-                                                    <Grid container spacing={2}>
-                                                        <Grid item xs={2}>
-                                                            <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)} />
+                                                <CardActionArea>
+                                                    <CardContent>
+                                                        <Grid container spacing={2}>
+                                                            <Grid item xs={2}>
+                                                                <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)} />
+                                                            </Grid>
+                                                            <Grid item xs={10}>
+                                                                <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
+                                                                {
+                                                                    dayjs() > dayjs(card.taskDate.toDate()) ?
+                                                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
+                                                                }
+                                                                <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
+                                                                <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{card.content}</Typography>
+                                                                {card.tasks ? (
+                                                                    card.tasks.map((task, index) => {
+                                                                        return (
+                                                                            <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                                                                                {task.completed ? (
+                                                                                    <Checkbox
+                                                                                        checked
+                                                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                                                    />
+                                                                                ) : (
+                                                                                    <Checkbox
+                                                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                                                    />
+                                                                                )}
+                                                                                <div style={{ marginLeft: 8 }}>{task.task}</div>
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                                ) : (null)
+                                                                }
+                                                                {card.tags ? (
+                                                                    card.tags.map((task) => {
+                                                                        return (
+                                                                            <Typography>{task}</Typography>
+                                                                        )
+                                                                    })
+                                                                ) : (null)
+                                                                }
+                                                            </Grid>
                                                         </Grid>
-                                                        <Grid item xs={10}>
-                                                            <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
-                                                            {
-                                                                dayjs() > dayjs(card.taskDate.toDate()) ?
-                                                                    <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
-                                                            }
-                                                            <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
-                                                            <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{card.content}</Typography>
-                                                            {card.tasks ? (
-                                                                card.tasks.map((task, index) => {
-                                                                    return (
-                                                                        <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                                                                            {task.completed ? (
-                                                                                <Checkbox
-                                                                                    checked
-                                                                                    onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
-                                                                                />
-                                                                            ) : (
-                                                                                <Checkbox
-                                                                                    onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
-                                                                                />
-                                                                            )}
-                                                                            <div style={{ marginLeft: 8 }}>{task.task}</div>
-                                                                        </div>
-                                                                    )
-                                                                })
-                                                            ) : (null)
-                                                            }
-                                                            {card.tags ? (
-                                                                card.tags.map((task) => {
-                                                                    return (
-                                                                        <Typography>{task}</Typography>
-                                                                    )
-                                                                })
-                                                            ) : (null)
-                                                            }
+                                                    </CardContent>
+                                                </CardActionArea>
+                                            </Card>
+                                        )
+                                    } else {
+                                        previousDate = dayjs(card.taskDate.toDate()).format('YYYY-MM-DD');
+                                        return (
+                                            <Card key={card.id}>
+                                                <CardActionArea>
+                                                    <CardContent>
+                                                        <Grid container spacing={2}>
+                                                            <Grid item xs={2}>
+                                                                <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)} />
+                                                            </Grid>
+                                                            <Grid item xs={10}>
+                                                                <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
+                                                                {
+                                                                    dayjs() > dayjs(card.taskDate.toDate()) ?
+                                                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
+                                                                }
+                                                                <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
+                                                                <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{card.content}</Typography>
+                                                                {card.tasks ? (
+                                                                    card.tasks.map((task, index) => {
+                                                                        return (
+                                                                            <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                                                                                {task.completed ? (
+                                                                                    <Checkbox
+                                                                                        checked
+                                                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                                                    />
+                                                                                ) : (
+                                                                                    <Checkbox
+                                                                                        onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
+                                                                                    />
+                                                                                )}
+                                                                                <div style={{ marginLeft: 8 }}>{task.task}</div>
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                                ) : (null)
+                                                                }
+                                                            </Grid>
                                                         </Grid>
-                                                    </Grid>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
-                                    )
-                                } else {
-                                    previousDate = dayjs(card.taskDate.toDate()).format('YYYY-MM-DD');
+                                                    </CardContent>
+                                                </CardActionArea>
+                                            </Card>
+                                        )
+                                    }
+                                    //Update this date as the last date
+                                } else if (selectedDate === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
+                                    noOfCards += 1;
                                     return (
                                         <Card key={card.id}>
                                             <CardActionArea>
@@ -538,8 +607,8 @@ const Todos = () => {
                                                                 dayjs() > dayjs(card.taskDate.toDate()) ?
                                                                     <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
                                                             }
-                                                            <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{handleData(card.taskDate)}</Typography>
-                                                            <Typography variant="body1" sx={{ color: "#AFAFA7", mb: 0.3 }}>{card.content}</Typography>
+                                                            <Typography variant="body2" sx={{ mb: 0.3, color: "#AFAFA7" }}>{handleData(card.taskDate)}</Typography>
+                                                            <Typography variant="body2" sx={{ mb: 0.3, color: "#AFAFA7" }}>{card.content}</Typography>
                                                             {card.tasks ? (
                                                                 card.tasks.map((task, index) => {
                                                                     return (
@@ -567,70 +636,25 @@ const Todos = () => {
                                         </Card>
                                     )
                                 }
-                                //Update this date as the last date
-                            } else if (selectedDate === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
-                                noOfCards += 1;
-                                return (
-                                    <Card key={card.id}>
-                                        <CardActionArea>
-                                            <CardContent>
-                                                <Grid container spacing={2}>
-                                                    <Grid item xs={2}>
-                                                        <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)} />
-                                                    </Grid>
-                                                    <Grid item xs={10}>
-                                                        <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>
-                                                        {
-                                                            dayjs() > dayjs(card.taskDate.toDate()) ?
-                                                                <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>OVERDUE</Typography> : null
-                                                        }
-                                                        <Typography variant="body2" sx={{ mb: 0.3, color: "#AFAFA7" }}>{handleData(card.taskDate)}</Typography>
-                                                        <Typography variant="body2" sx={{ mb: 0.3, color: "#AFAFA7" }}>{card.content}</Typography>
-                                                        {card.tasks ? (
-                                                            card.tasks.map((task, index) => {
-                                                                return (
-                                                                    <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                                                                        {task.completed ? (
-                                                                            <Checkbox
-                                                                                checked
-                                                                                onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
-                                                                            />
-                                                                        ) : (
-                                                                            <Checkbox
-                                                                                onChange={(e) => handleCheckboxChange(card.id, card.tasks, index, e)}
-                                                                            />
-                                                                        )}
-                                                                        <div style={{ marginLeft: 8 }}>{task.task}</div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        ) : (null)
-                                                        }
-                                                    </Grid>
-                                                </Grid>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                )
-                            }
 
-                            //Check if it is the last one
-                            if (index === todos.length - 1) {
-                                //Last one in the MAP
-                                if (noOfCards === 0) {
-                                    return (
-                                        <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>No Tasks Today</Typography>
-                                    );
-                                } else {
-                                    return noOfCards = 0;
-                                }
-                            } else return null
-                        })
-                    ) : (
-                        <img src="../IconNoTodos.svg" alt="No Todos" loading="lazy" style={{ height: 250, marginTop: 50 }} />
-                    )
-                }
-            </Container>
+                                //Check if it is the last one
+                                if (index === todos.length - 1) {
+                                    //Last one in the MAP
+                                    if (noOfCards === 0) {
+                                        return (
+                                            <Typography variant="body1" sx={{ fontWeight: "400", mb: 0.3 }}>No Tasks Today</Typography>
+                                        );
+                                    } else {
+                                        return noOfCards = 0;
+                                    }
+                                } else return null
+                            })
+                        ) : (
+                            <img src="../IconNoTodos.svg" alt="No Todos" loading="lazy" style={{ height: 250, marginTop: 50 }} />
+                        )
+                    }
+                </Container>
+            </Box>
         </Box>
     );
 };

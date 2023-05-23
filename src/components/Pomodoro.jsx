@@ -3,7 +3,7 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import React, { useEffect } from 'react';
-import NavBar from "./NavBar";
+import PomodoroNavBar from "./PomodoroNavBar";
 
 const Pomodoro = () => {
     const timer = {
@@ -167,7 +167,7 @@ const Pomodoro = () => {
 
     return (
         <Box>
-            <NavBar />
+            <PomodoroNavBar />
             <Container>
                 <Card>
                     <CardContent>

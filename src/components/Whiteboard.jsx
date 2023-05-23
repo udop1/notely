@@ -1,10 +1,10 @@
-import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography, styled } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from "./NavBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
@@ -27,8 +27,7 @@ const Whiteboard = () => {
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const refsHeight = [useRef(null), useRef(null), useRef(null)];
-    const refEditorHeight = useRef(null);
+    const [toggleDrawer, setToggleDrawer] = useState(true);
 
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "whiteboards", boardId));
@@ -106,14 +105,6 @@ const Whiteboard = () => {
     };
 
     useEffect(() => {
-        if (refEditorHeight.current) {
-            const compHeight = refsHeight[0].current.clientHeight + refsHeight[1].current.clientHeight + refsHeight[2].current.clientHeight;
-
-            refEditorHeight.current.style.height = `calc(100vh - ${compHeight}px - 200px)`;
-        }
-    }, [refsHeight]);
-
-    useEffect(() => {
         if (whiteboardData.content) {
             syncedStore.store.deserialize(whiteboardData.content);
         } else {
@@ -122,90 +113,112 @@ const Whiteboard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardData.content]);
 
+    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+        ({ theme, open }) => ({
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            marginLeft: '-250px',
+            ...(open && {
+                transition: theme.transitions.create('margin', {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+                marginLeft: 0,
+            }),
+        }),
+    );
+
     if (!whiteboardData) return <div>Loading...</div>;
 
     return (
-        <Box>
-            <Box ref={refsHeight[0]}>
-                <NavBar />
+        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+            <Box>
+                <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
             </Box>
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
-            <Box component="form" onSubmit={handleSubmit}>
-                <Container>
-                    <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} ref={refsHeight[1]} />
-                    <Grid container spacing={1} columns={12} ref={refsHeight[2]} sx={{ mt: 1.5, mb: 2.5 }}>
-                        <Grid item xs={4}>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+                <Toolbar className="desktop-undernav-toolbar" />
+                <Box component="form" onSubmit={handleSubmit}>
+                    <Container>
+                        <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} />
+                        <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
+                            <Grid item xs={4}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Typography variant="body2" color="text.secondary">{whiteboardData.modifiedDate.toDate().toDateString()}, {whiteboardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
+                                    {
+                                        tagFields.map((tag) => {
+                                            return (
+                                                <Chip key={tag} size="small" label={tag} />
+                                            );
+                                        })
+                                    }
+                                </Stack>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={8}>
-                            <Typography variant="body2" color="text.secondary">{whiteboardData.modifiedDate.toDate().toDateString()}, {whiteboardData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
-                                {
-                                    tagFields.map((tag) => {
-                                        return (
-                                            <Chip key={tag} size="small" label={tag} />
-                                        );
-                                    })
-                                }
-                            </Stack>
-                        </Grid>
-                    </Grid>
-                </Container>
+                    </Container>
 
-                <Box ref={refEditorHeight}>
-                    <TldrawEditor instanceId={`instance:${boardId}`} userId={`user:${user.uid}`} store={syncedStore}>
-                        <TldrawUiContextProvider>
-                            <ContextMenu>
-                                <Canvas />
-                            </ContextMenu>
-                            <TldrawUi />
-                        </TldrawUiContextProvider>
-                    </TldrawEditor>
+                    <Box sx={{ height: "calc(100vh - 270px)" }}>
+                        <TldrawEditor instanceId={`instance:${boardId}`} userId={`user:${user.uid}`} store={syncedStore}>
+                            <TldrawUiContextProvider>
+                                <ContextMenu>
+                                    <Canvas />
+                                </ContextMenu>
+                                <TldrawUi />
+                            </TldrawUiContextProvider>
+                        </TldrawEditor>
+                    </Box>
                 </Box>
+
+                <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
+                    <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Whiteboard" sx={{ color: "black" }} />
+                    <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
+                    <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Whiteboard" sx={{ color: "black" }} />
+                </SpeedDial>
+
+                <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
+                    <DialogContent>
+                        <DialogContentText>
+                            Delete this whiteboard?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="outlined" onClick={() => handleDelete(false)} autoFocus>Cancel</Button>
+                        <Button variant="contained" color="error" onClick={() => handleDelete(true)}>Delete</Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog component="form" open={modalTagOpen} onSubmit={(e) => { e.preventDefault(); setModalTagOpen(false); }} aria-labelledby="modal-tag-title" aria-describedby="modal-tag-description">
+                    <DialogTitle>Add Tags</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ mb: 2 }}>
+                            Add some tags to your whiteboard here.
+                        </DialogContentText>
+
+                        {tagFields.map((tagValue, index) => (
+                            <Stack key={index} direction="row" sx={{ mb: 1 }}>
+                                <TextField required variant="standard" size="small" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
+                                <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
+                            </Stack>
+                        ))}
+                        <IconButton onClick={handleAddTag}><AddCircleOutlineRoundedIcon /></IconButton>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button type="submit" variant="contained" autoFocus>Confirm</Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
-
-            <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
-                <SpeedDialAction onClick={() => setModalDelOpen(true)} icon={<DeleteOutlinedIcon />} tooltipTitle="Delete Whiteboard" sx={{ color: "black" }} />
-                <SpeedDialAction onClick={() => setModalTagOpen(true)} icon={<LocalOfferOutlinedIcon />} tooltipTitle="Modify Tags" sx={{ color: "black" }} />
-                <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Whiteboard" sx={{ color: "black" }} />
-            </SpeedDial>
-
-            <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
-                <DialogContent>
-                    <DialogContentText>
-                        Delete this whiteboard?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => handleDelete(false)} autoFocus>Cancel</Button>
-                    <Button variant="contained" color="error" onClick={() => handleDelete(true)}>Delete</Button>
-                </DialogActions>
-            </Dialog>
-
-            <Dialog component="form" open={modalTagOpen} onSubmit={(e) => { e.preventDefault(); setModalTagOpen(false); }} aria-labelledby="modal-tag-title" aria-describedby="modal-tag-description">
-                <DialogTitle>Add Tags</DialogTitle>
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        Add some tags to your whiteboard here.
-                    </DialogContentText>
-
-                    {tagFields.map((tagValue, index) => (
-                        <Stack key={index} direction="row" sx={{ mb: 1 }}>
-                            <TextField required variant="standard" size="small" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
-                            <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
-                        </Stack>
-                    ))}
-                    <IconButton onClick={handleAddTag}><AddCircleOutlineRoundedIcon /></IconButton>
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit" variant="contained" autoFocus>Confirm</Button>
-                </DialogActions>
-            </Dialog>
         </Box>
     );
 };

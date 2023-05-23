@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography, styled } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -24,7 +24,7 @@ const Note = () => {
     const [tagFields, setTagFields] = useState([]);
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
-
+    const [toggleDrawer, setToggleDrawer] = useState(true);
 
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "notes", noteId));
@@ -98,51 +98,73 @@ const Note = () => {
         });
     };
 
+    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+        ({ theme, open }) => ({
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            marginLeft: '-250px',
+            ...(open && {
+                transition: theme.transitions.create('margin', {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+                marginLeft: 0,
+            }),
+        }),
+    );
+
     if (!noteData) return <div>Loading...</div>;
 
     return (
-        <Box>
-            <NavBar />
+        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+            <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
-            <Box component="form" onSubmit={handleSubmit}>
-                <Container>
-                    <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} />
-                    <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
-                        <Grid item xs={4}>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+                <Toolbar className="desktop-undernav-toolbar" />
+                <Box component="form" onSubmit={handleSubmit}>
+                    <Container>
+                        <TextField multiline fullWidth variant="standard" size="small" label="Title" defaultValue={title} onChange={(e) => setTitle(e.target.value)} />
+                        <Grid container spacing={1} columns={12} sx={{ mt: 1.5, mb: 2.5 }}>
+                            <Grid item xs={4}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Last Modified</Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Typography variant="body2" color="text.secondary">{noteData.modifiedDate.toDate().toDateString()}, {noteData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
+                                    {
+                                        tagFields.map((tag) => {
+                                            return (
+                                                <Chip key={tag} size="small" label={tag} />
+                                            );
+                                        })
+                                    }
+                                </Stack>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={8}>
-                            <Typography variant="body2" color="text.secondary">{noteData.modifiedDate.toDate().toDateString()}, {noteData.modifiedDate.toDate().toLocaleTimeString('en-GB')}</Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>Tags</Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <Stack direction="row" spacing={1} sx={{ overflow: "auto" }}>
-                                {
-                                    tagFields.map((tag) => {
-                                        return (
-                                            <Chip key={tag} size="small" label={tag} />
-                                        );
-                                    })
-                                }
-                            </Stack>
-                        </Grid>
-                    </Grid>
-                </Container>
+                    </Container>
 
-                <Editor
-                    tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue={noteData.content}
-                    init={{
-                        height: 500,
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
-                    }}
-                />
+                    <Editor
+                        tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
+                        onInit={(evt, editor) => editorRef.current = editor}
+                        initialValue={noteData.content}
+                        init={{
+                            height: 500,
+                            plugins: [
+                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
+                            ],
+                            toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+                        }}
+                    />
+                </Box>
             </Box>
 
             <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "absolute", bottom: 16, right: 16 }}>
