@@ -104,11 +104,11 @@ const NavBar = () => {
                 </Toolbar>
             </AppBar>
 
-            <Drawer variant="temporary" sx={{ width: 250, display: { xs: "block", sm: "none" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflowX: "hidden" } }} anchor="left" open={!toggleDrawer} onClose={() => setToggleDrawer(!toggleDrawer)} ModalProps={{ keepMounted: true }}>
+            <Drawer variant="temporary" sx={{ width: 250, display: { xs: "block", md: "none" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflowX: "hidden" } }} anchor="left" open={!toggleDrawer} onClose={() => setToggleDrawer(!toggleDrawer)} ModalProps={{ keepMounted: true }}>
                 {drawer}
             </Drawer>
 
-            <Drawer variant="persistent" sx={{ width: 250, display: { xs: "none", sm: "block" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflowX: "hidden" } }} anchor="left" open={toggleDrawer} onClose={() => setToggleDrawer(!toggleDrawer)}>
+            <Drawer variant="persistent" sx={{ width: 250, display: { xs: "none", md: "block" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflowX: "hidden" } }} anchor="left" open={toggleDrawer} onClose={() => setToggleDrawer(!toggleDrawer)}>
                 {drawer}
             </Drawer>
         </Box>

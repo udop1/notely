@@ -4,7 +4,6 @@ import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 import React, { useEffect } from 'react';
-// import PomodoroNavBar from "./PomodoroNavBar";
 import NavBar from "./NavBar";
 
 const Pomodoro = () => {
@@ -182,7 +181,6 @@ const Pomodoro = () => {
 
     return (
         <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
-            {/* <PomodoroNavBar /> */}
             <NavBar />
             <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />
