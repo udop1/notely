@@ -97,7 +97,7 @@ const PomodoroNavBar = () => {
                     <img src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px" }} />
                     <Typography variant="h5" sx={{ fontFamily: "DKSmilingCat", letterSpacing: 2, color: "#5D6716" }}>notely</Typography>
                 </Box>
-                <IconButton size="large" edge="end" color="inherit" sx={{ ml: 2 }}>
+                <IconButton size="large" edge="end" color="inherit" sx={{ ml: 2, visibility: "hidden" }}>
                     <SearchRoundedIcon />
                 </IconButton>
             </Toolbar>

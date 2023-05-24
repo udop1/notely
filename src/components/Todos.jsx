@@ -1,6 +1,5 @@
-import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Stack, styled, Toolbar } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Stack, Toolbar } from "@mui/material";
 import NavBar from "./NavBar";
-// import ListRoundedIcon from '@mui/icons-material/ListRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
 import { UserAuth } from "../context/AuthContext";
 import React, { useState, useEffect } from 'react';
@@ -11,34 +10,13 @@ import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
 import WeekRow from "./WeekRow";
 import MonthRow from "./MonthRow";
-// import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 const Todos = () => {
-    const [toggleDrawer, setToggleDrawer] = useState(true);
     const [date, setDate] = useState(dayjs());
     const [showSubField, setShowSubField] = useState(false);
     const [showTagField, setTagField] = useState(false);
     const [open, setOpen] = useState(false);
     const { todos, createToDo, updateToDoSubTask, setToDoTags } = UserAuth();
-
-    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-        ({ theme, open }) => ({
-            flexGrow: 1,
-            padding: theme.spacing(3),
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            marginLeft: '-250px',
-            ...(open && {
-                transition: theme.transitions.create('margin', {
-                    easing: theme.transitions.easing.easeOut,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-                marginLeft: 0,
-            }),
-        }),
-    );
 
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const today = new Date().toLocaleDateString('en-UK', options);
@@ -301,8 +279,8 @@ const Todos = () => {
 
     return (
         <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
-            <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
-            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+            <NavBar />
+            <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />
 
                 <Dialog open={open} onClose={handleClose}>

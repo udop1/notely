@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography, styled } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -27,7 +27,6 @@ const Whiteboard = () => {
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const [toggleDrawer, setToggleDrawer] = useState(true);
 
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "whiteboards", boardId));
@@ -113,34 +112,15 @@ const Whiteboard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardData.content]);
 
-    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-        ({ theme, open }) => ({
-            flexGrow: 1,
-            padding: theme.spacing(3),
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            marginLeft: '-250px',
-            ...(open && {
-                transition: theme.transitions.create('margin', {
-                    easing: theme.transitions.easing.easeOut,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-                marginLeft: 0,
-            }),
-        }),
-    );
-
     if (!whiteboardData) return <div>Loading...</div>;
 
     return (
         <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
             <Box>
-                <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
+                <NavBar />
             </Box>
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
-            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+            <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />
                 <Box component="form" onSubmit={handleSubmit}>
                     <Container>

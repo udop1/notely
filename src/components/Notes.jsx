@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Toolbar, Typography, styled } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Toolbar, Typography } from "@mui/material";
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
@@ -16,7 +16,6 @@ const Notes = () => {
 
     const [modalDelOpen, setModalDelOpen] = useState(false);
     const [cardForDel, setCardForDel] = useState('');
-    const [toggleDrawer, setToggleDrawer] = useState(true);
 
     const handleNewNote = async () => {
         var docId = await createNote();
@@ -28,30 +27,11 @@ const Notes = () => {
         setModalDelOpen(false);
     };
 
-    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-        ({ theme, open }) => ({
-            flexGrow: 1,
-            padding: theme.spacing(3),
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            marginLeft: '-250px',
-            ...(open && {
-                transition: theme.transitions.create('margin', {
-                    easing: theme.transitions.easing.easeOut,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-                marginLeft: 0,
-            }),
-        }),
-    );
-
     return (
         <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
-            <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
+            <NavBar />
 
-            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+            <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />
                 <Container sx={{ mb: 2 }}>
                     <Grid container columns={12} sx={{ display: "flex", alignItems: "center" }}>
@@ -85,7 +65,7 @@ const Notes = () => {
                                                             })
                                                         }
                                                     </Stack>
-                                                    <Typography variant="body" dangerouslySetInnerHTML={{ __html: `${DOMPurify.sanitize(note.content, { USE_PROFILES: { html: true } }).substring(0, 50)}...` }}></Typography>
+                                                    <Typography variant="body1" dangerouslySetInnerHTML={{ __html: `${DOMPurify.sanitize(note.content, { USE_PROFILES: { html: true } }).substring(0, 50)}...` }}></Typography>
                                                 </CardContent>
                                             </CardActionArea>
                                             <CardActions disableSpacing sx={{ justifyContent: "space-evenly", pt: 0 }}>

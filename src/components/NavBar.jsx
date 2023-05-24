@@ -9,12 +9,14 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
-import React from 'react'
+import React, { useState } from 'react'
 import { UserAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
-const NavBar = ({ toggleDrawer, setToggleDrawer }) => {
+const NavBar = () => {
     const { user } = UserAuth();
+
+    const [toggleDrawer, setToggleDrawer] = useState(true);
 
     const drawer = (
         <Box sx={{ width: 250 }}>
@@ -22,7 +24,7 @@ const NavBar = ({ toggleDrawer, setToggleDrawer }) => {
                 <ListItem sx={{ backgroundColor: "#DBE192", py: 1 }}>
                     <img className="desktop-hide-logo" src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px", visibility: "hidden" }} />
                     <Typography className="desktop-hide-logo" variant="h5" sx={{ flexGrow: 1, fontFamily: "DKSmilingCat", letterSpacing: 2, color: "#5D6716", visibility: "hidden" }}>notely</Typography>
-                    <IconButton onClick={setToggleDrawer} size="large" edge="end" color="inherit" sx={{ ml: 2, transform: "rotate(180deg)" }}>
+                    <IconButton onClick={() => setToggleDrawer(!toggleDrawer)} size="large" edge="end" color="inherit" sx={{ ml: 2, transform: "rotate(180deg)" }}>
                         <ArrowForwardIosRoundedIcon />
                     </IconButton>
                 </ListItem>
@@ -89,24 +91,24 @@ const NavBar = ({ toggleDrawer, setToggleDrawer }) => {
         <Box sx={{ display: "inherit" }}>
             <AppBar className="desktop-navbar-appbar" position="fixed">
                 <Toolbar>
-                    <IconButton onClick={setToggleDrawer} size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
+                    <IconButton onClick={() => setToggleDrawer(!toggleDrawer)} size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
                         <MenuRoundedIcon />
                     </IconButton>
                     <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <img src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px" }} />
                         <Typography variant="h5" sx={{ fontFamily: "DKSmilingCat", letterSpacing: 2, color: "#5D6716" }}>notely</Typography>
                     </Box>
-                    <IconButton size="large" edge="end" color="inherit" sx={{ ml: 2 }}>
+                    <IconButton size="large" edge="end" color="inherit" sx={{ ml: 2, visibility: "hidden" }}>
                         <SearchRoundedIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
 
-            <Drawer variant="temporary" sx={{ width: 250, display: { xs: "block", sm: "none" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflow: "hidden" } }} anchor="left" open={!toggleDrawer} onClose={setToggleDrawer} ModalProps={{ keepMounted: true }}>
+            <Drawer variant="temporary" sx={{ width: 250, display: { xs: "block", sm: "none" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflowX: "hidden" } }} anchor="left" open={!toggleDrawer} onClose={() => setToggleDrawer(!toggleDrawer)} ModalProps={{ keepMounted: true }}>
                 {drawer}
             </Drawer>
 
-            <Drawer variant="persistent" sx={{ width: 250, display: { xs: "none", sm: "block" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflow: "hidden" } }} anchor="left" open={toggleDrawer} onClose={setToggleDrawer}>
+            <Drawer variant="persistent" sx={{ width: 250, display: { xs: "none", sm: "block" }, "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250, overflowX: "hidden" } }} anchor="left" open={toggleDrawer} onClose={() => setToggleDrawer(!toggleDrawer)}>
                 {drawer}
             </Drawer>
         </Box>

@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography, styled } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -38,7 +38,6 @@ const Flashcard = () => {
     const [editCardIndex, setEditCardIndex] = useState(0);
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
-    const [toggleDrawer, setToggleDrawer] = useState(true);
 
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "flashcards", cardId));
@@ -154,32 +153,13 @@ const Flashcard = () => {
         setModalDelOpen(false);
     };
 
-    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-        ({ theme, open }) => ({
-            flexGrow: 1,
-            padding: theme.spacing(3),
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            marginLeft: '-250px',
-            ...(open && {
-                transition: theme.transitions.create('margin', {
-                    easing: theme.transitions.easing.easeOut,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-                marginLeft: 0,
-            }),
-        }),
-    );
-
     if (!flashcardData) return <div>Loading...</div>;
 
     return (
         <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
-            <NavBar toggleDrawer={toggleDrawer} setToggleDrawer={() => setToggleDrawer(!toggleDrawer)} />
+            <NavBar />
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
-            <Box className="desktop-undernav-content" component={Main} open={toggleDrawer} sx={{ flexGrow: 1, mt: 2 }}>
+            <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />
                 <Box component="form" onSubmit={handleSubmit}>
                     <Container>
