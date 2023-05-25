@@ -87,6 +87,92 @@ a {
 	body .desktop-undernav-toolbar {
 		display: none;
 	}
+
+	body #homepage-upper-banner-container {
+		justify-content: flex-start;
+	}
+
+	body #homepage-upper-banner {
+		content: url("../public/MobileLandingBannerOrange.svg");
+	}
+
+	body #homepage-upper-text-container {
+		margin-top: 30px;
+	}
+
+	body .homepage-text-containers {
+		width: 95%;
+	}
+
+	body #homepage-function-container {
+		overflow-x: scroll;
+		max-width: 100%;
+		padding-bottom: 10px;
+	}
+
+	body .homepage-function-icons {
+		flex-basis: 50%;
+		flex-shrink: 0;
+	}
+
+	body .homepage-function-icons:not(:first-child), body .homepage-computing-icons:not(:first-child) {
+		margin-left: 16px;
+	}
+
+	body #homepage-function-scroll {
+		display: flex;
+	}
+
+	body .homepage-computing-icons img {
+		height: 75px !important;
+	}
+
+	body .homepage-computing-icons .MuiTypography-root {
+		margin-top: 16px;
+	}
+
+	body #homepage-credits-container {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	body .homepage-credits-cards:first-child {
+		margin-bottom: 12px;
+	}
+
+	body .homepage-credits-cards, body .homepage-credits-cards:not(:first-child) {
+		margin-left: 0;
+		margin-right: 0;
+		padding: 0;
+	}
+
+	body .homepage-credits-cards .MuiAvatar-root {
+		margin-left: 0;
+		height: 100px;
+		width: 100px;
+	}
+
+	body .homepage-credits-text-stack, body .homepage-credits-text-stack:not(:first-child) {
+		margin: 0;
+		margin-right: 16px;
+	}
+
+	body #homepage-lower-banner-container {
+		justify-content: flex-start;
+	}
+
+	body #homepage-lower-banner {
+		content: url("../public/MobileLandingBannerGreen.svg");
+	}
+
+	body #homepage-lower-text-container {
+		margin-top: 36px;
+		display: block;
+	}
+	
+	body #homepage-lower-text-box {
+		margin-left: unset;
+	}
 }
 
 @font-face {
