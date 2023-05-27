@@ -1,19 +1,25 @@
+// MUI theme override - ADAM
+// Imports
 import { createTheme } from "@mui/material";
 import "./index.css";
 import "@fontsource/montserrat/400.css";
 import "@fontsource/montserrat/700.css";
 
+// Function to retrieve set colours created in CSS so they can be used here without remembering hex values
 function getColour(colour) {
 	return getComputedStyle(document.querySelector(":root")).getPropertyValue(colour);
 }
 
+// Create a new MUI theme that overrides the default
 const theme = createTheme({
+	// Set new font
 	typography: {
 		fontFamily: "Montserrat",
 		allVariants: {
 			color: getColour("--black"),
 		},
 	},
+	// Override default component styles
 	components: {
 		MuiAppBar: {
 			styleOverrides: {

@@ -1,3 +1,5 @@
+// Signup component - ADAM
+// Imports
 import { LoadingButton } from '@mui/lab';
 import { Alert, AlertTitle, Container, TextField, Typography, Stack, Box, FormControl, InputLabel, Input, InputAdornment, IconButton, Grid } from '@mui/material';
 import React, { useState } from 'react';
@@ -7,6 +9,7 @@ import Header from "./Header";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Signup = () => {
+    // Variables
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -19,6 +22,7 @@ const Signup = () => {
 
     const navigate = useNavigate();
 
+    // When the user is attempting to create a new account, make sure that the password and confirmation match then run the createUser function.
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');

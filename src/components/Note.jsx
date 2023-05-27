@@ -1,3 +1,5 @@
+// Note component - ADAM
+// Imports
 import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
@@ -13,6 +15,7 @@ import { UserAuth } from "../context/AuthContext";
 import { Editor } from "@tinymce/tinymce-react";
 
 const Note = () => {
+    // Variables
     const navigate = useNavigate();
     const { user, updateNote, deleteNote } = UserAuth();
     const { noteId } = useParams();
@@ -25,6 +28,7 @@ const Note = () => {
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
 
+    // Get user data
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "notes", noteId));
 
@@ -97,6 +101,7 @@ const Note = () => {
         });
     };
 
+    // Wait for user data before loading page
     if (!noteData) return <div>Loading...</div>;
 
     return (

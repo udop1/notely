@@ -1,3 +1,5 @@
+// Whiteboards component - ADAM
+// Imports
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Toolbar, Typography } from "@mui/material";
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';

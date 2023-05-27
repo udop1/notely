@@ -1,3 +1,5 @@
+// Dashboard component - ADAM
+// Imports
 import { Box, Card, CardActionArea, CardContent, Container, Grid, Toolbar, Typography, styled } from '@mui/material';
 import React, { useState } from 'react';
 import { UserAuth } from '../context/AuthContext';
@@ -9,6 +11,7 @@ const Dashboard = () => {
 
     const [toggleDrawer, setToggleDrawer] = useState(true);
 
+    //Override default style
     const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
             flexGrow: 1,

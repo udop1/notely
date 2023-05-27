@@ -1,3 +1,5 @@
+/* CSS - ADAM */
+/* Setup default colours */
 :root {
 	--black: #210B03;
 	--green-gray: #AFAFA7;
@@ -36,6 +38,7 @@ a {
 	font-weight: 700;
 }
 
+/* Mobile design */
 @media (max-width: 900px) {
 	.desktop-pre-side-view {
 		display: none;
@@ -175,6 +178,7 @@ a {
 	}
 }
 
+/* Title font */
 @font-face {
 	font-family: "DKSmilingCat";
 	src: url("../public/fonts/DK-Smiling-Cat.otf");

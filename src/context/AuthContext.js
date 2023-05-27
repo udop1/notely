@@ -1,3 +1,5 @@
+// AuthContext is where the app's primary functions are stored - ADAM
+// Imports
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "firebase/auth";
@@ -7,6 +9,7 @@ import { useLocation } from "react-router-dom";
 const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+	// Variables
 	const location = useLocation();
 	const [user, setUser] = useState({});
 	const [notes, setNotes] = useState([]);
@@ -14,6 +17,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [whiteboards, setWhiteboards] = useState([]);
 	const [flashcards, setFlashcards] = useState([]);
 
+	// Creates a new users and adds them to firebase auth. This includes creating user data on the firestore database
 	const createUser = async (email, password, username) => {
 		return await createUserWithEmailAndPassword(auth, email, password).then(async () => {
 			await updateUser(username);
@@ -79,24 +83,29 @@ export const AuthContextProvider = ({ children }) => {
 		});
 	};
 
+	// During user creation, set the username
 	const updateUser = (username) => {
 		return updateProfile(auth.currentUser, {
 			displayName: username,
 		});
 	};
 
+	// When the user wants to sign in, authenticate their credentials against firebase auth
 	const signIn = (email, password) => {
 		return signInWithEmailAndPassword(auth, email, password);
 	};
 
+	// When the user wants to reset their password, if an account was created with their email, send a reset email
 	const resetPassword = (email) => {
 		return sendPasswordResetEmail(auth, email);
 	};
 
+	// User logout
 	const logout = () => {
 		return signOut(auth);
 	};
 
+	// Check which user is currently logged in
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
 			setUser(currentUser);
@@ -107,6 +116,7 @@ export const AuthContextProvider = ({ children }) => {
 		};
 	}, []);
 
+	// When on specific functionality pages, check the database for specified user data
 	useEffect(() => {
 		if (location.pathname.includes("/notes")) {
 			onAuthStateChanged(auth, async (currentUser) => {
@@ -170,6 +180,7 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	}, [location]);
 
+	// When the user wants to create a note, create a blank template that gets added to the database
 	const createNote = async () => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "notes"), {
 			title: "",
@@ -183,6 +194,7 @@ export const AuthContextProvider = ({ children }) => {
 		return docRef.id;
 	};
 
+	// When the user wants to update a note, update the database with the specified data
 	const updateNote = async (noteId, title, content, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "notes", noteId), {
 			title: title,
@@ -193,10 +205,12 @@ export const AuthContextProvider = ({ children }) => {
 		});
 	};
 
+	// When the user wants to delete a note, remove that specific ID from the database
 	const deleteNote = async (noteId) => {
 		await deleteDoc(doc(db, "users", user.uid, "notes", noteId));
 	};
 
+	// When the user wants to create a whiteboard, create a blank template that gets added to the database
 	const createWhiteboard = async () => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "whiteboards"), {
 			title: "",
@@ -210,6 +224,7 @@ export const AuthContextProvider = ({ children }) => {
 		return docRef.id;
 	};
 
+	// When the user wants to update a whiteboard, update the database with the specified data
 	const updateWhiteboard = async (whiteboardId, title, content, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId), {
 			title: title,
@@ -220,10 +235,12 @@ export const AuthContextProvider = ({ children }) => {
 		});
 	};
 
+	// When the user wants to delete a whiteboard, remove that specific ID from the database
 	const deleteWhiteboard = async (whiteboardId) => {
 		await deleteDoc(doc(db, "users", user.uid, "whiteboards", whiteboardId));
 	};
 
+	// When the user wants to create a flashcard, create a blank template that gets added to the database
 	const createFlashcardGroup = async () => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "flashcards"), {
 			title: "",
@@ -237,6 +254,7 @@ export const AuthContextProvider = ({ children }) => {
 		return docRef.id;
 	};
 
+	// When the user wants to update a flashcard, update the database with the specified data
 	const updateFlashcardGroup = async (flashcardId, title, cards, tags, revisionNumber) => {
 		await updateDoc(doc(db, "users", user.uid, "flashcards", flashcardId), {
 			title: title,
@@ -247,20 +265,24 @@ export const AuthContextProvider = ({ children }) => {
 		});
 	};
 
+	// When the user wants to delete a flashcard, remove that specific ID from the database
 	const deleteFlashcardGroup = async (flashcardId) => {
 		await deleteDoc(doc(db, "users", user.uid, "flashcards", flashcardId));
 	};
 
+	// When the user wants to create a todo, create a blank template that gets added to the database - JACK (level 5)
 	const createToDo = async (newTodo) => {
 		const docRef = await addDoc(collection(db, "users", user.uid, "todos"), newTodo);
 		return docRef.id;
 	};
 
+	// When the user wants to update a todo list, update the database with the specified data - JACK (level 5)
 	const updateToDoSubTask = async (docId, taskIndex) => {
 		await updateDoc(doc(db, "users", user.uid, "todos", docId), taskIndex);
 		return docId;
 	};
 
+	// When the user wants to update their todo list tags, update the database with the specified data - JACK (level 5)
 	const setToDoTags = async (docId, arr) => {
 		const docRef = doc(db, "users", user.uid, "todos", docId);
 		const data = { saved: arr };
@@ -277,6 +299,7 @@ export const AuthContextProvider = ({ children }) => {
 		}
 	};
 
+	// Set all the functions to be exported so they can be access outside
 	return <UserContext.Provider value={{ createUser, user, logout, signIn, updateUser, resetPassword, notes, createNote, updateNote, deleteNote, todos, createToDo, updateToDoSubTask, setToDoTags, whiteboards, createWhiteboard, updateWhiteboard, deleteWhiteboard, flashcards, createFlashcardGroup, updateFlashcardGroup, deleteFlashcardGroup }}>{children}</UserContext.Provider>;
 };
 

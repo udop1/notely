@@ -1,3 +1,5 @@
+// Todos component - JACK (level 5)
+// Imports
 import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography, Checkbox, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Stack, Toolbar } from "@mui/material";
 import NavBar from "./NavBar";
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
@@ -12,6 +14,7 @@ import WeekRow from "./WeekRow";
 import MonthRow from "./MonthRow";
 
 const Todos = () => {
+    // Variables
     const [date, setDate] = useState(dayjs());
     const [showSubField, setShowSubField] = useState(false);
     const [showTagField, setTagField] = useState(false);

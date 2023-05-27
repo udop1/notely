@@ -1,3 +1,5 @@
+// Whiteboard component - ADAM
+// Imports
 import { Alert, AlertTitle, Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
@@ -15,6 +17,7 @@ import "@tldraw/tldraw/editor.css";
 import "@tldraw/tldraw/ui.css";
 
 const Whiteboard = () => {
+    // Variables
     const navigate = useNavigate();
     const { user, updateWhiteboard, deleteWhiteboard } = UserAuth();
     const { boardId } = useParams();
@@ -28,12 +31,14 @@ const Whiteboard = () => {
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
+    // Retrieve user data
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "whiteboards", boardId));
 
         return queryData;
     }
 
+    // Setup whiteboard store
     const syncedStore = useLocalSyncClient({
         instanceId: `instance:${boardId}`,
         userId: `user:${user.uid}`,
@@ -68,12 +73,14 @@ const Whiteboard = () => {
         }
     };
 
+    // 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
             setSaveRevision((saveRevision) => saveRevision + 1);
+            // When the user saves, serialise the data so that it can be put in the main database
             await updateWhiteboard(boardId, title, syncedStore.store.serialize(), tagFields, saveRevision);
         } catch (error) {
             setError(error.message);
@@ -103,6 +110,7 @@ const Whiteboard = () => {
         });
     };
 
+    // When the whiteboard content has been loaded from the database, deserialise it so that the whiteboard API can read it
     useEffect(() => {
         if (whiteboardData.content) {
             syncedStore.store.deserialize(whiteboardData.content);
@@ -112,6 +120,7 @@ const Whiteboard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardData.content]);
 
+    // Wait for user data before loading page
     if (!whiteboardData) return <div>Loading...</div>;
 
     return (

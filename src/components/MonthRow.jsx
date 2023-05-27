@@ -1,3 +1,5 @@
+// Month Row component (part of todos) - JACK (level 5)
+// Imports
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import { Typography, Grid, Container } from '@mui/material';
@@ -6,6 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const MonthRow = ({ handleWeek, mappedTasks }) => {
+  // Variables
   const [selectedDate, setSelectedDate] = useState(null);
   const today = dayjs();
   const monthStart = today.startOf('month');

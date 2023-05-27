@@ -1,3 +1,5 @@
+// Signin component - ADAM
+// Imports
 import { LoadingButton } from "@mui/lab";
 import { Alert, AlertTitle, Box, Container, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from 'react';
@@ -7,6 +9,7 @@ import Header from "./Header";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Signin = () => {
+    // Variables
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -17,6 +20,7 @@ const Signin = () => {
 
     const navigate = useNavigate();
 
+    // When the user clicks sign in, run the signin function
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');

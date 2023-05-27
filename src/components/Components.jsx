@@ -1,3 +1,4 @@
+// Components that can easily be accessed from one place - ADAM
 export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as Settings } from "./Settings";
 export { default as Todos } from "./Todos";

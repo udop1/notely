@@ -1,3 +1,5 @@
+// Settings component - ADAM
+// Imports
 import { Alert, AlertTitle, Avatar, Box, Button, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, Snackbar, Stack, TextField, Toolbar, Typography } from "@mui/material";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import React, { useState } from 'react';
@@ -8,6 +10,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { EmailAuthProvider, deleteUser, reauthenticateWithCredential, updatePassword } from "firebase/auth";
 
 const Settings = () => {
+    // Variables
     const { user, logout } = UserAuth();
     const [passwordModal, setPasswordModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -20,6 +23,7 @@ const Settings = () => {
 
     const navigate = useNavigate();
 
+    // When the user clicks the logout button, run the logout function
     const handleLogout = async () => {
         try {
             await logout();
@@ -30,6 +34,7 @@ const Settings = () => {
         }
     };
 
+    // When the user wants to update their password, check that their new password matches the confirmation, then check that their original password matches too. This prevent unauthorised pass changing.
     const handlePassUpdate = async (e) => {
         e.preventDefault();
         setError('');
@@ -74,6 +79,7 @@ const Settings = () => {
         });
     };
 
+    // Wait for user data before loading page
     if (!user.displayName && !user.email && !user.photoURL) return <div>Loading...</div>;
 
     return (

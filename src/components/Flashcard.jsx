@@ -1,3 +1,5 @@
+// Flashcard component - ADAM
+// Imports
 import { Alert, AlertTitle, Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, TextField, Toolbar, Typography } from "@mui/material";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
@@ -14,6 +16,7 @@ import { db } from "../firebase";
 import { UserAuth } from "../context/AuthContext";
 
 const Flashcard = () => {
+    // Variables
     const navigate = useNavigate();
     const { user, updateFlashcardGroup, deleteFlashcardGroup } = UserAuth();
     const { cardId } = useParams();
@@ -39,6 +42,7 @@ const Flashcard = () => {
     const [saveRevision, setSaveRevision] = useState(0); //If used to update page info, data is updated before changed meaning always 0
     const [isSaving, setIsSaving] = useState(0); //When changed, update page info
 
+    // Retrieve user data
     async function getData(userId) {
         const queryData = await getDoc(doc(db, "users", userId, "flashcards", cardId));
 
@@ -153,6 +157,7 @@ const Flashcard = () => {
         setModalDelOpen(false);
     };
 
+    //Wait for user data before loading page
     if (!flashcardData) return <div>Loading...</div>;
 
     return (

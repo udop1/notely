@@ -1,3 +1,5 @@
+// Pomodoro component - ADAM
+// Imports
 import { Box, Card, CardContent, Container, IconButton, Stack, Toolbar, Typography } from "@mui/material";
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
@@ -7,6 +9,7 @@ import React, { useEffect } from 'react';
 import NavBar from "./NavBar";
 
 const Pomodoro = () => {
+    // Variables
     const timer = {
         pomodoro: 25,
         shortBreak: 5,
@@ -64,6 +67,7 @@ const Pomodoro = () => {
         stopTimer();
     }
 
+    // Calculate time left on timer
     function getRemainingTime(endTime) {
         const currentTime = Date.parse(new Date());
         const difference = endTime - currentTime;
@@ -75,6 +79,7 @@ const Pomodoro = () => {
         return { total, minutes, seconds };
     }
 
+    // Start the timer and count down. Checks when ended and changes mode
     function startTimer() {
         const mainButton = document.getElementById("js-btn");
         let { total } = timer.remainingTime;
@@ -126,6 +131,7 @@ const Pomodoro = () => {
         mainButton.classList.remove("active");
     }
 
+    // Update clock interface
     function updateClock(mode) {
         const { remainingTime } = timer;
         const minutes = `${remainingTime.minutes}`.padStart(2, "0");
@@ -139,6 +145,7 @@ const Pomodoro = () => {
         setCircleDasharray(mode);
     }
 
+    // When timer has run out, swap modes
     function switchMode(mode) {
         timer.mode = mode;
         timer.remainingTime = {
@@ -155,6 +162,7 @@ const Pomodoro = () => {
         updateClock(mode);
     }
 
+    // Calculate dash array values to make visual timer move smoothly
     function calculateTimeFraction(mode) {
         if (mode !== undefined) {
             fractionMode = mode;
@@ -168,6 +176,7 @@ const Pomodoro = () => {
         document.getElementById("base-timer-path-remaining").setAttribute("stroke-dasharray", circleDasharray);
     }
 
+    // On page load, use pomodoro mode
     useEffect(() => {
         setTimeout(() => {
             switchMode("pomodoro");
@@ -192,12 +201,13 @@ const Pomodoro = () => {
                         </CardContent>
                     </Card>
 
+                    {/* Set up UI for visual timer */}
                     <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 3 }}>
                         <Box className="base-timer" sx={{ position: "relative", height: "300px", width: "300px" }}>
                             <svg className="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{ transform: "scaleX(-1)" }}>
                                 <g id="timer-front" className="base-timer__circle" style={{ fill: "none", stroke: "none" }}>
-                                    <circle id="timer-back" className="base-timer__path-elapsed" cx="50" cy="50" r="45" style={{ strokeWidth: "7px"/*, stroke: "grey"*/ }} />
-                                    <path id="base-timer-path-remaining" className="base-timer__path-remaining" strokeDasharray="283" d="M 50, 50 m -45, 0 a 45,45 0 1,0 90,0 a 45,45 0 1,0 -90,0" style={{ strokeWidth: "7px", strokeLinecap: "round", transform: "rotate(90deg)", transformOrigin: "center", transition: "1s linear all"/*, stroke: "black"*/ }}></path>
+                                    <circle id="timer-back" className="base-timer__path-elapsed" cx="50" cy="50" r="45" style={{ strokeWidth: "7px" }} />
+                                    <path id="base-timer-path-remaining" className="base-timer__path-remaining" strokeDasharray="283" d="M 50, 50 m -45, 0 a 45,45 0 1,0 90,0 a 45,45 0 1,0 -90,0" style={{ strokeWidth: "7px", strokeLinecap: "round", transform: "rotate(90deg)", transformOrigin: "center", transition: "1s linear all" }}></path>
                                 </g>
                             </svg>
                             <span id="base-timer-label" className="base-timer__label" style={{ position: "absolute", width: "300px", height: "300px", top: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", fontSize: "48px", fontWeight: "700" }}>

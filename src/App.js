@@ -1,8 +1,11 @@
+// React app - ADAM
+// Imports
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Dashboard, Flashcard, Flashcards, ForgotPassword, Homepage, Note, Notes, Pomodoro, ProtectedRoute, Settings, Signin, Signup, Todos, Whiteboard, Whiteboards } from "./components/Components";
 import { AuthContextProvider } from "./context/AuthContext";
 
+// Create a single app component that the entire website is loaded into. Set routes so URLs load the correct components, and ensure that user areas are protected routes
 function App() {
 	return (
 		<div>

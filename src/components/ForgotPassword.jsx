@@ -1,3 +1,5 @@
+// Forgot Password component - ADAM
+// Imports
 import { LoadingButton } from "@mui/lab";
 import { Alert, AlertTitle, Box, Container, Grid, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from 'react';
@@ -6,6 +8,7 @@ import { UserAuth } from '../context/AuthContext';
 import Header from "./Header";
 
 const ForgotPassword = () => {
+    // Variables
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');

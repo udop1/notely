@@ -1,3 +1,5 @@
+// Homepage component - ADAM
+// Imports
 import { Avatar, Box, Button, Card, CardContent, Container, Stack, Typography } from "@mui/material";
 import React from 'react';
 import Header from "./Header";
