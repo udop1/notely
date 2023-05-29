@@ -123,6 +123,15 @@ const Homepage = () => {
                     </Card>
                 </Stack>
             </Container>
+            <Container sx={{ mt: 6, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+                <Box className="homepage-text-containers" sx={{ width: "75%" }}>
+                    <Typography variant="h5" fontWeight="700" sx={{ mb: 3 }}>Watch our trailer to find out more</Typography>
+                </Box>
+                <video width="100%" height="100%" controls style={{ maxWidth: "960", maxHeight: "540" }}>
+                    <source src="./trailer.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </Container>
             <Box id="homepage-lower-banner-container" sx={{ mt: 6, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <img id="homepage-lower-banner" src="./DesktopLandingBannerGreen.svg" alt="Desktop Landing Banner" style={{ display: "block", width: "100%" }}></img>
                 <Container id="homepage-lower-text-container" sx={{ flexGrow: 1, position: "absolute", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
