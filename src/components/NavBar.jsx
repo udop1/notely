@@ -26,7 +26,7 @@ const NavBar = () => {
                 <ListItem sx={{ backgroundColor: "#DBE192", py: 1 }}>
                     <img className="desktop-hide-logo" src="../IconLogo.svg" alt="Notely Logo" loading="lazy" style={{ marginRight: 10, height: "40px", visibility: "hidden" }} />
                     <Typography className="desktop-hide-logo" variant="h5" sx={{ flexGrow: 1, fontFamily: "DKSmilingCat", letterSpacing: 2, color: "#5D6716", visibility: "hidden" }}>notely</Typography>
-                    <IconButton onClick={() => setToggleDrawer(!toggleDrawer)} size="large" edge="end" color="inherit" sx={{ ml: 2, transform: "rotate(180deg)" }}>
+                    <IconButton className="desktop-navbar-arrow" onClick={() => setToggleDrawer(!toggleDrawer)} size="large" edge="end" color="inherit" sx={{ ml: 2, transform: "rotate(180deg)", visibility: "hidden" }}>
                         <ArrowForwardIosRoundedIcon />
                     </IconButton>
                 </ListItem>

@@ -67,7 +67,7 @@ const Signup = () => {
                             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
 
                             <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-                                <Stack spacing={4} sx={{ mb: 2 }}>
+                                <Stack spacing={4} sx={{ mb: 3 }}>
                                     <TextField required variant="standard" label="Username" onChange={(e) => setUsername(e.target.value)} type="text"></TextField>
                                     <TextField required variant="standard" label="Email Address" onChange={(e) => setEmail(e.target.value)} type="email"></TextField>
                                     <FormControl required variant="standard" onChange={(e) => setPassword(e.target.value)} type="password">

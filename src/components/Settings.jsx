@@ -88,8 +88,8 @@ const Settings = () => {
             <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />
 
-                <Container>
-                    <Card sx={{ mb: 2 }}>
+                <Container sx={{ "&&": { px: 5 } }}>
+                    <Card sx={{ mb: 4 }}>
                         <CardContent>
                             <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-around", mb: 3 }}>
                                 <Avatar alt={user && user.displayName} src={user && user.photoURL} sx={{ height: "100px", width: "100px" }} />
@@ -110,9 +110,9 @@ const Settings = () => {
                             </Stack>
                         </CardContent>
                     </Card>
-                    <Stack spacing={6} sx={{ mx: 4 }}>
+                    <Stack id="desktop-settings-buttons" spacing={2} sx={{ mx: 20 }}>
                         <Button variant="contained" onClick={handleLogout}>Logout</Button>
-                        <Button variant="contained" onClick={() => setDeleteModal(true)} sx={{ backgroundColor: "#d32f2f" }}>Delete Account</Button>
+                        <Button variant="contained" onClick={() => setDeleteModal(true)} sx={{ backgroundColor: "#d32f2f", ":hover": { backgroundColor: "#7f1c1c" } }}>Delete Account</Button>
                     </Stack>
                 </Container>
             </Box>

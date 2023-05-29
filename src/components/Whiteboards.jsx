@@ -29,7 +29,7 @@ const Whiteboards = () => {
     };
 
     return (
-        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+        <Box className="desktop-navbar-container" sx={{ display: "flex", mx: 5 }}>
             <NavBar />
             <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />

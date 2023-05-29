@@ -396,7 +396,7 @@ const Todos = () => {
                     <SpeedDialAction icon={<NoteAddOutlinedIcon />} tooltipTitle="New ToDo" sx={{ color: "black" }} onClick={handleOpen} />
                 </SpeedDial>
 
-                <Container sx={{ backgroundColor: showWeek || showMonth ? "#FFFFFF" : "transparent", mt: -3, mb: 2, py: 2 }}>
+                <Container sx={{ backgroundColor: showWeek || showMonth ? "#FFFFFF" : "transparent", mt: -3, mb: 2, py: 4 }}>
                     <Stack direction="row" spacing={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
                         <Button variant="outlined" onClick={handleToday} sx={{ borderRadius: 2, px: "0" }}>Today</Button>
                         <Button variant="outlined" onClick={handleWeek} sx={{ borderRadius: 2, px: "0" }}>Week</Button>
@@ -410,12 +410,12 @@ const Todos = () => {
                 <Container sx={{ mb: 2 }}>
                     <Grid container columns={12} justifyItems="center">
                         <Grid item xs={6}>
-                            <Typography variant="body1" sx={{ fontWeight: "700", color: "black" }}>{stringify}</Typography>
+                            <Typography variant="h6" sx={{ fontWeight: "700", color: "black", pt: 3, pb: 1 }}>{stringify}</Typography>
                         </Grid>
                     </Grid>
                 </Container>
 
-                <Container>
+                <Container sx={{ "&&": { px: 5 } }}>
 
                     {/* First Offer the user the option of 3 Buttons. Todays Tasks, Upcomming and Tags */}
                     {/* {menuView &&
@@ -575,12 +575,12 @@ const Todos = () => {
                                 } else if (selectedDate === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
                                     noOfCards += 1;
                                     return (
-                                        <Card key={card.id}>
+                                        <Card key={card.id} sx={{ mb: 3 }}>
                                             <CardActionArea>
                                                 <CardContent>
                                                     <Grid container spacing={2}>
                                                         <Grid item xs={2}>
-                                                            <Checkbox onChange={(e) => handleTaskCheckboxChange(card.id, e)} />
+                                                            <Checkbox checked={card.completed ? true : false} onChange={(e) => handleTaskCheckboxChange(card.id, e)} />
                                                         </Grid>
                                                         <Grid item xs={10}>
                                                             <Typography variant="body1" sx={{ fontWeight: "700", mb: 0.5 }}>{card.title}</Typography>

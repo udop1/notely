@@ -164,6 +164,14 @@ const theme = createTheme({
 				colorPrimary: {
 					color: getColour("--green-400"),
 				},
+				root: {
+					"&.Mui-checked": {
+						color: getColour("--green-400"),
+					},
+					":checked": {
+						color: getColour("--green-400"),
+					},
+				},
 			},
 		},
 	},

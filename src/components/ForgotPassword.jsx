@@ -51,7 +51,7 @@ const ForgotPassword = () => {
 
                             <Stack component="form" spacing={2} onSubmit={handleSubmit}>
                                 <TextField required label="Email Address" variant="standard" onChange={(e) => setEmail(e.target.value)} type="email" sx={{ mb: 2 }}></TextField>
-                                <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { py: 1.25 } }}>Reset Password</LoadingButton>
+                                <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { mt: 4, py: 1.25 } }}>Reset Password</LoadingButton>
                             </Stack>
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                                 <Typography variant="body1">Remember your password? <Link to='/login'>Login</Link></Typography>

@@ -2,8 +2,8 @@
 // Imports
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import { Typography, Grid, Container } from '@mui/material';
-import CircleIcon from '@mui/icons-material/Circle';
+import { Typography, Grid, Container, Stack } from '@mui/material';
+// import CircleIcon from '@mui/icons-material/Circle';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -132,17 +132,19 @@ const MonthRow = ({ handleWeek, mappedTasks }) => {
 
   return (
     <Container>
-      <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: 'normal', color: 'grey' }}>{monthName}</Typography>
-      <ArrowBackIcon onClick={preMonthToArray} />
-      <ArrowForwardIcon onClick={addMonthToArray} />
-      <Grid container spacing={2} columns={7}>
-        <Grid item xs={1} ><Typography>Mon</Typography></Grid>
-        <Grid item xs={1} ><Typography>Tue</Typography></Grid>
-        <Grid item xs={1} ><Typography>Wed</Typography></Grid>
-        <Grid item xs={1} ><Typography>Thu</Typography></Grid>
-        <Grid item xs={1} ><Typography>Fri</Typography></Grid>
-        <Grid item xs={1} ><Typography>Sat</Typography></Grid>
-        <Grid item xs={1} ><Typography>Sun</Typography></Grid>
+      <Stack direction="row" spacing={2} sx={{ alignItems: "center", mb: 2 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, cursor: 'pointer' }}>{monthName}</Typography>
+        <ArrowBackIcon onClick={preMonthToArray} />
+        <ArrowForwardIcon onClick={addMonthToArray} />
+      </Stack>
+      <Grid container spacing={2} columns={7} sx={{ textAlign: "center" }}>
+        <Grid item xs={1} ><Typography sx={{ fontWeight: 700 }}>Mon</Typography></Grid>
+        <Grid item xs={1} ><Typography sx={{ fontWeight: 700 }}>Tue</Typography></Grid>
+        <Grid item xs={1} ><Typography sx={{ fontWeight: 700 }}>Wed</Typography></Grid>
+        <Grid item xs={1} ><Typography sx={{ fontWeight: 700 }}>Thu</Typography></Grid>
+        <Grid item xs={1} ><Typography sx={{ fontWeight: 700 }}>Fri</Typography></Grid>
+        <Grid item xs={1} ><Typography sx={{ fontWeight: 700 }}>Sat</Typography></Grid>
+        <Grid item xs={1} ><Typography sx={{ fontWeight: 700 }}>Sun</Typography></Grid>
         {monthPreRender.map((day) => (
           <Grid item key={day} xs={1} >
             <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'grey' }} onClick={() => handleDateClick(day)}>
@@ -152,10 +154,10 @@ const MonthRow = ({ handleWeek, mappedTasks }) => {
         ))}
         {monthRender.map((day) => (
           <Grid item key={day} xs={1} >
-            <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'text.primary' }} onClick={() => handleDateClick(day)}>
+            <Typography variant="body1" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'var(--green-400)' : 'text.primary' }} onClick={() => handleDateClick(day)}>
               {day.format('D')}
             </Typography>
-            {mappedTasks.map((card, index) => {
+            {/* {mappedTasks.map((card, index) => {
 
               if (card.id === "tags") { return null };
               if (day.format('YYYY-MM-DD') === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
@@ -164,7 +166,7 @@ const MonthRow = ({ handleWeek, mappedTasks }) => {
                   <CircleIcon key={card.id} style={{ fontSize: "8px", paddingLeft: "5px", color: "orange" }} />
                 )
               } else return null
-            })}
+            })} */}
           </Grid>
         ))}
         {monthAfterRender.map((day) => (

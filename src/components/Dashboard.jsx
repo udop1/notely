@@ -43,7 +43,7 @@ const Dashboard = () => {
                     <Box sx={{ mt: 2 }}>
                         <Grid container spacing={2} columns={12}>
                             <Grid item xs={6}>
-                                <Card>
+                                <Card sx={{ height: "100%" }} >
                                     <CardActionArea component={Link} to="/todos">
                                         <CardContent>
                                             <img src="./IconTodo.svg" alt="Todo Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
@@ -54,7 +54,7 @@ const Dashboard = () => {
                                 </Card>
                             </Grid>
                             <Grid item xs={6}>
-                                <Card>
+                                <Card sx={{ height: "100%" }} >
                                     <CardActionArea component={Link} to="/notes">
                                         <CardContent>
                                             <img src="./IconNotes.svg" alt="Notes Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
@@ -65,7 +65,7 @@ const Dashboard = () => {
                                 </Card>
                             </Grid>
                             <Grid item xs={6}>
-                                <Card>
+                                <Card sx={{ height: "100%" }} >
                                     <CardActionArea component={Link} to="/whiteboards">
                                         <CardContent>
                                             <img src="./IconWhiteboard.svg" alt="Whiteboards Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
@@ -76,7 +76,7 @@ const Dashboard = () => {
                                 </Card>
                             </Grid>
                             <Grid item xs={6}>
-                                <Card>
+                                <Card sx={{ height: "100%" }} >
                                     <CardActionArea component={Link} to="/flashcards">
                                         <CardContent>
                                             <img src="./IconFlashcard.svg" alt="Flashcards Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
@@ -87,7 +87,7 @@ const Dashboard = () => {
                                 </Card>
                             </Grid>
                             <Grid item xs={6}>
-                                <Card>
+                                <Card sx={{ height: "100%" }} >
                                     <CardActionArea component={Link} to="/pomodoro">
                                         <CardContent>
                                             <img src="./IconPomodoro.svg" alt="Pomodoro Timer Icon" loading="lazy" style={{ minHeight: 40, marginBottom: 8, fontSize: 50 }} />
@@ -97,11 +97,11 @@ const Dashboard = () => {
                                     </CardActionArea>
                                 </Card>
                             </Grid>
-                        </Grid>
-                    </Box>
-                </Container>
-            </Box>
-        </Box>
+                        </Grid >
+                    </Box >
+                </Container >
+            </Box >
+        </Box >
     );
 };
 

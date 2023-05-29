@@ -105,7 +105,7 @@ const Note = () => {
     if (!noteData) return <div>Loading...</div>;
 
     return (
-        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+        <Box className="desktop-navbar-container" sx={{ display: "flex", mx: 5 }}>
             <NavBar />
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
             <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
@@ -128,7 +128,7 @@ const Note = () => {
                                     {
                                         tagFields.map((tag) => {
                                             return (
-                                                <Chip key={tag} size="small" label={tag} />
+                                                <Chip key={tag} size="small" label={tag} sx={{ fontWeight: 700 }} />
                                             );
                                         })
                                     }
@@ -159,35 +159,39 @@ const Note = () => {
             </SpeedDial>
 
             <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
-                <DialogContent>
-                    <DialogContentText>
-                        Delete this note?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => handleDelete(false)} autoFocus>Cancel</Button>
-                    <Button variant="contained" color="error" onClick={() => handleDelete(true)}>Delete</Button>
-                </DialogActions>
+                <Box sx={{ p: 2 }}>
+                    <DialogContent>
+                        <DialogTitle sx={{ fontWeight: 700 }}>
+                            Delete this note?
+                        </DialogTitle>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button variant="outlined" onClick={() => handleDelete(false)} autoFocus sx={{ px: 5 }}>Cancel</Button>
+                        <Button variant="contained" color="error" onClick={() => handleDelete(true)} sx={{ px: 5 }}>Delete</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
 
             <Dialog component="form" open={modalTagOpen} onSubmit={(e) => { e.preventDefault(); setModalTagOpen(false); }} aria-labelledby="modal-tag-title" aria-describedby="modal-tag-description">
-                <DialogTitle>Add Tags</DialogTitle>
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        Add some tags to your note here.
-                    </DialogContentText>
+                <Box sx={{ p: 2 }}>
+                    <DialogTitle sx={{ fontWeight: 700 }}>Add Tags</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ mb: 2 }}>
+                            Add some tags to your note here.
+                        </DialogContentText>
 
-                    {tagFields.map((tagValue, index) => (
-                        <Stack key={index} direction="row" sx={{ mb: 1 }}>
-                            <TextField required size="small" variant="standard" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
-                            <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
-                        </Stack>
-                    ))}
-                    <IconButton onClick={handleAddTag}><AddCircleOutlineRoundedIcon /></IconButton>
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit" variant="contained" autoFocus>Confirm</Button>
-                </DialogActions>
+                        {tagFields.map((tagValue, index) => (
+                            <Stack key={index} direction="row" sx={{ mb: 1 }}>
+                                <TextField required size="small" variant="standard" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} sx={{ width: "100%" }} />
+                                <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
+                            </Stack>
+                        ))}
+                        <IconButton onClick={handleAddTag}><AddCircleOutlineRoundedIcon /></IconButton>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button type="submit" variant="contained" autoFocus sx={{ px: 5 }}>Confirm</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
         </Box>
     );

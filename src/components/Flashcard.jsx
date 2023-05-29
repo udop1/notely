@@ -161,7 +161,7 @@ const Flashcard = () => {
     if (!flashcardData) return <div>Loading...</div>;
 
     return (
-        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+        <Box className="desktop-navbar-container" sx={{ display: "flex", mx: 5 }}>
             <NavBar />
             {error && <Alert severity="error"><AlertTitle><strong>Error</strong></AlertTitle>{error}</Alert>}
             <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
@@ -184,7 +184,7 @@ const Flashcard = () => {
                                     {
                                         tagFields.map((tag) => {
                                             return (
-                                                <Chip key={tag} size="small" label={tag} />
+                                                <Chip key={tag} size="small" label={tag} sx={{ fontWeight: 700 }} />
                                             );
                                         })
                                     }
@@ -234,80 +234,90 @@ const Flashcard = () => {
                 <SpeedDialAction onClick={handleSubmit} icon={<SaveOutlinedIcon />} tooltipTitle="Save Flashcard Group" sx={{ color: "black" }} />
             </SpeedDial>
 
-            <Dialog component="form" open={modalAddOpen} onSubmit={handleAddCard} fullWidth maxWidth="md" aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
-                <DialogTitle>Add Flashcards</DialogTitle>
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        Add some cards to your flashcard group here.
-                    </DialogContentText>
+            <Dialog component="form" open={modalAddOpen} onSubmit={handleAddCard} aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
+                <Box sx={{ p: 2 }}>
+                    <DialogTitle sx={{ fontWeight: 700 }}>Add Flashcards</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ mb: 2 }}>
+                            Add some cards to your flashcard group here.
+                        </DialogContentText>
 
-                    <Stack>
-                        <TextField required onChange={(e) => setAddTerm(e.target.value)} label="Term" variant="standard" sx={{ mb: 2 }}></TextField>
-                        <TextField required onChange={(e) => setAddDef(e.target.value)} label="Definition" variant="standard"></TextField>
-                    </Stack>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => setModalAddOpen(false)}>Cancel</Button>
-                    <Button type="submit" variant="contained" autoFocus>Add</Button>
-                </DialogActions>
+                        <Stack>
+                            <TextField required onChange={(e) => setAddTerm(e.target.value)} label="Term" variant="standard" sx={{ mb: 2 }}></TextField>
+                            <TextField required onChange={(e) => setAddDef(e.target.value)} label="Definition" variant="standard"></TextField>
+                        </Stack>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button variant="outlined" onClick={() => setModalAddOpen(false)} sx={{ px: 5 }}>Cancel</Button>
+                        <Button type="submit" variant="contained" autoFocus sx={{ px: 5 }}>Add</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
 
-            <Dialog component="form" open={modalEditOpen} onSubmit={handleEditCard} fullWidth maxWidth="md" aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
-                <DialogTitle>Edit Flashcards</DialogTitle>
-                <DialogContent>
-                    <Stack>
-                        <TextField required value={editTerm} onChange={(e) => setEditTerm(e.target.value)} label="Term" variant="standard" sx={{ my: 2 }}></TextField>
-                        <TextField required value={editDef} onChange={(e) => setEditDef(e.target.value)} label="Definition" variant="standard"></TextField>
-                    </Stack>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => setModalEditOpen(false)} autoFocus>Cancel</Button>
-                    <Button type="submit" variant="contained">Confirm</Button>
-                </DialogActions>
+            <Dialog component="form" open={modalEditOpen} onSubmit={handleEditCard} aria-labelledby="modal-add-title" aria-describedby="modal-add-description">
+                <Box sx={{ p: 2 }}>
+                    <DialogTitle sx={{ fontWeight: 700 }}>Edit Flashcards</DialogTitle>
+                    <DialogContent>
+                        <Stack>
+                            <TextField required value={editTerm} onChange={(e) => setEditTerm(e.target.value)} label="Term" variant="standard" sx={{ my: 2 }}></TextField>
+                            <TextField required value={editDef} onChange={(e) => setEditDef(e.target.value)} label="Definition" variant="standard"></TextField>
+                        </Stack>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button variant="outlined" onClick={() => setModalEditOpen(false)} autoFocus sx={{ px: 5 }}>Cancel</Button>
+                        <Button type="submit" variant="contained" sx={{ px: 5 }}>Confirm</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
 
             <Dialog open={modalDelGroupOpen} onClose={() => setModalDelGroupOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
-                <DialogContent>
-                    <DialogContentText>
-                        Delete this Flashcard Group?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => handleCardGroupDelete(false)} autoFocus>Cancel</Button>
-                    <Button variant="contained" color="error" onClick={() => handleCardGroupDelete(true)}>Delete</Button>
-                </DialogActions>
+                <Box sx={{ p: 2 }}>
+                    <DialogContent>
+                        <DialogTitle sx={{ fontWeight: 700, textAlign: "center" }}>
+                            Delete this Flashcard Group?
+                        </DialogTitle>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button variant="outlined" onClick={() => handleCardGroupDelete(false)} autoFocus sx={{ px: 5 }}>Cancel</Button>
+                        <Button variant="contained" color="error" onClick={() => handleCardGroupDelete(true)} sx={{ px: 5 }}>Delete</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
 
             <Dialog component="form" open={modalTagOpen} onSubmit={(e) => { e.preventDefault(); setModalTagOpen(false); }} aria-labelledby="modal-tag-title" aria-describedby="modal-tag-description">
-                <DialogTitle>Add Tags</DialogTitle>
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        Add some tags to your flashcard here.
-                    </DialogContentText>
+                <Box sx={{ p: 2 }}>
+                    <DialogTitle sx={{ fontWeight: 700 }}>Add Tags</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ mb: 2 }}>
+                            Add some tags to your flashcard here.
+                        </DialogContentText>
 
-                    {tagFields.map((tagValue, index) => (
-                        <Stack key={index} direction="row" sx={{ mb: 1 }}>
-                            <TextField required size="small" variant="standard" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} />
-                            <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
-                        </Stack>
-                    ))}
-                    <IconButton onClick={handleAddTag}><AddCircleOutlineRoundedIcon /></IconButton>
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit" variant="contained" autoFocus>Confirm</Button>
-                </DialogActions>
+                        {tagFields.map((tagValue, index) => (
+                            <Stack key={index} direction="row" sx={{ mb: 1 }}>
+                                <TextField required size="small" variant="standard" value={tagValue} onChange={(e) => handleTagChange(index, e.target.value)} sx={{ width: "100%" }} />
+                                <IconButton onClick={() => handleRemoveTag(index)}><RemoveCircleRoundedIcon /></IconButton>
+                            </Stack>
+                        ))}
+                        <IconButton onClick={handleAddTag}><AddCircleOutlineRoundedIcon /></IconButton>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button type="submit" variant="contained" autoFocus sx={{ px: 5 }}>Confirm</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
 
             <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
-                <DialogContent>
-                    <DialogContentText>
-                        Delete this flashcard?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus>Cancel</Button>
-                    <Button variant="contained" color="error" onClick={() => handleDelete()}>Delete</Button>
-                </DialogActions>
+                <Box sx={{ p: 2 }}>
+                    <DialogContent>
+                        <DialogTitle sx={{ fontWeight: 700 }}>
+                            Delete this flashcard?
+                        </DialogTitle>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus sx={{ px: 5 }}>Cancel</Button>
+                        <Button variant="contained" color="error" onClick={() => handleDelete()} sx={{ px: 5 }}>Delete</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
         </Box>
     );

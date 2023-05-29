@@ -76,7 +76,7 @@ const Signin = () => {
                                     </FormControl>
                                 </Stack>
                                 <Typography display="flex" justifyContent="flex-end"><Link to='/forgot-password'>Forgot Password?</Link></Typography>
-                                <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { py: 1.25 } }}>Log In</LoadingButton>
+                                <LoadingButton type="submit" loading={loading} variant="contained" sx={{ "&&": { mt: 4, py: 1.25 } }}>Log In</LoadingButton>
                             </Stack>
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                                 <Typography variant="body1">Don't have an account yet? <Link to='/signup'>Sign Up</Link></Typography>

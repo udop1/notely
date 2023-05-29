@@ -189,7 +189,7 @@ const Pomodoro = () => {
     }, []);
 
     return (
-        <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
+        <Box className="desktop-navbar-container" sx={{ display: "flex", mx: 5 }}>
             <NavBar />
             <Box className="desktop-undernav-content" sx={{ flexGrow: 1, mt: 2 }}>
                 <Toolbar className="desktop-undernav-toolbar" />
@@ -202,7 +202,7 @@ const Pomodoro = () => {
                     </Card>
 
                     {/* Set up UI for visual timer */}
-                    <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 3 }}>
+                    <Box sx={{ display: "flex", justifyContent: "center", mt: 4, mb: 3 }}>
                         <Box className="base-timer" sx={{ position: "relative", height: "300px", width: "300px" }}>
                             <svg className="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{ transform: "scaleX(-1)" }}>
                                 <g id="timer-front" className="base-timer__circle" style={{ fill: "none", stroke: "none" }}>
@@ -226,15 +226,15 @@ const Pomodoro = () => {
                     <Stack spacing={4} direction="row" justifyContent="center">
                         <Stack sx={{ justifyContent: "space-between", alignItems: "center", width: "90px" }}>
                             <IconButton className="pomodoro-timer-buttons" onClick={handleRestartButton} sx={{ borderRadius: "10px" }}><ReplayRoundedIcon /></IconButton>
-                            <Typography variant="body1" color="text.secondary" fontWeight="700" sx={{ mt: 1 }}>Restart</Typography>
+                            <Typography variant="body1" sx={{ mt: 1 }}>Restart</Typography>
                         </Stack>
                         <Stack sx={{ justifyContent: "space-between", alignItems: "center", width: "90px" }}>
                             <IconButton className="main-button pomodoro-timer-buttons" data-action="start" id="js-btn" onClick={handlePlayButton} sx={{ borderRadius: "10px" }}><PlayArrowRoundedIcon /><PauseRoundedIcon /></IconButton>
-                            <Typography variant="body1" color="text.secondary" fontWeight="700" sx={{ mt: 1 }}>Play/Pause</Typography>
+                            <Typography variant="body1" sx={{ mt: 1 }}>Play/Pause</Typography>
                         </Stack>
                         <Stack sx={{ justifyContent: "space-between", alignItems: "center", width: "90px" }}>
                             <IconButton className="pomodoro-timer-buttons" onClick={handleSkipButton} sx={{ borderRadius: "10px" }}><SkipNextRoundedIcon /></IconButton>
-                            <Typography variant="body1" color="text.secondary" fontWeight="700" sx={{ mt: 1 }}>Skip</Typography>
+                            <Typography variant="body1" sx={{ mt: 1 }}>Skip</Typography>
                         </Stack>
                     </Stack>
                 </Container>

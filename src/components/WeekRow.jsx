@@ -2,9 +2,9 @@
 // Imports
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import { Typography, Grid, Container } from '@mui/material';
+import { Typography, Grid, Container, Stack } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import CircleIcon from '@mui/icons-material/Circle';
+// import CircleIcon from '@mui/icons-material/Circle';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
@@ -64,21 +64,23 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
   return (
 
     <Container>
-      <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: 'normal', color: 'grey' }}>{monthName}</Typography>
-      <ArrowBackIcon onClick={previousWeekToArray} />
-      <ArrowForwardIcon onClick={addWeekToArray} />
-      <Grid container>
+      <Stack direction="row" spacing={2} sx={{ alignItems: "center", mb: 2 }}>
+        <Typography variant="h5" sx={{ cursor: 'pointer', fontWeight: 700 }}>{monthName}</Typography>
+        <ArrowBackIcon onClick={previousWeekToArray} />
+        <ArrowForwardIcon onClick={addWeekToArray} />
+      </Stack>
+      <Grid container sx={{ textAlign: "center" }}>
         {renderDays.map((day) => {
           return (
             <Grid item key={day} xs>
-              <Typography variant="subtitle1" sx={{ color: day.isSame(today, 'day') ? 'primary.main' : 'text.primary' }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: day.isSame(today, 'day') ? 'var(--green-400)' : 'text.primary' }}>
                 {day.format('ddd')}
               </Typography>
-              <Typography variant="h6" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'secondary.main' : 'text.primary' }} onClick={() => handleWeekdayClick(day)}>
+              <Typography variant="body1" sx={{ cursor: 'pointer', fontWeight: selectedDate?.isSame(day, 'day') ? 'bold' : 'normal', color: selectedDate?.isSame(day, 'day') ? 'var(--green-400)' : 'text.primary' }} onClick={() => handleWeekdayClick(day)}>
                 {day.format('D')}
               </Typography>
 
-              {mappedTasks.map((card, index) => {
+              {/* {mappedTasks.map((card, index) => {
                 if (card.id === "tags") { return null };
                 if (day.format('YYYY-MM-DD') === dayjs(card.taskDate.toDate()).format('YYYY-MM-DD')) {
                   //This Date Has a Task
@@ -86,7 +88,7 @@ const WeekRow = ({ startDate, handleWeek, mappedTasks }) => {
                     <CircleIcon key={card.id} style={{ fontSize: "8px", paddingLeft: "5px", color: "orange" }} />
                   )
                 } else return null
-              })}
+              })} */}
             </Grid>
           )
         })}
