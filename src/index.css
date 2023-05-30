@@ -187,6 +187,15 @@ a {
 		margin-left: 24px;
 		margin-right: 24px;
 	}
+
+	body #desktop-todos-add {
+		flex-direction: column;
+	}
+
+	body #desktop-todos-add button:last-child {
+		margin-left: 0px;
+		margin-top: 12px;
+	}
 }
 
 /* Title font */

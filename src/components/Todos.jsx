@@ -337,7 +337,7 @@ const Todos = () => {
                                         style={{ display: showSubField ? 'block' : 'none' }}
                                     />
                                 ))}
-                            <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
+                            <Stack id="desktop-todos-add" direction="row" spacing={2} sx={{ mt: 3 }}>
                                 <Button
                                     variant="outlined"
                                     color="secondary"
