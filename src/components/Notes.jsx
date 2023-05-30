@@ -1,6 +1,6 @@
 // Notes component - ADAM
 // Imports
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Toolbar, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Toolbar, Typography } from "@mui/material";
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
@@ -91,15 +91,17 @@ const Notes = () => {
             </SpeedDial>
 
             <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
-                <DialogContent>
-                    <DialogContentText>
-                        Delete this note?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus>Cancel</Button>
-                    <Button variant="contained" color="error" onClick={() => handleDelete()}>Delete</Button>
-                </DialogActions>
+                <Box sx={{ p: 2 }}>
+                    <DialogContent>
+                        <DialogTitle sx={{ fontWeight: 700 }}>
+                            Delete this note?
+                        </DialogTitle>
+                    </DialogContent>
+                    <DialogActions sx={{ justifyContent: "center" }}>
+                        <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus sx={{ px: 5 }}>Cancel</Button>
+                        <Button variant="contained" color="error" onClick={() => handleDelete()} sx={{ px: 5 }}>Delete</Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
         </Box>
     );

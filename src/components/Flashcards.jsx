@@ -1,6 +1,6 @@
 // Flashcards component - ADAM
 // Imports
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Toolbar, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Chip, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Toolbar, Typography } from "@mui/material";
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import PostAddIcon from '@mui/icons-material/PostAdd';
@@ -76,7 +76,7 @@ const Flashcards = () => {
                                     );
                                 })
                             ) : (
-                                <img src="../IconNoNotes.svg" alt="No Notes" loading="lazy" style={{ height: 350, marginTop: 50 }} />
+                                <img src="../IconNoFlashcards.svg" alt="No Flashcards" loading="lazy" style={{ height: 350, marginTop: 50 }} />
                             )
                         }
                     </Stack>
@@ -87,15 +87,17 @@ const Flashcards = () => {
                 </SpeedDial>
 
                 <Dialog open={modalDelOpen} onClose={() => setModalDelOpen(false)} aria-labelledby="alert-delete-title" aria-describedby="alert-delete-description">
-                    <DialogContent>
-                        <DialogContentText>
-                            Delete this flashcard group?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus>Cancel</Button>
-                        <Button variant="contained" color="error" onClick={() => handleDelete()}>Delete</Button>
-                    </DialogActions>
+                    <Box sx={{ p: 2 }}>
+                        <DialogContent>
+                            <DialogTitle sx={{ fontWeight: 700 }}>
+                                Delete this flashcard group?
+                            </DialogTitle>
+                        </DialogContent>
+                        <DialogActions sx={{ justifyContent: "center" }}>
+                            <Button variant="outlined" onClick={() => setModalDelOpen(false)} autoFocus sx={{ px: 5 }}>Cancel</Button>
+                            <Button variant="contained" color="error" onClick={() => handleDelete()} sx={{ px: 5 }}>Delete</Button>
+                        </DialogActions>
+                    </Box>
                 </Dialog>
             </Box>
         </Box>

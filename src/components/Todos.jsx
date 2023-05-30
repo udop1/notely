@@ -4,7 +4,7 @@ import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, SpeedD
 import NavBar from "./NavBar";
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
 import { UserAuth } from "../context/AuthContext";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -17,9 +17,9 @@ const Todos = () => {
     // Variables
     const [date, setDate] = useState(dayjs());
     const [showSubField, setShowSubField] = useState(false);
-    const [showTagField, setTagField] = useState(false);
+    // const [showTagField, setTagField] = useState(false);
     const [open, setOpen] = useState(false);
-    const { todos, createToDo, updateToDoSubTask, setToDoTags } = UserAuth();
+    const { todos, createToDo, updateToDoSubTask/*, setToDoTags*/ } = UserAuth();
 
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const today = new Date().toLocaleDateString('en-UK', options);
@@ -128,7 +128,7 @@ const Todos = () => {
                 revisionNumber: 0,
                 taskDate: correctDate(date.toISOString()),
                 tasks: subTasks.map(subTask => subTask),
-                tags: selectedTags
+                // tags: selectedTags
             };
         } else {
             newTodo = {
@@ -138,7 +138,7 @@ const Todos = () => {
                 modifiedDate: Timestamp.now(),
                 revisionNumber: 0,
                 taskDate: correctDate(date.toISOString()),
-                tags: selectedTags
+                // tags: selectedTags
             };
         }
 
@@ -179,7 +179,7 @@ const Todos = () => {
         completeTask(id, { completed: isChecked });
     }
     const completeTask = async (id, task) => { await updateToDoSubTask(id, task); }
-    const addTag = async (id, task) => { await setToDoTags(id, task); }
+    // const addTag = async (id, task) => { await setToDoTags(id, task); }
 
     const [showWeek, setShowWeek] = useState(false);
     const [showMonth, setShowMonth] = useState(false);
@@ -240,30 +240,30 @@ const Todos = () => {
     var noOfCards = 0;
 
     // TAGS
-    const [newTag, setNewTag] = useState('');
-    const [tagSavedList, settagSavedList] = useState([]);
-    const [selectedTags, setSelectedTags] = useState([]);
+    // const [newTag, setNewTag] = useState('');
+    // const [tagSavedList, settagSavedList] = useState([]);
+    // const [selectedTags, setSelectedTags] = useState([]);
 
-    const selectTag = (tag) => {
+    // const selectTag = (tag) => {
 
-        console.log(tag);
-        let arr = selectedTags;
-        arr.push(tag);
-        console.log(arr);
-        setSelectedTags(arr);
-    }
+    //     console.log(tag);
+    //     let arr = selectedTags;
+    //     arr.push(tag);
+    //     console.log(arr);
+    //     setSelectedTags(arr);
+    // }
 
-    const handleNewTagChange = (event) => {
-        setNewTag(event.target.value);
-    };
+    // const handleNewTagChange = (event) => {
+    //     setNewTag(event.target.value);
+    // };
 
-    const addNewTag = () => {
-        const arr = tagSavedList;
-        arr.push(newTag);
-        settagSavedList(arr);
-        addTag("tags", arr);
-        setNewTag('');
-    };
+    // const addNewTag = () => {
+    //     const arr = tagSavedList;
+    //     arr.push(newTag);
+    //     settagSavedList(arr);
+    //     addTag("tags", arr);
+    //     setNewTag('');
+    // };
 
     // const removeTag = (index) => {
     //     const arr = tagSavedList;
@@ -272,13 +272,13 @@ const Todos = () => {
     //     addTag("tags", arr);
     // };
     //Check to see if these tags already exist
-    useEffect(() => {
-        todos.forEach(card => {
-            if (card.id === 'tags') {
-                settagSavedList(card.saved);
-            }
-        });
-    }, [todos]);
+    // useEffect(() => {
+    //     todos.forEach(card => {
+    //         if (card.id === 'tags') {
+    //             settagSavedList(card.saved);
+    //         }
+    //     });
+    // }, [todos]);
 
     return (
         <Box className="desktop-navbar-container" sx={{ display: "flex" }}>
@@ -287,72 +287,75 @@ const Todos = () => {
                 <Toolbar className="desktop-undernav-toolbar" />
 
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle sx={{ pb: 0 }}>Add a New To-do Item</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            label="Task Title"
-                            variant="standard"
-                            fullWidth
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            margin="normal"
-                            error={!!titleError}
-                            helperText={titleError}
-                        />
-                        <TextField
-                            label="Task Description (Optional)"
-                            variant="standard"
-                            fullWidth
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            margin="normal"
-                        />
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker
-                                label="Basic date time picker"
-                                value={date}
-                                onChange={e => handleDateChange(e.$d)}
-                                sx={{ my: 4 }}
+                    <Box sx={{ p: 2 }}>
+                        <DialogTitle sx={{ fontWeight: 700 }}>Add a New To-do Item</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                label="Task Title"
+                                variant="standard"
+                                fullWidth
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                margin="normal"
+                                error={!!titleError}
+                                helperText={titleError}
                             />
-                        </LocalizationProvider>
-
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => setShowSubField(!showSubField)}
-                        >
-                            {showSubField ? 'Hide' : 'Show'} Sub Tasks
-                        </Button>
-                        {showSubField &&
-                            subTasks.map((subTask) => (
-                                <TextField
-                                    key={subTask.id}
-                                    label="Add a Subtask"
-                                    variant="standard"
-                                    fullWidth
-                                    value={subTask.title}
-                                    margin="normal"
-                                    onChange={(e) => handleSubTaskChange(subTask.id, e)}
-                                    style={{ display: showSubField ? 'block' : 'none' }}
+                            <TextField
+                                label="Task Description (Optional)"
+                                variant="standard"
+                                fullWidth
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                margin="normal"
+                            />
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DateTimePicker
+                                    label="Basic date time picker"
+                                    value={date}
+                                    onChange={e => handleDateChange(e.$d)}
+                                    sx={{ my: 4, display: "flex" }}
                                 />
-                            ))}
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            style={{ display: showSubField ? 'block' : 'none' }}
-                            onClick={handleAddSubTask}
-                        >
-                            Add Another Sub Task
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            style={{ display: showSubField ? 'block' : 'none' }}
-                            onClick={handleRemoveSubTask}
-                        >
-                            Remove Last Sub Task
-                        </Button>
-                        <Button
+                            </LocalizationProvider>
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => setShowSubField(!showSubField)}
+                            >
+                                {showSubField ? 'Hide' : 'Show'} Sub Tasks
+                            </Button>
+                            {showSubField &&
+                                subTasks.map((subTask) => (
+                                    <TextField
+                                        key={subTask.id}
+                                        label="Add a Subtask"
+                                        variant="standard"
+                                        fullWidth
+                                        value={subTask.title}
+                                        margin="normal"
+                                        onChange={(e) => handleSubTaskChange(subTask.id, e)}
+                                        style={{ display: showSubField ? 'block' : 'none' }}
+                                    />
+                                ))}
+                            <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    style={{ display: showSubField ? 'block' : 'none' }}
+                                    onClick={handleAddSubTask}
+                                >
+                                    Add Another Sub Task
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    style={{ display: showSubField ? 'block' : 'none' }}
+                                    onClick={handleRemoveSubTask}
+                                >
+                                    Remove Last Sub Task
+                                </Button>
+                            </Stack>
+                            {/* <Button
                             onClick={() => setTagField(!showTagField)}
                         >Tags</Button>
                         {showTagField &&
@@ -384,12 +387,13 @@ const Todos = () => {
                                 />
                                 <Button onClick={addNewTag}>Add new tag</Button>
                             </Container>
-                        }
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleAddTodo}>OK</Button>
-                    </DialogActions>
+                        } */}
+                        </DialogContent>
+                        <DialogActions sx={{ justifyContent: "center" }}>
+                            <Button variant="outlined" onClick={handleClose} sx={{ px: 5 }}>Cancel</Button>
+                            <Button variant="contained" onClick={handleAddTodo} sx={{ px: 5 }}>Done</Button>
+                        </DialogActions>
+                    </Box>
                 </Dialog>
 
                 <SpeedDial ariaLabel="SpeedDial" icon={<SpeedDialIcon />} sx={{ position: "fixed", bottom: 16, right: 16 }}>
