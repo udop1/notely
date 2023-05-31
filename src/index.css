@@ -107,6 +107,11 @@ a {
 
 	body #homepage-upper-text-container {
 		margin-top: 30px;
+		display: block;
+	}
+
+	body #homepage-upper-text-box {
+		padding: 0px 10%;
 	}
 
 	body .homepage-text-containers {

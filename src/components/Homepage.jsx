@@ -12,8 +12,8 @@ const Homepage = () => {
 
             <Box id="homepage-upper-banner-container" sx={{ mt: -3, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <img id="homepage-upper-banner" src="./DesktopLandingBannerOrange.svg" alt="Desktop Landing Banner" style={{ display: "block", width: "100%" }}></img>
-                <Container id="homepage-upper-text-container" sx={{ flexGrow: 1, position: "absolute", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-                    <Box sx={{ gridColumnStart: 2, mr: 4 }}>
+                <Container id="homepage-upper-text-container" sx={{ flexGrow: 1, position: "absolute", display: "grid", gridTemplateColumns: "1fr 1fr", "&&": { maxWidth: "unset" } }}>
+                    <Box id="homepage-upper-text-box" sx={{ gridColumnStart: 2, px: "25%" }}>
                         <Typography variant="h5" fontWeight="700" sx={{ mb: 1 }}>Hi there! Welcome to Notely</Typography>
                         <Typography variant="body1" sx={{ mb: 3 }}><span style={{ fontWeight: 700 }}>Notely</span> is an all-in-one productivity application designed for students by students.</Typography>
                         <Box display="flex" justifyContent="center">
